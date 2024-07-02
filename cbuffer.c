@@ -86,18 +86,10 @@
  */
 void cb_init(cbuffer_t *cb, void *buf, uint32_t size)
 {
-  if (size == 0)
-  {
-    return;
-  }
-
-  cb->data = (uint8_t *)malloc(size);
-  memset(cb->data, 0, size);
-
-  if (buf != NULL)
-  {
-    memmove(cb->data, buf, size);
-  }
+  CHECK(cb, NULL);
+  CHECK(buf, NULL);
+  CHECK(size, 0);
+  CHECK(size, CB_MAX_SIZE);
 
   cb->size = size;
   cb->writer = 0;
@@ -108,11 +100,7 @@ void cb_init(cbuffer_t *cb, void *buf, uint32_t size)
 
 void cb_clear(cbuffer_t *cb)
 {
-  if (cb == NULL)
-  {
-    return;
-  }
-  memset(cb->data, 0, cb->size);
+  CHECK(cb, NULL);
   cb->writer = 0;
   cb->reader = 0;
   cb->overflow = 0;
