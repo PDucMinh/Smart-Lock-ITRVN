@@ -162,3 +162,12 @@ uint32_t cb_read(cbuffer_t *cb, void *buf, uint32_t nbytes)
     return index;
   }
 }
+
+uint32_t cb_data_count(cbuffer_t *cb)
+{
+  CHECK_NULL(cb, NULL);
+  if ((cb->writer) >= (cb->reader))
+    return (cb->writer) - (cb->reader);
+  else
+    return (cb->size) - (cb->reader) + (cb->writer);
+}
