@@ -84,12 +84,13 @@ uint8_t string_recognize_fsm(uint8_t input)
   case STATE_D:
     fsm_state = input == 0 ? INIT : STATE_A;
     fsm_state == INIT ? printf("String recognized\n") : printf("");
+    return input == 0 ? 1 : 0;
     break;
   default:
     fsm_state = input == 1 ? STATE_A : INIT;
     break;
   }
-  return 1;
+  return 0;
 }
 /* Private definitions ----------------------------------------------- */
 
