@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-.vscode
-.clang-format
-=======
 .clang-format
 .vscode
->>>>>>> design
