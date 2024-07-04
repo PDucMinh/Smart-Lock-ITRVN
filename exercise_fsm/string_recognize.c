@@ -46,7 +46,7 @@
  */
 
 /* Public variables --------------------------------------------------- */
-
+string_recognize_fsm_t fsm_state;
 /* Private variables -------------------------------------------------- */
 
 /* Private function prototypes ---------------------------------------- */
