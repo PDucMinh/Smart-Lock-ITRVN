@@ -1,3 +1,37 @@
-@startuml
+@startuml button_fsm
+
+hide empty description
+
+state "Idle" as Idle 
+state "Init" as Init 
+state "1 click" as Click1
+state "2 clicks" as Click2
+state "hold" as hold
+state "release" as release
+state "short unclick 1" as su1
+state "short unclick 2" as su2
+
+Idle -up-> Idle : 0
+Idle -> Init : 1
+
+Init --> Idle : 0
+Init --> Init : 1 \n t < 30ms
+Init --> Click1 : 1 \n t > 30ms
+
+Click1 --> su1 : 0 \n t < 500ms
+Click1 --> Init : 0 \n t > 500ms
+Click1 --> hold : 1 \n t > 500ms
+Click1 --> Click1 : 1 \n t < 500ms
+
+su1 --> Click2 : 1, t < 300ms
+su1 --> Init : 1, t > 300ms
+su1 --> su1 : 0, t < 300ms
+su1 --> Init : 0, t > 300ms
+
+Click2 --> su2 : 0 \n t < 500ms
+Click2 --> Init : 0 \n t > 500ms
+Click2 --> hold : 1 \n t > 500ms
+Click2 --> Click2 : 1 \n t < 500ms
+
 
 @enduml
