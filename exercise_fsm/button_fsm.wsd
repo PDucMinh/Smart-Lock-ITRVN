@@ -2,8 +2,8 @@
 
 hide empty description
 
-state "Idle" as Idle 
-state "Init" as Init 
+state "Idle" as Idle
+state "Init" as Init
 state "1 click" as Click1
 state "2 clicks" as Click2
 state "hold" as hold
@@ -33,5 +33,14 @@ Click2 --> Init : 0 \n t > 500ms
 Click2 --> hold : 1 \n t > 500ms
 Click2 --> Click2 : 1 \n t < 500ms
 
+hold --> release : 0
+hold --> hold : 1
+
+su2 --> hold : 1 \n t < 300ms
+su2 --> Click1 : 1 \n t > 300ms
+su2 --> su2 : 0 \n t < 300ms
+su2 --> Init : 0 \n t > 300ms
+
+release --> Idle 
 
 @enduml
