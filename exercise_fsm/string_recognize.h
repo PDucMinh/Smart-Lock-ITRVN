@@ -63,7 +63,7 @@ string_recognize_fsm_t;
 
 
 /* Public variables --------------------------------------------------- */
-extern uint8_t fsm_state; /**< Description of public variable g_var_1 */ /**< Description of public variable g_var_2 */
+extern string_recognize_fsm_t fsm_state; /**< Description of public variable g_var_1 */ /**< Description of public variable g_var_2 */
 
 /* Public function prototypes ----------------------------------------- */
 /**
