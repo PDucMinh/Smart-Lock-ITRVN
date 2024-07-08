@@ -85,8 +85,11 @@ static int var_2; /**< Description of private variable var_2 */
  */
 static void private_function(void);
 /* Function definitions ----------------------------------------------- */
-void public_function(void)
-{
+system_button_state_t system_button_read(driver_button_t* db){
+  
+}
+void system_button_loop(driver_button_t* db){
+
 }
 /* Private definitions ----------------------------------------------- */
 static void private_function(void)
