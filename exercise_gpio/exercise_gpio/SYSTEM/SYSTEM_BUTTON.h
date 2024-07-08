@@ -1,15 +1,15 @@
 /**
  * @file       SYSTEM_BUTTON.h
- * @copyright  
- * @license    
- * @version    
+ * @copyright
+ * @license
+ * @version
  * @date       2024-07-07
  * @author     Minh Pham Duc
  * @author     <first_name_2> <last_name_2>
- *             
+ *
  * @brief      <A brief description of the content of the file>
- *             
- * @note          
+ *
+ * @note
  * @example    example_file_1.c
  *             Example_1 description
  * @example    example_file_2.c
@@ -28,14 +28,13 @@
 /**
  * @brief <enum descriptiton>
  */
-typedef enum 
+typedef enum
 {
   SYSTEM_BUTTON_1CLICK, /**< Description of PUBLIC_ENUM_1 */
   SYSTEM_BUTTON_2CLICK, /**< Description of PUBLIC_ENUM_2 */
   SYSTEM_BUTTON_HOLD,
-  SYSTEM_BUTTON_RELEASE  /**< Description of PUBLIC_ENUM_3 */
-}
-system_button_state_t;
+  SYSTEM_BUTTON_RELEASE /**< Description of PUBLIC_ENUM_3 */
+} system_button_state_t;
 
 /* Public macros ------------------------------------------------------ */
 /**
@@ -47,11 +46,11 @@ system_button_state_t;
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
-#define PUBLIC_MACRO(a)  do_something_with(a)
+#define PUBLIC_MACRO(a) do_something_with(a)
 
 /* Public variables --------------------------------------------------- */
 extern int g_var_1; /**< Description of public variable g_var_1 */
@@ -67,12 +66,12 @@ extern int g_var_2; /**< Description of public variable g_var_2 */
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
- system_button_state_t system_button_read(driver_button_t *db);
-void system_button_loop system_button_loop(driver_button_t *db);
+system_button_state_t system_button_read(driver_button_t* db);
+void system_button_loop(driver_button_t* db);
 #endif // __CODE_TEMPLATE_H
 
 /* End of file -------------------------------------------------------- */
