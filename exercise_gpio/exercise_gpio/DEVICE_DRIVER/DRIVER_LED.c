@@ -34,12 +34,11 @@
  *  - 0: Success
  *  - 1: Error
  */
-#define PRIVATE_MACRO(a) do_something_with(a)
-#define CHECK_NULL(A,B) \
-  do                  \
-  {                   \
-    if (!(A != NULL)) \
-      return B;         \
+#define CHECK_NULL(A, B) \
+  do                     \
+  {                      \
+    if (!(A != NULL))    \
+      B = DRIVER_FAIL;   \
   } while (0)
 /* Public variables --------------------------------------------------- */
 
@@ -61,11 +60,16 @@
  */
 
 /* Function definitions ----------------------------------------------- */
-driver_state_t driver_led_init(driver_led_t* dl)
+driver_state_t driver_led_init(driver_led_t *dl)
 {
-  CHECK_NULL(dl,DRIVER_FAIL);
+  driver_state_t errorCode;
+  CHECK_NULL(dl, errorCode);
+  if (errorCode == DRIVER_FAIL)
+  {
+    return errorCode;
+  }
   uint16_t port, pin;
-  GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   port = ((dl->led_io) & 0x00F0) >> 4;
   pin = (dl->led_io) & 0x000F;
   switch (port)
@@ -94,9 +98,14 @@ driver_state_t driver_led_init(driver_led_t* dl)
   return DRIVER_PASS;
 }
 
-driver_state_t driver_led_set(driver_led_t* dl, driver_led_set_t state)
+driver_state_t driver_led_set(driver_led_t *dl, driver_led_set_t state)
 {
-  CHECK_NULL(dl,DRIVER_FAIL);
+  driver_state_t errorCode;
+  CHECK_NULL(dl, errorCode);
+  if(errorCode == DRIVER_FAIL)
+  {
+    return errorCode;
+  }
   uint16_t port, pin;
   port = ((dl->led_io) & 0x00F0) >> 4;
   pin = (dl->led_io) & 0x000F;
@@ -106,17 +115,17 @@ driver_state_t driver_led_set(driver_led_t* dl, driver_led_set_t state)
   {
     if ((dl->led_type) == DRIVER_LED_ACOMMON)
     {
-        if (state == DRIVER_LED_ON)
-            HAL_GPIO_WritePin(GPIOA,((uint16_t)1 << pin), GPIO_PIN_RESET);
-        else if (state == DRIVER_LED_OFF)
-            HAL_GPIO_WritePin(GPIOA,((uint16_t)1 << pin), GPIO_PIN_SET);
+      if (state == DRIVER_LED_ON)
+        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_RESET);
+      else if (state == DRIVER_LED_OFF)
+        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_SET);
     }
     else if ((dl->led_type) == DRIVER_LED_KCOMMON)
     {
-        if (state == DRIVER_LED_ON)
-            HAL_GPIO_WritePin(GPIOA,((uint16_t)1 << pin), GPIO_PIN_SET);
-        else if (state == DRIVER_LED_OFF)
-            HAL_GPIO_WritePin(GPIOA,((uint16_t)1 << pin), GPIO_PIN_RESET);
+      if (state == DRIVER_LED_ON)
+        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_SET);
+      else if (state == DRIVER_LED_OFF)
+        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_RESET);
     }
     break;
   }
@@ -124,17 +133,17 @@ driver_state_t driver_led_set(driver_led_t* dl, driver_led_set_t state)
   {
     if ((dl->led_type) == DRIVER_LED_ACOMMON)
     {
-        if (state == DRIVER_LED_ON)
-            HAL_GPIO_WritePin(GPIOD,((uint16_t)1 << pin), GPIO_PIN_RESET);
-        else if (state == DRIVER_LED_OFF)
-            HAL_GPIO_WritePin(GPIOD,((uint16_t)1 << pin), GPIO_PIN_SET);
+      if (state == DRIVER_LED_ON)
+        HAL_GPIO_WritePin(GPIOD, ((uint16_t)1 << pin), GPIO_PIN_RESET);
+      else if (state == DRIVER_LED_OFF)
+        HAL_GPIO_WritePin(GPIOD, ((uint16_t)1 << pin), GPIO_PIN_SET);
     }
     else if ((dl->led_type) == DRIVER_LED_KCOMMON)
     {
-        if (state == DRIVER_LED_ON)
-            HAL_GPIO_WritePin(GPIOD,((uint16_t)1 << pin), GPIO_PIN_SET);
-        else if (state == DRIVER_LED_OFF)
-            HAL_GPIO_WritePin(GPIOD,((uint16_t)1 << pin), GPIO_PIN_RESET);
+      if (state == DRIVER_LED_ON)
+        HAL_GPIO_WritePin(GPIOD, ((uint16_t)1 << pin), GPIO_PIN_SET);
+      else if (state == DRIVER_LED_OFF)
+        HAL_GPIO_WritePin(GPIOD, ((uint16_t)1 << pin), GPIO_PIN_RESET);
     }
     break;
   }

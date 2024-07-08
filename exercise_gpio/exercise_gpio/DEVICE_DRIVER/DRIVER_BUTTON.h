@@ -32,6 +32,7 @@ typedef enum
 {
   DRIVER_BUTTON_IS_PUSHED, /**< Description of PUBLIC_ENUM_1 */
   DRIVER_BUTTON_NO_PUSHED, /**< Description of PUBLIC_ENUM_2 */
+  DRIVER_BUTTON_NO_READ
 } driver_button_state_t;
 
 /**
@@ -71,8 +72,6 @@ typedef struct
 #define PUBLIC_MACRO(a) do_something_with(a)
 
 /* Public variables --------------------------------------------------- */
-extern int g_var_1; /**< Description of public variable g_var_1 */
-extern int g_var_2; /**< Description of public variable g_var_2 */
 
 /* Public function prototypes ----------------------------------------- */
 /**
@@ -89,7 +88,7 @@ extern int g_var_2; /**< Description of public variable g_var_2 */
  *  - 1: Error
  */
 driver_state_t driver_button_init(driver_button_t* db);
-driver_state_t driver_button_read(driver_button_t* db, driver_button_state_t* button_st);
+driver_button_state_t driver_button_read(driver_button_t* db, driver_state_t* errorCode);
 
 #endif // __CODE_TEMPLATE_H
 

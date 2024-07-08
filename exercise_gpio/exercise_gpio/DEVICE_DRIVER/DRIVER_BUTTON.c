@@ -36,12 +36,11 @@
  *  - 0: Success
  *  - 1: Error
  */
-#define PRIVATE_MACRO(a) do_something_with(a)
 #define CHECK_NULL(A, B) \
   do                     \
   {                      \
     if (!(A != NULL))    \
-      return B;          \
+      B = DRIVER_FAIL;   \
   } while (0)
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
@@ -60,13 +59,18 @@
  *  - 0: Success
  *  - 1: Error
  */
-static uint32_t debounce_tick_cnt(driver_button_t* db);
+static uint32_t debounce_tick_cnt(driver_button_t *db);
 /* Function definitions ----------------------------------------------- */
-driver_state_t driver_button_init(driver_button_t* db)
+driver_state_t driver_button_init(driver_button_t *db)
 {
-  CHECK_NULL(db, DRIVER_FAIL);
+  driver_state_t errorCode;
+  CHECK_NULL(db, errorCode);
+  if (errorCode == DRIVER_FAIL)
+  {
+    return errorCode;
+  }
   uint16_t port, pin;
-  GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   port = ((db->button_io) & 0x00F0) >> 4;
   pin = (db->button_io) & 0x000F;
   switch (port)
@@ -95,9 +99,14 @@ driver_state_t driver_button_init(driver_button_t* db)
   return DRIVER_PASS;
 }
 
-driver_state_t driver_button_read(driver_button_t* db, driver_button_state_t* button_st)
+driver_button_state_t driver_button_read(driver_button_t *db, driver_state_t *errorCode)
 {
-  CHECK_NULL(db, DRIVER_FAIL);
+  CHECK_NULL(db, *errorCode);
+  if (*errorCode == DRIVER_FAIL)
+  {
+    return DRIVER_BUTTON_NO_READ;
+  }
+
   uint16_t port, pin;
   static uint8_t event_flag = NO_EVENT;
   GPIO_PinState state;
@@ -135,48 +144,32 @@ driver_state_t driver_button_read(driver_button_t* db, driver_button_state_t* bu
     event_flag = TIMEOUT_EVENT;
   }
 
-  /* This part execute when there is no change to button status */
-  if (event_flag == NO_EVENT)
+  /* This execute when the change is validated and io_preState is updated */
+
+  if (event_flag == TIMEOUT_EVENT)
   {
-    if ((db->button_type) == DRIVER_BUTTON_PULL_DOWN)
-    {
-      if ((db->button_io_preState) == GPIO_PIN_RESET)
-        *button_st = DRIVER_BUTTON_NO_PUSHED;
-      else
-        *button_st = DRIVER_BUTTON_IS_PUSHED;
-    }
-    else
-    {
-      if ((db->button_io_preState) == GPIO_PIN_SET)
-        *button_st = DRIVER_BUTTON_NO_PUSHED;
-      else
-        *button_st = DRIVER_BUTTON_IS_PUSHED;
-    }
-  }
-  /* This execute when the change is validates and io_preState is updated */
-  else if (event_flag == TIMEOUT_EVENT)
-  {
-    if ((db->button_type) == DRIVER_BUTTON_PULL_DOWN)
-    {
-      if ((state) == GPIO_PIN_RESET)
-        *button_st = DRIVER_BUTTON_NO_PUSHED;
-      else
-        *button_st = DRIVER_BUTTON_IS_PUSHED;
-    }
-    else
-    {
-      if (state == GPIO_PIN_SET)
-        *button_st = DRIVER_BUTTON_NO_PUSHED;
-      else
-        *button_st = DRIVER_BUTTON_IS_PUSHED;
-    }
-    db->button_io_preState = state;
     event_flag = NO_EVENT;
+    db->button_io_preState = state;
   }
-  return DRIVER_PASS;
+
+  /* return button state base button type */
+  if ((db->button_type) == DRIVER_BUTTON_PULL_DOWN)
+  {
+    if ((db->button_io_preState) == GPIO_PIN_RESET)
+      return DRIVER_BUTTON_NO_PUSHED;
+    else
+      return DRIVER_BUTTON_IS_PUSHED;
+  }
+  else
+  {
+    if ((db->button_io_preState) == GPIO_PIN_SET)
+      return DRIVER_BUTTON_NO_PUSHED;
+    else
+      return DRIVER_BUTTON_IS_PUSHED;
+  }
 }
 /* Private definitions ----------------------------------------------- */
-static uint32_t debounce_tick_cnt(driver_button_t* db)
+static uint32_t debounce_tick_cnt(driver_button_t *db)
 {
   uint32_t tick;
   tick = HAL_GetTick();
