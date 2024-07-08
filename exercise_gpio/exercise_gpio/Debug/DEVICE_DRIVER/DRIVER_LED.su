@@ -1,0 +1,2 @@
+../DEVICE_DRIVER/DRIVER_LED.c:64:16:driver_led_init	48	static
+../DEVICE_DRIVER/DRIVER_LED.c:97:16:driver_led_set	24	static
