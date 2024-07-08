@@ -62,7 +62,7 @@
 /* Function definitions ----------------------------------------------- */
 driver_state_t driver_led_init(driver_led_t *dl)
 {
-  driver_state_t errorCode;
+  driver_state_t errorCode = DRIVER_PASS;
   CHECK_NULL(dl, errorCode);
   if (errorCode == DRIVER_FAIL)
   {
@@ -70,7 +70,7 @@ driver_state_t driver_led_init(driver_led_t *dl)
   }
   uint16_t port, pin;
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  port = ((dl->led_io) & 0x00F0) >> 4;
+  port = (dl->led_io) & 0x00F0;
   pin = (dl->led_io) & 0x000F;
   switch (port)
   {
@@ -100,14 +100,14 @@ driver_state_t driver_led_init(driver_led_t *dl)
 
 driver_state_t driver_led_set(driver_led_t *dl, driver_led_set_t state)
 {
-  driver_state_t errorCode;
+  driver_state_t errorCode = DRIVER_PASS;
   CHECK_NULL(dl, errorCode);
   if(errorCode == DRIVER_FAIL)
   {
     return errorCode;
   }
   uint16_t port, pin;
-  port = ((dl->led_io) & 0x00F0) >> 4;
+  port = (dl->led_io) & 0x00F0;
   pin = (dl->led_io) & 0x000F;
   switch (port)
   {

@@ -63,7 +63,7 @@ static uint32_t debounce_tick_cnt(driver_button_t *db);
 /* Function definitions ----------------------------------------------- */
 driver_state_t driver_button_init(driver_button_t *db)
 {
-  driver_state_t errorCode;
+  driver_state_t errorCode = DRIVER_PASS;
   CHECK_NULL(db, errorCode);
   if (errorCode == DRIVER_FAIL)
   {
@@ -71,7 +71,7 @@ driver_state_t driver_button_init(driver_button_t *db)
   }
   uint16_t port, pin;
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  port = ((db->button_io) & 0x00F0) >> 4;
+  port = (db->button_io) & 0x00F0;
   pin = (db->button_io) & 0x000F;
   switch (port)
   {
@@ -99,6 +99,7 @@ driver_state_t driver_button_init(driver_button_t *db)
   return DRIVER_PASS;
 }
 
+
 driver_button_state_t driver_button_read(driver_button_t *db, driver_state_t *errorCode)
 {
   CHECK_NULL(db, *errorCode);
@@ -108,9 +109,10 @@ driver_button_state_t driver_button_read(driver_button_t *db, driver_state_t *er
   }
 
   uint16_t port, pin;
-  static uint8_t event_flag = NO_EVENT;
   GPIO_PinState state;
-  port = ((db->button_io) & 0x00F0) >> 4;
+  static uint8_t event_flag = NO_EVENT;
+
+  port = (db->button_io) & 0x00F0;
   pin = (db->button_io) & 0x000F;
   switch (port)
   {
@@ -134,14 +136,14 @@ driver_button_state_t driver_button_read(driver_button_t *db, driver_state_t *er
       event_flag = EDGE_EVENT;
       db->button_tick = HAL_GetTick();
     }
-    else if (debounce_tick_cnt(db) <= 30)
+    else if ((debounce_tick_cnt(db) > 30) && (event_flag == EDGE_EVENT))
     {
-      event_flag = NO_EVENT;
+      event_flag = TIMEOUT_EVENT;
     }
   }
-  else if ((debounce_tick_cnt(db) > 30) && (event_flag == EDGE_EVENT))
+  else if (state == (db->button_io_preState))
   {
-    event_flag = TIMEOUT_EVENT;
+    event_flag = NO_EVENT;
   }
 
   /* This execute when the change is validated and io_preState is updated */
@@ -149,7 +151,7 @@ driver_button_state_t driver_button_read(driver_button_t *db, driver_state_t *er
   if (event_flag == TIMEOUT_EVENT)
   {
     event_flag = NO_EVENT;
-    db->button_io_preState = state;
+    (db->button_io_preState) = state;
   }
 
   /* return button state base button type */
