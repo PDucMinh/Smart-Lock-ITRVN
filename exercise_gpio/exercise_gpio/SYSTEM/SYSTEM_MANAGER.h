@@ -1,19 +1,19 @@
 /**
- * @file       <file_name>.h
- * @copyright  Copyright (C) 2019 ITRVN. All rights reserved.
- * @license    This project is released under the Fiot License.
- * @version    major.minor.patch
- * @date       yyyy-mm-dd
- * @author     <first_name_1> <last_name_1>
- * @author     <first_name_2> <last_name_2>
+ * @file       SYSTEM_MANAGER.h
+ * @copyright  
+ * @license    
+ * @version    1.0
+ * @date       2024-07-07
+ * @author     Phat Nguyen Tan
+ * @author     
  *             
- * @brief      <A brief description of the content of the file>
+ * @brief      <This header file contain name of function for system layer>
  *             
  * @note          
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example    
+ *             
+ * @example    
+ *             
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -21,20 +21,23 @@
 #define __SYSTEM_MANAGER_H
 
 /* Includes ----------------------------------------------------------- */
+#include "DRIVER_LED.h"
+#include "DRIVER_MCU.h"
+#include "DRIVER_BUTTON.h"
+
 /* Public defines ----------------------------------------------------- */
-#define PUBLIC_DEFINE_1  (0) /*!< Description of PUBLIC_DEFINE_1 */
-#define PUBLIC_DEFINE_2  (0) /*!< Description of PUBLIC_DEFINE_2 */
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
- * @brief <enum descriptiton>
+ * @brief <State of sysytem>
  */
 typedef enum 
 {
-  SYSTEM_LED1_ON, /**< Description of PUBLIC_ENUM_1 */
-  SYSTEM_LED2_ON, /**< Description of PUBLIC_ENUM_2 */
-  SYSTEM_LED3_ON,
-  SYSTEM_OFF,  /**< Description of PUBLIC_ENUM_3 */
+  SYSTEM_LED1_ON, /**< In this state, Led 1 on, Led 2 and Led 3 off */
+  SYSTEM_LED2_ON, /**< In this state, Led 2 on, Led 1 and Led 3 off */
+  SYSTEM_LED3_ON, /**< In this state, Led 3 on, Led 1 and Led 2 off */
+  SYSTEM_HOLD,    /**< In this state, system detect hold, all led off */
+  SYSTEM_IDLE     /**< State idle */
 }
 system_state_t;
 
@@ -72,8 +75,8 @@ extern int g_var_2; /**< Description of public variable g_var_2 */
  *  - 0: Success
  *  - 1: Error
  */
- void system_manager_init(void);
- void system_manager_loop(void);
+ void system_manager_init(driver_button_t *db, driver_led_t *dl);
+ void system_manager_loop(driver_button_t *db, driver_led_t *dl);
 
 #endif // __CODE_TEMPLATE_H
 
