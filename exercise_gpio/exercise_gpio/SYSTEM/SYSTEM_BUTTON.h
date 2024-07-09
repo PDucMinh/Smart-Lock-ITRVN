@@ -30,12 +30,23 @@
  */
 typedef enum
 {
+  SYSTEM_BUTTON_IDLE,
+  SYSTEM_BUTTON_INIT,
   SYSTEM_BUTTON_1CLICK, /**< Description of PUBLIC_ENUM_1 */
   SYSTEM_BUTTON_2CLICK, /**< Description of PUBLIC_ENUM_2 */
   SYSTEM_BUTTON_HOLD,
   SYSTEM_BUTTON_RELEASE /**< Description of PUBLIC_ENUM_3 */
 } system_button_state_t;
 
+typedef struct 
+{
+  system_button_state_t button_state;
+  driver_button_t* button;
+  driver_state_t activate;
+}system_button_t;
+/**
+ * @brief structure manage a button
+ */
 /* Public macros ------------------------------------------------------ */
 /**
  * @brief  <macro description>
@@ -50,7 +61,6 @@ typedef enum
  *  - 0: Success
  *  - 1: Error
  */
-#define PUBLIC_MACRO(a) do_something_with(a)
 
 /* Public variables --------------------------------------------------- */
 extern int g_var_1; /**< Description of public variable g_var_1 */
@@ -70,8 +80,42 @@ extern int g_var_2; /**< Description of public variable g_var_2 */
  *  - 0: Success
  *  - 1: Error
  */
+void system_button_init(driver_button_t* db);
+/**
+ * @brief  <initialize counter before reading number of clicks>
+ *
+ * @param[in]     driver_button_t struct pointer manage button signal
+ * @param[out]    none 
+ *
+ * @attention  none
+ *
+ * @return
+ *  none
+ */
 system_button_state_t system_button_read(driver_button_t* db);
-void system_button_loop(driver_button_t* db);
+/**
+ * @brief  <read button state>
+ *
+ * @param[in]     driver_button_t struct pointer manage button signal
+ * @param[out]    system_button_state_t  button behavior number of click or release
+ *
+ * @attention  none
+ *
+ * @return
+ *  system_button_state_t: number of the button clicks
+ */
+void system_button_loop(driver_button_t* db, driver_state_t *errorCode);
+/**
+ * @brief  <button click counter run() in TIMER>
+ *
+ * @param[in]     driver_button_t struct pointer manage button signal
+ * @param[out]    none
+ *
+ * @attention  none
+ *
+ * @return
+ *  none
+ */
 #endif // __CODE_TEMPLATE_H
 
 /* End of file -------------------------------------------------------- */
