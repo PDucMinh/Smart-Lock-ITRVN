@@ -1,0 +1,17 @@
+07:54:25 **** Incremental Build of configuration Debug for project exercise_gpio ****
+make -j8 all 
+arm-none-eabi-gcc "../DEVICE_DRIVER/DRIVER_LED.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F411xE -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I"C:/Users/ASUS/Desktop/06-2024-itr-intern-group-3/exercise_gpio/exercise_gpio/DEVICE_DRIVER" -I"C:/Users/ASUS/Desktop/06-2024-itr-intern-group-3/exercise_gpio/exercise_gpio/SYSTEM" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"DEVICE_DRIVER/DRIVER_LED.d" -MT"DEVICE_DRIVER/DRIVER_LED.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "DEVICE_DRIVER/DRIVER_LED.o"
+arm-none-eabi-gcc -o "exercise_gpio.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ASUS\Desktop\06-2024-itr-intern-group-3\exercise_gpio\exercise_gpio\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="exercise_gpio.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: exercise_gpio.elf
+ 
+arm-none-eabi-size  exercise_gpio.elf 
+arm-none-eabi-objdump -h -S exercise_gpio.elf  > "exercise_gpio.list"
+   text	   data	    bss	    dec	    hex	filename
+   6340	     16	   1584	   7940	   1f04	exercise_gpio.elf
+Finished building: default.size.stdout
+ 
+Finished building: exercise_gpio.list
+ 
+
+07:54:26 Build Finished. 0 errors, 0 warnings. (took 708ms)
+
