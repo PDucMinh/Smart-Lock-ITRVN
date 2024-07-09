@@ -29,12 +29,14 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "SYSTEM_MANAGER.h"
+#include "SYSTEM_BUTTON.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+extern driver_button_t button1;
+extern driver_state_t errorCode;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

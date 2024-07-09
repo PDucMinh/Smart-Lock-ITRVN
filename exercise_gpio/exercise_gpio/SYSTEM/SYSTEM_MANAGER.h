@@ -1,19 +1,19 @@
 /**
  * @file       SYSTEM_MANAGER.h
- * @copyright  
- * @license    
+ * @copyright
+ * @license
  * @version    1.0
  * @date       2024-07-07
  * @author     Phat Nguyen Tan
- * @author     
- *             
+ * @author
+ *
  * @brief      <This header file contain name of function for system layer>
- *             
- * @note          
- * @example    
- *             
- * @example    
- *             
+ *
+ * @note
+ * @example
+ *
+ * @example
+ *
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -21,9 +21,9 @@
 #define __SYSTEM_MANAGER_H
 
 /* Includes ----------------------------------------------------------- */
+#include "DRIVER_BUTTON.h"
 #include "DRIVER_LED.h"
 #include "DRIVER_MCU.h"
-#include "DRIVER_BUTTON.h"
 
 /* Public defines ----------------------------------------------------- */
 
@@ -31,35 +31,18 @@
 /**
  * @brief <State of sysytem>
  */
-typedef enum 
+typedef enum
 {
   SYSTEM_LED1_ON, /**< In this state, Led 1 on, Led 2 and Led 3 off */
   SYSTEM_LED2_ON, /**< In this state, Led 2 on, Led 1 and Led 3 off */
   SYSTEM_LED3_ON, /**< In this state, Led 3 on, Led 1 and Led 2 off */
   SYSTEM_HOLD,    /**< In this state, system detect hold, all led off */
   SYSTEM_IDLE     /**< State idle */
-}
-system_state_t;
+} system_state_t;
 
 /* Public macros ------------------------------------------------------ */
-/**
- * @brief  <macro description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return  
- *  - 0: Success
- *  - 1: Error
- */
-#define PUBLIC_MACRO(a)  do_something_with(a)
 
 /* Public variables --------------------------------------------------- */
-extern int g_var_1; /**< Description of public variable g_var_1 */
-extern int g_var_2; /**< Description of public variable g_var_2 */
 
 /* Public function prototypes ----------------------------------------- */
 /**
@@ -71,12 +54,12 @@ extern int g_var_2; /**< Description of public variable g_var_2 */
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
- void system_manager_init(driver_button_t *db, driver_led_t *dl);
- void system_manager_loop(driver_button_t *db, driver_led_t *dl);
+void system_manager_init(driver_button_t* db, driver_led_t* dl);
+void system_manager_loop(driver_button_t* db, driver_led_t* dl);
 
 #endif // __CODE_TEMPLATE_H
 

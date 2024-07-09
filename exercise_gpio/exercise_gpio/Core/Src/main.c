@@ -42,7 +42,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+driver_button_t button1;
+driver_led_t led[3];
+driver_state_t errorCode = DRIVER_PASS;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -84,7 +86,8 @@ int main(void)
   /* Initialize all configured peripherals */
 
   /* USER CODE BEGIN 2 */
-  
+  system_manager_init(&button1,led);
+  system_button_init(&button1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -92,7 +95,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    
+    system_manager_loop(&button1, led);
+//    HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
