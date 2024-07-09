@@ -1,0 +1,20 @@
+@startuml
+hide empty description
+
+title "System state diagram"
+
+[*] --> SYSTEM_IDLE
+SYSTEM_IDLE --> SYSTEM_LED1_ON : system_button_state = SYSTEM_BUTTON_1CLICK
+SYSTEM_LED1_ON : set led 1 on\nset led 2 off\nset led 3 off
+SYSTEM_LED1_ON --> SYSTEM_LED2_ON : system_button_state = SYSTEM_BUTTON_2CLICK
+SYSTEM_LED1_ON --> SYSTEM_HOLD : system_button_state = SYSTEM_BUTTON_HOLD
+SYSTEM_LED2_ON : set led 1 off\nset led 2 on\nset led 3 off
+SYSTEM_HOLD : set led 1 off\nset led 2 off\nset led 3 off
+SYSTEM_LED2_ON --> SYSTEM_LED3_ON : system_button_state = SYSTEM_BUTTON_2CLICK
+SYSTEM_LED2_ON --> SYSTEM_HOLD : system_button_state = SYSTEM_BUTTON_HOLD
+SYSTEM_LED3_ON : set led 1 off\nset led 2 off\nset led 3 on
+SYSTEM_LED3_ON --> SYSTEM_LED1_ON : system_button_state = SYSTEM_BUTTON_2CLICK
+SYSTEM_LED3_ON --> SYSTEM_HOLD : system_button_state = SYSTEM_BUTTON_HOLD
+SYSTEM_HOLD --> SYSTEM_IDLE : system_button_state = SYSTEM_BUTTON_RELEASE
+
+@enduml
