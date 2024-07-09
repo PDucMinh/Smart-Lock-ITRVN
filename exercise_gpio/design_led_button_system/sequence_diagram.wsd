@@ -1,0 +1,33 @@
+@startuml system_sequence_diagram
+
+actor "USER" as ac 
+participant "SYSTEM MANGER" as sm
+participant "SYSTEM BUTTON" as sb 
+participant "DRIVER LED" as dl
+participant "DRIVER MCU" as dm
+participant "DRIVER BUTTON" as db
+
+sm -> dm : init()
+
+ac -> sm : press 1 click
+sm -> sb : system_button_read(button)
+sb -> db : driver_button_read(button)
+alt error case 
+    db --> sb : error
+else successful case
+    alt button pressed
+        db --> sb : button pressed
+    else button released
+        db --> sb : button released
+    end
+end 
+sb -> sb : set_button_state(click)
+sb --> sm : 1 click | 2 click | hold | release
+
+sm -> sm : set_led_state(state)
+sm -> dl : set_led()
+dl -> dl : led_on | led_off
+dl --> sm : complete
+sm --> ac : led on | led off
+
+@enduml
