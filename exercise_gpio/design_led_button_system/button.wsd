@@ -1,0 +1,37 @@
+@startuml button_click
+hide empty description
+
+state "CLICK" as cl
+cl : click + 1
+cl : set_timer()
+
+state "OFF" as of
+of : click = 0 or click + 1
+of : set_timer()
+
+state "INIT" as in 
+in : click + 1
+in : set_timer()
+
+state "1CLICK" as cl1
+state "2CLICK" as cl2
+state "HOLD" as hold
+state "RELEASE" as re
+state "IDLE" as idle
+
+in --> cl : button_pressed
+cl --> cl : button_pressed \n time_out()
+cl --> of : button_release
+
+of --> in : button_release \n time_out()
+of --> cl : button_pressed
+
+idle -> cl1 : click = 1
+idle --> cl2 : click = 2
+idle --> hold : click > 2
+cl1 --> re : click = 0
+cl2 --> re : click = 0
+hold --> re : click = 0
+re -> idle : no condition
+
+@enduml
