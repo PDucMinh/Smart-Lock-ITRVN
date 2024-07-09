@@ -22,17 +22,18 @@
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /**
- * @brief  <macro description>
+ * @brief  Macro check whether the first parameter is equal to NULL. If it's
+ * equal to NULL then return DRIVER_FAIL for second parameter, else return
+ * DRIVER_PASS.
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     A  <parameter need to be checked>
+ * @param[out]    B  <parameter receive return value>
  *
- * @attention  <API attention note>
+ * @attention
  *
  * @return
- *  - 0: Success
- *  - 1: Error
+ *  - DRIVER_PASS: first parameter is valid
+ *  - DRIVER_FAIL: first parameter is invalid 
  */
 #define CHECK_NULL(A, B) \
   do                     \
@@ -41,24 +42,8 @@
       B = DRIVER_FAIL;   \
   } while (0)
 /* Public variables --------------------------------------------------- */
-
 /* Private variables -------------------------------------------------- */
-
 /* Private function prototypes ---------------------------------------- */
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-
 /* Function definitions ----------------------------------------------- */
 driver_state_t driver_led_init(driver_led_t *dl)
 {
@@ -102,7 +87,7 @@ driver_state_t driver_led_set(driver_led_t *dl, driver_led_set_t state)
 {
   driver_state_t errorCode = DRIVER_PASS;
   CHECK_NULL(dl, errorCode);
-  if(errorCode == DRIVER_FAIL)
+  if (errorCode == DRIVER_FAIL)
   {
     return errorCode;
   }

@@ -5,15 +5,12 @@
  * @version
  * @date       2024-07-07
  * @author     Hung Nguyen Nhat
- * @author     <first_name_2> <last_name_2>
  *
- * @brief      <A brief description of the content of the file>
- *
+ * @brief      This file export the following functions:
+ *             - driver_button_init : Initializing GPIO pin for button
+ *             - driver_button_read : Reading button state
  * @note
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -30,9 +27,9 @@
  */
 typedef enum
 {
-  DRIVER_BUTTON_IS_PUSHED, /**< Description of PUBLIC_ENUM_1 */
-  DRIVER_BUTTON_NO_PUSHED, /**< Description of PUBLIC_ENUM_2 */
-  DRIVER_BUTTON_NO_READ
+  DRIVER_BUTTON_IS_PUSHED, /**< Button is pushed */
+  DRIVER_BUTTON_NO_PUSHED, /**< Button is not pushed */
+  DRIVER_BUTTON_NO_READ    /**< GPIO pin is not allowed to read */
 } driver_button_state_t;
 
 /**
@@ -40,56 +37,51 @@ typedef enum
  */
 typedef enum
 {
-  DRIVER_BUTTON_PULL_UP,  /**< Description of PUBLIC_ENUM_1 */
-  DRIVER_BUTTON_PULL_DOWN /**< Description of PUBLIC_ENUM_2 */
+  DRIVER_BUTTON_PULL_UP,  /**< button is connected with pull-up register */
+  DRIVER_BUTTON_PULL_DOWN /**< button is connected with pull-down register */
 } driver_button_type_t;
 
 /**
- * @brief <structure descriptiton>
+ * @brief struct manage properties of button
  */
 typedef struct
 {
-  driver_button_type_t button_type; /**< Description of member_2 */
-  uint16_t button_io;
-  GPIO_PinState button_io_preState;
-  uint32_t button_tick; /**< Description of member_3 */
+  driver_button_type_t button_type; /**< type of button */
+  uint16_t button_io;               /**<GPIO pin used for button */
+  GPIO_PinState button_io_preState; /**<previous GPIO status */
+  uint32_t button_tick;             /**< the tick read from Systick counter when start debouncing */
 } driver_button_t;
 
 /* Public macros ------------------------------------------------------ */
-/**
- * @brief  <macro description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-#define PUBLIC_MACRO(a) do_something_with(a)
-
 /* Public variables --------------------------------------------------- */
-
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  Initialize GPIO pin to be used for button
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     db  <struct pointer managing the button>
  *
- * @attention  <API attention note>
+ * @attention
  *
  * @return
- *  - 0: Success
- *  - 1: Error
+ *  - DRIVER_PASS: the button is initialized successfully
+ *  - DRIVER_FAIL: the button is initialized fail
  */
-driver_state_t driver_button_init(driver_button_t* db);
-driver_button_state_t driver_button_read(driver_button_t* db, driver_state_t* errorCode);
+driver_state_t driver_button_init(driver_button_t *db);
 
-#endif // __CODE_TEMPLATE_H
+/**
+ * @brief  reading button state
+ *
+ * @param[in]     db  <struct pointer managing the button>
+ * @param[out]    errorCode <pointer to errorCode to store the result of reading process>
+ *
+ * @attention
+ *
+ * @return
+ *  - DRIVER_BUTTON_NO_PUSHED: the button is not pushed
+ *  - DRIVER_BUTTON_IS_PUSHED: the button is pushed
+ */
+driver_button_state_t driver_button_read(driver_button_t *db, driver_state_t *errorCode);
+
+#endif // __DRIVER_BUTTON_H
 
 /* End of file -------------------------------------------------------- */

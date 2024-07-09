@@ -5,15 +5,13 @@
  * @version
  * @date       2024-07-07
  * @author     Hung Nguyen Nhat
- * @author     <first_name_2> <last_name_2>
  *
- * @brief      <A brief description of the content of the file>
+ * @brief      This file export the following functions:
+ *             - driver_led_init : Initializing GPIO pin for led
+ *             - driver_led_read : Setting led state
  *
  * @note
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example    
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -27,25 +25,25 @@
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
- * @brief <enum descriptiton>
+ * @brief state ID of led for turning on and turning off led
  */
 typedef enum
 {
-  DRIVER_LED_ON,  /**< Description of PUBLIC_ENUM_1 */
-  DRIVER_LED_OFF, /**< Description of PUBLIC_ENUM_2 */
+  DRIVER_LED_ON,  /**< State led is on */
+  DRIVER_LED_OFF, /**< State led is off */
 } driver_led_set_t;
 
 /**
- * @brief <enum descriptiton>
+ * @brief the type of led
  */
 typedef enum
 {
-  DRIVER_LED_ACOMMON, /**< Description of PUBLIC_ENUM_1 */
-  DRIVER_LED_KCOMMON, /**< Description of PUBLIC_ENUM_2 */
+  DRIVER_LED_ACOMMON, /**< led is common anode type */
+  DRIVER_LED_KCOMMON, /**< led is common katode type */
 } driver_led_type_t;
 
 /**
- * @brief <structure descriptiton>
+ * @brief struct manage properties of led
  */
 typedef struct
 {
@@ -54,28 +52,35 @@ typedef struct
 } driver_led_t;
 
 /* Public macros ------------------------------------------------------ */
-
 /* Public variables --------------------------------------------------- */
-extern int g_var_1; /**< Description of public variable g_var_1 */
-extern int g_var_2; /**< Description of public variable g_var_2 */
-
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  Initialize GPIO pin to be used for for
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     dl  <struct pointer managing the led>
  *
- * @attention  <API attention note>
+ * @attention
  *
  * @return
- *  - 0: Success
- *  - 1: Error
+ *  - DRIVER_PASS: the led is initialized successfully
+ *  - DRIVER_FAIL: the led is initialized fail
  */
 driver_state_t driver_led_init(driver_led_t* dl);
+
+/**
+ * @brief  setting led state
+ *
+ * @param[in]     dl  <struct pointer managing the led>
+ * @param[out]    state <the state of led>
+ *
+ * @attention
+ *
+ * @return
+ *  - DRIVER_PASS: the led is set successfully
+ *  - DRIVER_FAIL: the led is set fail
+ */
 driver_state_t driver_led_set(driver_led_t* dl, driver_led_set_t state);
 
-#endif // __CODE_TEMPLATE_H
+#endif // __DRIVER_LED_H
 
 /* End of file -------------------------------------------------------- */

@@ -18,23 +18,24 @@
 #include "DRIVER_BUTTON.h"
 
 /* Private defines ---------------------------------------------------- */
-#define NO_EVENT (0)
-#define EDGE_EVENT (1)
-#define TIMEOUT_EVENT (2)
+#define NO_EVENT (0)      /* event ID when there is no edge on GPIO pin */
+#define EDGE_EVENT (1)    /* event ID when there is an edge on GPIO pin */
+#define TIMEOUT_EVENT (2) /* event ID when edge on GPIO pin is validated */
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /**
- * @brief  <macro description>
+ * @brief  Macro check whether the first parameter is equal to NULL. If it's 
+ * equal to NULL then return DRIVER_FAIL for second parameter, else return 
+ * DRIVER_PASS.
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     A  <parameter need to be checked>
+ * @param[out]    B  <parameter receive return value>
  *
- * @attention  <API attention note>
+ * @attention  
  *
  * @return
- *  - 0: Success
- *  - 1: Error
+ *  - DRIVER_PASS: first parameter is valid
+ *  - DRIVER_FAIL: first parameter is invalid
  */
 #define CHECK_NULL(A, B) \
   do                     \
@@ -47,17 +48,16 @@
 
 /* Private function prototypes ---------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  This function will count the tick from Systick Timer to measure
+ * the time for debouncing button
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
+ * @param[in]     db  <struct pointer managing the button needing to be debounced>
+ * 
  * @attention  <API attention note>
  *
  * @return
- *  - 0: Success
- *  - 1: Error
+ *  - tick - (db->button_tick) if Systick Timer counter hasn't overflowed
+ *  - tick + 1 + 0xFFFFFFFF - (db->button_tick) if Systick Timer counter has overflowed
  */
 static uint32_t debounce_tick_cnt(driver_button_t *db);
 /* Function definitions ----------------------------------------------- */
@@ -98,7 +98,6 @@ driver_state_t driver_button_init(driver_button_t *db)
   }
   return DRIVER_PASS;
 }
-
 
 driver_button_state_t driver_button_read(driver_button_t *db, driver_state_t *errorCode)
 {
