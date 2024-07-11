@@ -138,7 +138,6 @@ void system_button_set_state(driver_button_t *db)
     }
     break;
   case STATE_OFF:
-    set_timer_2(3000);
     if ((driver_button_read(db) == DRIVER_BUTTON_NO_PUSHED) && (time_out()))
     {
       v_sbutton_click = 0;
@@ -148,6 +147,7 @@ void system_button_set_state(driver_button_t *db)
     {
       v_sbutton_click++;
       set_timer(500);
+      set_timer_2(3000);
       v_sbutton_process = STATE_CLICK;
     }
     break;
