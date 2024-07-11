@@ -84,7 +84,7 @@ system_button_state_t system_button_read(system_button_t *v_button)
     (*v_button).button_state = SYSTEM_BUTTON_2CLICK;
     return SYSTEM_BUTTON_2CLICK;
   }
-  if (v_sbutton_click > 2)
+  if ((v_sbutton_click > 2) && time_out_2())
   {
     (*v_button).button_state = SYSTEM_BUTTON_HOLD;
     return SYSTEM_BUTTON_HOLD;
@@ -111,7 +111,7 @@ void timer_run()
       v_sbutton_timeout = 1;
     }
   }
-  if ((v_sbutton_timer_2 > 0) && time_out_2())
+  if (v_sbutton_timer_2 > 0)
   {
     v_sbutton_timer_2--;
     if (v_sbutton_timer_2 <= 0)
