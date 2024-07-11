@@ -65,8 +65,10 @@ void system_button_init(system_button_t *v_sbutton)
 {
   v_sbutton_click = 0;
   v_sbutton_timeout = 0;
-  v_sbutton_process = STATE_INIT;
   v_sbutton_timer = 0;
+  v_sbutton_timeout_2 = 0;
+  v_sbutton_timer_2 = 0;
+  v_sbutton_process = STATE_INIT;
   v_sbutton_1 = v_sbutton;
 }
 
