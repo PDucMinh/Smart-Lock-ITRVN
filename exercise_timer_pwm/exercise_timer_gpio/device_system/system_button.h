@@ -91,7 +91,7 @@ void system_button_init(system_button_t *v_sbutton);
  * @return
  *  none
  */
-system_button_state_t system_button_read(driver_button_t *db);
+system_button_state_t system_button_read(system_button_t *v_sbutton);
 /**
  * @brief  <read button state>
  *
@@ -103,7 +103,7 @@ system_button_state_t system_button_read(driver_button_t *db);
  * @return
  *  system_button_state_t: number of the button clicks
  */
-void system_button_loop(driver_button_t *db, driver_state_t *errorCode);
+void system_button_loop(system_button_t *v_sbutton);
 /**
  * @brief  <button click counter run() in TIMER>
  *
