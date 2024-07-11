@@ -61,8 +61,8 @@ typedef struct
  */
 typedef struct
 {
-  uint16_t dmcu_io; /**< Description of member_2 */
-  uint16_t dmcu_af;
+  uint16_t io; /**< Description of member_2 */
+  uint16_t af;
 } driver_mcu_pin_t;
 /* Public macros ------------------------------------------------------ */
 
@@ -82,7 +82,7 @@ typedef struct
  *  - 0: Success
  *  - 1: Error
  */
-driver_state_t driver_mcu_init(driver_mcu_t *dmcu);
+driver_state_t driver_mcu_init(driver_mcu_t* v_dmcu);
 
 #endif // __CODE_TEMPLATE_H
 

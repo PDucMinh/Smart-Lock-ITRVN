@@ -47,7 +47,7 @@ typedef enum
 typedef struct
 {
   driver_button_type_t button_type; /**< type of button */
-  driver_mcu_pin_t button_io;       /**<GPIO pin used for button */
+  driver_mcu_pin_t button_pin;      /**<GPIO pin used for button */
   GPIO_PinState button_io_preState; /**<previous GPIO status */
   uint32_t button_tick;             /**< the tick read from Systick counter when start debouncing */
 } driver_button_t;
@@ -58,7 +58,7 @@ typedef struct
 /**
  * @brief  Initialize GPIO pin to be used for button
  *
- * @param[in]     dbutton  <struct pointer managing the button>
+ * @param[in]     v_dbutton  <struct pointer managing the button>
  *
  * @attention
  *
@@ -66,7 +66,7 @@ typedef struct
  *  - DRIVER_PASS: the button is initialized successfully
  *  - DRIVER_FAIL: the button is initialized fail
  */
-driver_state_t driver_button_init(driver_button_t* dbutton);
+driver_state_t driver_button_init(driver_button_t* v_dbutton);
 
 /**
  * @brief  reading button state
@@ -79,7 +79,7 @@ driver_state_t driver_button_init(driver_button_t* dbutton);
  *  - DRIVER_BUTTON_NO_PUSHED: the button is not pushed
  *  - DRIVER_BUTTON_IS_PUSHED: the button is pushed
  */
-driver_button_state_t driver_button_read(driver_button_t* dbutton);
+driver_button_state_t driver_button_read(driver_button_t* v_dbutton);
 
 #endif // __DRIVER_BUTTON_H
 

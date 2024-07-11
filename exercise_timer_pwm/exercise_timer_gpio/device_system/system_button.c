@@ -1,5 +1,5 @@
 /**
- * @file       SYSTEM_BUTTON.c
+ * @file       system_button.c
  * @copyright  Copyright (C) 2024. All rights reserved.
  * @license    This project is released under the Fiot License.
  * @version    major.minor.patch
@@ -16,12 +16,10 @@
  */
 
 /* Includes ----------------------------------------------------------- */
-#include "SYSTEM_BUTTON.h"
-#include "DRIVER_BUTTON.h"
+#include "system_button.h"
 
 /* Private defines ---------------------------------------------------- */
-#define PRIVATE_DEFINE_1 (0) /*!< Description of PRIVATE_DEFINE_1 */
-#define PRIVATE_DEFINE_2 (0) /*!< Description of PRIVATE_DEFINE_2 */
+
 /* Private enumerate/structure ---------------------------------------- */
 typedef enum
 {
@@ -30,20 +28,6 @@ typedef enum
   STATE_INIT
 } button_state_process_t;
 /* Private macros ----------------------------------------------------- */
-/**
- * @brief  <macro description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-#define PRIVATE_MACRO(a) do_something_with(a)
 
 /* Public variables --------------------------------------------------- */
 
@@ -59,7 +43,9 @@ system_button_t *v_sbutton_1;
 void system_button_timer_run();
 char system_button_time_out();
 void set_timer(int time);
-void system_button_set_state(driver_button_t *db);
+char time_out_2();
+void set_timer_2(int time);
+void system_button_set_state(driver_button_t *v_dbutton);
 /* Function definitions ----------------------------------------------- */
 void system_button_init(system_button_t *v_sbutton)
 {
@@ -70,34 +56,37 @@ void system_button_init(system_button_t *v_sbutton)
   v_sbutton_timer_2 = 0;
   v_sbutton_process = STATE_INIT;
   v_sbutton_1 = v_sbutton;
+  v_sbutton->button->button_pin.io = DRIVER_MCU_PORT_A | DRIVER_MCU_PIN_0;
+  v_sbutton->button->button_type = DRIVER_BUTTON_TYPE_PD;
+  driver_button_init(v_sbutton->button);
 }
 
-system_button_state_t system_button_read(system_button_t *v_button)
+system_button_state_t system_button_read(system_button_t *v_sbutton)
 {
   if (v_sbutton_click == 1)
   {
-    (*v_button).button_state = SYSTEM_BUTTON_1CLICK;
+    (*v_sbutton).button_state = SYSTEM_BUTTON_1CLICK;
     return SYSTEM_BUTTON_1CLICK;
   }
   if (v_sbutton_click == 2)
   {
-    (*v_button).button_state = SYSTEM_BUTTON_2CLICK;
+    (*v_sbutton).button_state = SYSTEM_BUTTON_2CLICK;
     return SYSTEM_BUTTON_2CLICK;
   }
   if ((v_sbutton_click > 2) && time_out_2())
   {
-    (*v_button).button_state = SYSTEM_BUTTON_HOLD;
+    (*v_sbutton).button_state = SYSTEM_BUTTON_HOLD;
     return SYSTEM_BUTTON_HOLD;
   }
 
-  (*v_button).button_state = SYSTEM_BUTTON_RELEASE;
+  (*v_sbutton).button_state = SYSTEM_BUTTON_RELEASE;
   return SYSTEM_BUTTON_RELEASE;
 }
 
-void system_button_loop(system_button_t *v_button)
+void system_button_loop(system_button_t *v_sbutton)
 {
   timer_run();
-  system_button_set_state((*v_button).button);
+  system_button_set_state(v_sbutton->button);
 }
 
 /* Private definitions ----------------------------------------------- */
@@ -121,29 +110,29 @@ void timer_run()
   }
 }
 
-void system_button_set_state(driver_button_t *db)
+void system_button_set_state(driver_button_t *v_dbutton)
 {
   switch (v_sbutton_process)
   {
   case STATE_CLICK:
-    if ((driver_button_read(db) == DRIVER_BUTTON_IS_PUSHED) && (time_out()))
+    if ((driver_button_read(v_dbutton) == DRIVER_BUTTON_STATE_IS_PUSHED) && (time_out()))
     {
       v_sbutton_click++;
       set_timer(500);
     }
-    if (driver_button_read(db) == DRIVER_BUTTON_NO_PUSHED)
+    if (driver_button_read(v_dbutton) == DRIVER_BUTTON_STATE_NO_PUSHED)
     {
       set_timer(300);
       v_sbutton_process = STATE_OFF;
     }
     break;
   case STATE_OFF:
-    if ((driver_button_read(db) == DRIVER_BUTTON_NO_PUSHED) && (time_out()))
+    if ((driver_button_read(v_dbutton) == DRIVER_BUTTON_STATE_NO_PUSHED) && (time_out()))
     {
       v_sbutton_click = 0;
       v_sbutton_process = STATE_INIT;
     }
-    if (driver_button_read(db) == DRIVER_BUTTON_IS_PUSHED)
+    if (driver_button_read(v_dbutton) == DRIVER_BUTTON_STATE_IS_PUSHED)
     {
       v_sbutton_click++;
       set_timer(500);
@@ -152,7 +141,7 @@ void system_button_set_state(driver_button_t *db)
     }
     break;
   case STATE_INIT:
-    if (driver_button_read(db) == DRIVER_BUTTON_IS_PUSHED)
+    if (driver_button_read(v_dbutton) == DRIVER_BUTTON_STATE_IS_PUSHED)
     {
       set_timer_2(3000);
       v_sbutton_click++;
@@ -166,7 +155,7 @@ void system_button_set_state(driver_button_t *db)
   }
 }
 
-char time_out()
+char system_button_time_out()
 {
   if (v_sbutton_timeout)
   {

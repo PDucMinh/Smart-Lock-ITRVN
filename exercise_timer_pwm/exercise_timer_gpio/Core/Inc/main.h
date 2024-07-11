@@ -27,8 +27,8 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "driver_button.h"
-#include "driver_led.h"
+#include "system_manager.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -36,7 +36,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-extern driver_mcu_t dmcu;
+extern driver_mcu_t v_dmcu;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

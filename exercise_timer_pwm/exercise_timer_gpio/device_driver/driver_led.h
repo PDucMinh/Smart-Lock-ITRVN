@@ -11,7 +11,7 @@
  *             - driver_led_read : Setting led state
  *
  * @note
- * @example    
+ * @example
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -49,7 +49,7 @@ typedef enum
 typedef struct
 {
   driver_led_type_t led_type; /**< Description of member_2 */
-  driver_mcu_pin_t led_io;            /**< Description of member_3 */
+  driver_mcu_pin_t led_pin;   /**< Description of member_3 */
 } driver_led_t;
 
 /* Public macros ------------------------------------------------------ */
@@ -58,21 +58,22 @@ typedef struct
 /**
  * @brief  Initialize GPIO pin to be used for for
  *
- * @param[in]     dled  <struct pointer managing the led>
- *
+ * @param[in]     v_dled  <struct pointer managing the led>
+ * @param[in]     v_dmcu  <struct pointer managing the MCU peripheral>
  * @attention
  *
  * @return
  *  - DRIVER_PASS: the led is initialized successfully
  *  - DRIVER_FAIL: the led is initialized fail
  */
-driver_state_t driver_led_init(driver_led_t* dled, driver_mcu_t* dmcu);
+driver_state_t driver_led_init(driver_led_t* v_dled, driver_mcu_t* v_dmcu);
 
 /**
  * @brief  setting led state
  *
- * @param[in]     dled  <struct pointer managing the led>
- * @param[out]    dled_state <the state of led>
+ * @param[in]     v_dled  <struct pointer managing the led>
+ * @param[in]     v_dled_state <the state of led>
+ * @param[in]     v_dmcu <struc pointer managing MCU peripheral>
  *
  * @attention
  *
@@ -80,7 +81,7 @@ driver_state_t driver_led_init(driver_led_t* dled, driver_mcu_t* dmcu);
  *  - DRIVER_PASS: the led is set successfully
  *  - DRIVER_FAIL: the led is set fail
  */
-driver_state_t driver_led_set(driver_mcu_t* dmcu, driver_led_t* dled, driver_led_state_t dled_state);
+driver_state_t driver_led_set(driver_mcu_t* v_dmcu, driver_led_t* v_dled, driver_led_state_t v_dled_state);
 
 #endif // __DRIVER_LED_H
 

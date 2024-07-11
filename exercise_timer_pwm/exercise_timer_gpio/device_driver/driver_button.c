@@ -32,23 +32,23 @@
  * @brief  This function will count the tick from Systick Timer to measure
  * the time for debouncing button
  *
- * @param[in]     db  <struct pointer managing the button needing to be debounced>
+ * @param[in]     v_dbutton  <struct pointer managing the button needing to be debounced>
  *
  * @attention  <API attention note>
  *
  * @return
- *  - tick - (db->button_tick) if Systick Timer counter hasn't overflowed
- *  - tick + 1 + 0xFFFFFFFF - (db->button_tick) if Systick Timer counter has overflowed
+ *  - tick - (v_dbutton->button_tick) if Systick Timer counter hasn't overflowed
+ *  - tick + 1 + 0xFFFFFFFF - (v_dbutton->button_tick) if Systick Timer counter has overflowed
  */
-static uint32_t driver_button_tick(driver_button_t* dbutton);
+static uint32_t driver_button_tick(driver_button_t* v_dbutton);
 /* Function definitions ----------------------------------------------- */
-driver_state_t driver_button_init(driver_button_t* dbutton)
+driver_state_t driver_button_init(driver_button_t* v_dbutton)
 {
-  DRIVER_CHECK_NULL(dbutton, DRIVER_STATE_FAIL);
+  DRIVER_CHECK_NULL(v_dbutton, DRIVER_STATE_FAIL);
   uint16_t port, pin;
   GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-  port = (dbutton->button_io.dmcu_io) & 0x00F0;
-  pin = (dbutton->button_io.dmcu_io) & 0x000F;
+  port = (v_dbutton->button_pin.io) & 0x00F0;
+  pin = (v_dbutton->button_pin.io) & 0x000F;
   switch (port)
   {
   case DRIVER_MCU_PORT_A:
@@ -58,7 +58,7 @@ driver_state_t driver_button_init(driver_button_t* dbutton)
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-    dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOA, (uint16_t)1 << pin);
+    v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOA, (uint16_t)1 << pin);
     break;
   }
   case DRIVER_MCU_PORT_D:
@@ -68,22 +68,22 @@ driver_state_t driver_button_init(driver_button_t* dbutton)
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-    dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOD, (uint16_t)1 << pin);
+    v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOD, (uint16_t)1 << pin);
     break;
   }
   }
   return DRIVER_STATE_PASS;
 }
 
-driver_button_state_t driver_button_read(driver_button_t* dbutton)
+driver_button_state_t driver_button_read(driver_button_t* v_dbutton)
 {
-  DRIVER_CHECK_NULL(dbutton, DRIVER_BUTTON_STATE_NO_READ);
+  DRIVER_CHECK_NULL(v_dbutton, DRIVER_BUTTON_STATE_NO_READ);
   uint16_t port, pin;
   GPIO_PinState state;
   static uint8_t event_flag = NO_EVENT;
 
-  port = (dbutton->button_io.dmcu_io) & 0x00F0;
-  pin = (dbutton->button_io.dmcu_io) & 0x000F;
+  port = (v_dbutton->button_pin.io) & 0x00F0;
+  pin = (v_dbutton->button_pin.io) & 0x000F;
   switch (port)
   {
   case DRIVER_MCU_PORT_A:
@@ -99,19 +99,19 @@ driver_button_state_t driver_button_read(driver_button_t* dbutton)
   }
 
   /* Check whether an edge occur on gpio input */
-  if (state != (dbutton->button_io_preState))
+  if (state != (v_dbutton->button_io_preState))
   {
     if (event_flag == NO_EVENT)
     {
       event_flag = EDGE_EVENT;
-      dbutton->button_tick = HAL_GetTick();
+      v_dbutton->button_tick = HAL_GetTick();
     }
-    else if ((driver_button_tick(dbutton) > 30) && (event_flag == EDGE_EVENT))
+    else if ((driver_button_tick(v_dbutton) > 30) && (event_flag == EDGE_EVENT))
     {
       event_flag = TIMEOUT_EVENT;
     }
   }
-  else if (state == (dbutton->button_io_preState))
+  else if (state == (v_dbutton->button_io_preState))
   {
     event_flag = NO_EVENT;
   }
@@ -121,35 +121,35 @@ driver_button_state_t driver_button_read(driver_button_t* dbutton)
   if (event_flag == TIMEOUT_EVENT)
   {
     event_flag = NO_EVENT;
-    (dbutton->button_io_preState) = state;
+    (v_dbutton->button_io_preState) = state;
   }
 
   /* return button state base button type */
-  if ((dbutton->button_type) == DRIVER_BUTTON_TYPE_PD)
+  if ((v_dbutton->button_type) == DRIVER_BUTTON_TYPE_PD)
   {
-    if ((dbutton->button_io_preState) == GPIO_PIN_RESET)
+    if ((v_dbutton->button_io_preState) == GPIO_PIN_RESET)
       return DRIVER_BUTTON_STATE_NO_PUSHED;
     else
       return DRIVER_BUTTON_STATE_IS_PUSHED;
   }
   else
   {
-    if ((dbutton->button_io_preState) == GPIO_PIN_SET)
+    if ((v_dbutton->button_io_preState) == GPIO_PIN_SET)
       return DRIVER_BUTTON_STATE_NO_PUSHED;
     else
       return DRIVER_BUTTON_STATE_IS_PUSHED;
   }
 }
 /* Private definitions ----------------------------------------------- */
-static uint32_t driver_button_tick(driver_button_t* db)
+static uint32_t driver_button_tick(driver_button_t* v_dbutton)
 {
   uint32_t tick;
   tick = HAL_GetTick();
-  if (tick > (db->button_tick))
+  if (tick > (v_dbutton->button_tick))
   {
-    return tick - (db->button_tick);
+    return tick - (v_dbutton->button_tick);
   }
   else
-    return tick + 1 + 0xFFFFFFFF - (db->button_tick);
+    return tick + 1 + 0xFFFFFFFF - (v_dbutton->button_tick);
 }
 /* End of file -------------------------------------------------------- */

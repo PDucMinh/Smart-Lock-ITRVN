@@ -44,24 +44,22 @@
  *  - 1: Error
  */
 driver_state_t driver_mcu_clock_init(void);
-driver_state_t driver_mcu_pwm_init(driver_mcu_t *dmcu);
-driver_state_t driver_mcu_timer_init(driver_mcu_t *dmcu);
+driver_state_t driver_mcu_pwm_init(driver_mcu_t* v_dmcu);
+driver_state_t driver_mcu_timer_init(driver_mcu_t* v_dmcu);
 /* Function definitions ----------------------------------------------- */
-driver_state_t debug_clock = DRIVER_STATE_PASS;
-driver_state_t debug_timer = DRIVER_STATE_PASS;
-driver_state_t debug_pwm = DRIVER_STATE_PASS;
-driver_state_t driver_mcu_init(driver_mcu_t *dmcu)
+driver_state_t driver_mcu_init(driver_mcu_t* v_dmcu)
 {
+  DRIVER_CHECK_NULL(v_dmcu, DRIVER_STATE_FAIL);
   HAL_Init();
   if (driver_mcu_clock_init() == DRIVER_STATE_FAIL)
   {
     return DRIVER_STATE_FAIL;
   }
-  if (driver_mcu_timer_init(dmcu) == DRIVER_STATE_FAIL)
+  if (driver_mcu_timer_init(v_dmcu) == DRIVER_STATE_FAIL)
   {
     return DRIVER_STATE_FAIL;
   }
-  if (driver_mcu_pwm_init(dmcu) == DRIVER_STATE_FAIL)
+  if (driver_mcu_pwm_init(v_dmcu) == DRIVER_STATE_FAIL)
   {
     return DRIVER_STATE_FAIL;
   }
@@ -70,17 +68,17 @@ driver_state_t driver_mcu_init(driver_mcu_t *dmcu)
 /* Private definitions ----------------------------------------------- */
 driver_state_t driver_mcu_clock_init(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
 
   /** Configure the main internal regulator output voltage
-  */
+   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
   /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+   * in the RCC_OscInitTypeDef structure.
+   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
@@ -96,9 +94,9 @@ driver_state_t driver_mcu_clock_init(void)
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+   */
+  RCC_ClkInitStruct.ClockType =
+    RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -111,37 +109,37 @@ driver_state_t driver_mcu_clock_init(void)
   return DRIVER_STATE_PASS;
 }
 
-driver_state_t driver_mcu_timer_init(driver_mcu_t *dmcu)
+driver_state_t driver_mcu_timer_init(driver_mcu_t* v_dmcu)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
   TIM_MasterConfigTypeDef sMasterConfig = { 0 };
 
-  dmcu->htim3.Instance = TIM3;
-  dmcu->htim3.Init.Prescaler = 9999;
-  dmcu->htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  dmcu->htim3.Init.Period = 9;
-  dmcu->htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  dmcu->htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&(dmcu->htim3)) != HAL_OK)
+  v_dmcu->htim3.Instance = TIM3;
+  v_dmcu->htim3.Init.Prescaler = 9999;
+  v_dmcu->htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  v_dmcu->htim3.Init.Period = 9;
+  v_dmcu->htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  v_dmcu->htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&(v_dmcu->htim3)) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&(dmcu->htim3), &sClockSourceConfig) != HAL_OK)
+  if (HAL_TIM_ConfigClockSource(&(v_dmcu->htim3), &sClockSourceConfig) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&(dmcu->htim3), &sMasterConfig) != HAL_OK)
+  if (HAL_TIMEx_MasterConfigSynchronization(&(v_dmcu->htim3), &sMasterConfig) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
-  HAL_TIM_Base_Start_IT(&(dmcu->htim3));
+  HAL_TIM_Base_Start_IT(&(v_dmcu->htim3));
   return DRIVER_STATE_PASS;
 }
 
-driver_state_t driver_mcu_pwm_init(driver_mcu_t *dmcu)
+driver_state_t driver_mcu_pwm_init(driver_mcu_t* v_dmcu)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
   TIM_MasterConfigTypeDef sMasterConfig = { 0 };
@@ -150,28 +148,28 @@ driver_state_t driver_mcu_pwm_init(driver_mcu_t *dmcu)
   /* USER CODE BEGIN TIM4_Init 1 */
 
   /* USER CODE END TIM4_Init 1 */
-  dmcu->htim4.Instance = TIM4;
-  dmcu->htim4.Init.Prescaler = 9999;
-  dmcu->htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  dmcu->htim4.Init.Period = 9999;
-  dmcu->htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  dmcu->htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-  if (HAL_TIM_Base_Init(&(dmcu->htim4)) != HAL_OK)
+  v_dmcu->htim4.Instance = TIM4;
+  v_dmcu->htim4.Init.Prescaler = 9999;
+  v_dmcu->htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  v_dmcu->htim4.Init.Period = 9999;
+  v_dmcu->htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  v_dmcu->htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&(v_dmcu->htim4)) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&(dmcu->htim4), &sClockSourceConfig) != HAL_OK)
+  if (HAL_TIM_ConfigClockSource(&(v_dmcu->htim4), &sClockSourceConfig) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
-  if (HAL_TIM_PWM_Init(&(dmcu->htim4)) != HAL_OK)
+  if (HAL_TIM_PWM_Init(&(v_dmcu->htim4)) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&(dmcu->htim4), &sMasterConfig) != HAL_OK)
+  if (HAL_TIMEx_MasterConfigSynchronization(&(v_dmcu->htim4), &sMasterConfig) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
@@ -179,17 +177,18 @@ driver_state_t driver_mcu_pwm_init(driver_mcu_t *dmcu)
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&(dmcu->htim4), &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&(v_dmcu->htim4), &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
-  if (HAL_TIM_PWM_ConfigChannel(&(dmcu->htim4), &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&(v_dmcu->htim4), &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
-  if (HAL_TIM_PWM_ConfigChannel(&(dmcu->htim4), &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&(v_dmcu->htim4), &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
   {
     return DRIVER_STATE_FAIL;
   }
+  return DRIVER_STATE_PASS;
 }
 /* End of file -------------------------------------------------------- */

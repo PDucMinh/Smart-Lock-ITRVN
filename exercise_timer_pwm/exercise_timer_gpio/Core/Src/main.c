@@ -40,10 +40,9 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-driver_mcu_t dmcu;
-driver_button_t dbutton1;
-driver_led_t dled1;
-driver_button_state_t dbutton1_state;
+driver_mcu_t v_dmcu;
+system_button_t v_sbutton;
+system_led_t v_sled;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -87,14 +86,7 @@ int main(void)
   /* Initialize all configured peripherals */
 
   /* USER CODE BEGIN 2 */
-  driver_mcu_init(&dmcu);
-  dbutton1.button_io.dmcu_io = DRIVER_MCU_PORT_A | DRIVER_MCU_PIN_0;
-  dbutton1.button_type = DRIVER_BUTTON_TYPE_PD;
-  driver_button_init(&dbutton1);
-  dled1.led_io.dmcu_io = DRIVER_MCU_PORT_D | DRIVER_MCU_PIN_12;
-  dled1.led_io.dmcu_af = DRIVER_MCU_PWM_1;
-  dled1.led_type = DRIVER_LED_TYPE_KCOMMON;
-  driver_led_init(&dled1, &dmcu);
+  system_manager_init(&v_sbutton, &v_sled, &v_dmcu);
   // /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,8 +94,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    dbutton1_state = driver_button_read(&dbutton1);
-    driver_led_set(&dmcu, &dled1, DRIVER_LED_STATE_ON);
+    system_manager_loop(&v_sbutton, &v_sled, &v_dmcu);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
