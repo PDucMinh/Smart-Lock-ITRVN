@@ -31,8 +31,8 @@ typedef enum
 /* Public macros ------------------------------------------------------ */
 /**
  * @brief  Macro check whether the first parameter is equal to NULL. If it's
- * equal to NULL then return DRIVER_FAIL for second parameter, else return
- * DRIVER_PASS.
+ * equal to NULL then return DRIVER_FAIL for second parameter, else do nothing.
+ *
  *
  * @param[in]     A  <parameter need to be checked>
  * @param[out]    B  <parameter receive return value>
@@ -48,6 +48,27 @@ typedef enum
   {                             \
     if (!(A != NULL))           \
       return B;                 \
+  } while (0)
+
+/**
+ * @brief  Macro check whether the first parameter is out of range from 0 to B.
+ * If it's out of range then return DRIVER_FAIL for second parameter, else do nothing.
+ *
+ *
+ * @param[in]     A  <parameter need to be checked>
+ * @param[out]    B  <parameter receive return value>
+ *
+ * @attention
+ *
+ * @return
+ *  - DRIVER_PASS: first parameter is valid
+ *  - DRIVER_FAIL: first parameter is invalid
+ */
+#define DRIVER_CHECK_RANGE(A, __RANGE__, B) \
+  do                                        \
+  {                                         \
+    if (!(A < __RANGE__))                   \
+      return B;                             \
   } while (0)
 /* Public variables --------------------------------------------------- */
 

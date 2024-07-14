@@ -34,21 +34,21 @@ driver_state_t system_led_init(system_led_t* v_sled, driver_mcu_t* v_dmcu)
   DRIVER_CHECK_NULL(v_sled, DRIVER_STATE_FAIL);
   DRIVER_CHECK_NULL(v_dmcu, DRIVER_STATE_FAIL);
   v_sled->led1.led_pin.io = DRIVER_MCU_PORT_D | DRIVER_MCU_PIN_12;
-  v_sled->led1.led_pin.af = DRIVER_MCU_PWM_1;
+  v_sled->led1.led_pin.af = DRIVER_MCU_TIM_CHANNEL_1;
   v_sled->led1.led_type = DRIVER_LED_TYPE_KCOMMON;
   if (driver_led_init(&(v_sled->led1), v_dmcu) == DRIVER_STATE_FAIL)
   {
     return DRIVER_STATE_FAIL;
   }
   v_sled->led2.led_pin.io = DRIVER_MCU_PORT_D | DRIVER_MCU_PIN_13;
-  v_sled->led2.led_pin.af = DRIVER_MCU_PWM_2;
+  v_sled->led2.led_pin.af = DRIVER_MCU_TIM_CHANNEL_2;
   v_sled->led2.led_type = DRIVER_LED_TYPE_KCOMMON;
   if (driver_led_init(&(v_sled->led2), v_dmcu) == DRIVER_STATE_FAIL)
   {
     return DRIVER_STATE_FAIL;
   }
   v_sled->led3.led_pin.io = DRIVER_MCU_PORT_D | DRIVER_MCU_PIN_14;
-  v_sled->led3.led_pin.af = DRIVER_MCU_PWM_3;
+  v_sled->led3.led_pin.af = DRIVER_MCU_TIM_CHANNEL_3;
   v_sled->led3.led_type = DRIVER_LED_TYPE_KCOMMON;
   if (driver_led_init(&(v_sled->led3), v_dmcu) == DRIVER_STATE_FAIL)
   {
@@ -65,30 +65,30 @@ driver_state_t system_led_set(system_led_t* v_sled, driver_mcu_t* v_dmcu, system
   {
   case SYSTEM_LED_EVENT_LED1:
   {
-    driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_BLINK);
-    driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_OFF);
-    driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_BLINK);
+    // driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_OFF);
     break;
   }
   case SYSTEM_LED_EVENT_LED2:
   {
-    driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_OFF);
-    driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_BLINK);
-    driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_BLINK);
+    // driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_OFF);
     break;
   }
   case SYSTEM_LED_EVENT_LED3:
   {
-    driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_OFF);
-    driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_OFF);
-    driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_BLINK);
+    // driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_BLINK);
     break;
   }
   case SYSTEM_LED_EVENT_OFF:
   {
-    driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_OFF);
-    driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_OFF);
-    driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led1), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led2), DRIVER_LED_STATE_OFF);
+    // driver_led_set(v_dmcu, &(v_sled->led3), DRIVER_LED_STATE_OFF);
     break;
   }
   }
