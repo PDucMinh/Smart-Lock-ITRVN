@@ -50,47 +50,47 @@ void system_manager_loop(system_button_t* v_sbutton, system_led_t* v_sled, drive
   switch (currentState)
   {
   case SYSTEM_STATE_IDLE:
-    if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_1CLICK)
+    if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_1CLICK)
     {
       currentState = SYSTEM_STATE_LED1;
     }
     break;
   case SYSTEM_STATE_LED1:
     system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_LED1);
-    if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_2CLICK)
+    if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_2CLICK)
     {
       currentState = SYSTEM_STATE_LED2;
     }
-    else if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_HOLD)
+    else if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_HOLD)
     {
       currentState = SYSTEM_STATE_HOLD;
     }
     break;
   case SYSTEM_STATE_LED2:
     system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_LED2);
-    if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_2CLICK)
+    if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_2CLICK)
     {
       currentState = SYSTEM_STATE_LED3;
     }
-    else if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_HOLD)
+    else if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_HOLD)
     {
       currentState = SYSTEM_STATE_HOLD;
     }
     break;
   case SYSTEM_STATE_LED3:
     system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_LED3);
-    if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_2CLICK)
+    if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_2CLICK)
     {
       currentState = SYSTEM_STATE_LED1;
     }
-    else if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_HOLD)
+    else if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_HOLD)
     {
       currentState = SYSTEM_STATE_HOLD;
     }
     break;
   case SYSTEM_STATE_HOLD:
     system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_OFF);
-    if (system_button_read(v_sbutton->button) == SYSTEM_BUTTON_RELEASE)
+    if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_RELEASE)
     {
       currentState = SYSTEM_STATE_IDLE;
     }

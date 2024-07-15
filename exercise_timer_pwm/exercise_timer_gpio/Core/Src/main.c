@@ -40,9 +40,11 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-driver_mcu_t v_dmcu;
 system_button_t v_sbutton;
+system_button_state_t v_sbutton_state;
 system_led_t v_sled;
+driver_state_t check, check1;
+driver_mcu_t v_dmcu;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -86,7 +88,13 @@ int main(void)
   /* Initialize all configured peripherals */
 
   /* USER CODE BEGIN 2 */
-  system_manager_init(&v_sbutton, &v_sled, &v_dmcu);
+  // system_manager_init(&v_sbutton, &v_sled, &v_dmcu);
+  driver_mcu_init(&v_dmcu);
+  (v_sbutton.button).button_type = DRIVER_BUTTON_TYPE_PD;
+  (v_sbutton.button).button_pin.io = (DRIVER_MCU_PORT_A << 4) | DRIVER_MCU_PIN_0;
+  (v_sbutton.button).button_pin.mode = DRIVER_MCU_PIN_INPUT;
+  (v_sbutton.button).button_pin.pull_type = DRIVER_MCU_PIN_NOPULL;
+  system_button_init(&v_sbutton);
   // /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -94,12 +102,18 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    system_manager_loop(&v_sbutton, &v_sled, &v_dmcu);
+    // system_manager_loop(&v_sbutton, &v_sled, &v_dmcu);
+    // v_dbutton_state = driver_button_read(&v_dbutton);
+    system_button_loop(&v_sbutton);
+    v_sbutton_state = system_button_read(&v_sbutton);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  system_button_timeout(&v_sbutton);
+}
 #ifdef USE_FULL_ASSERT
 /**
  * @brief  Reports the name of the source file and the source line number
