@@ -56,7 +56,7 @@ void system_manager_loop(system_button_t* v_sbutton, system_led_t* v_sled, drive
     }
     break;
   case SYSTEM_STATE_LED1:
-    system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_LED1);
+    system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_ORANGE);
     if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_2CLICK)
     {
       currentState = SYSTEM_STATE_LED2;
@@ -67,7 +67,7 @@ void system_manager_loop(system_button_t* v_sbutton, system_led_t* v_sled, drive
     }
     break;
   case SYSTEM_STATE_LED2:
-    system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_LED2);
+    system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_VIOLET);
     if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_2CLICK)
     {
       currentState = SYSTEM_STATE_LED3;
@@ -78,7 +78,7 @@ void system_manager_loop(system_button_t* v_sbutton, system_led_t* v_sled, drive
     }
     break;
   case SYSTEM_STATE_LED3:
-    system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_LED3);
+    system_led_set(v_sled, v_dmcu, SYSTEM_LED_EVENT_YELLOW);
     if (system_button_read(&(v_sbutton->button)) == SYSTEM_BUTTON_2CLICK)
     {
       currentState = SYSTEM_STATE_LED1;

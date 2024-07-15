@@ -132,9 +132,9 @@ driver_state_t driver_mcu_timer_init(driver_mcu_t *v_dmcu)
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 
   v_dmcu->htim3.Instance = TIM3;
-  v_dmcu->htim3.Init.Prescaler = 9999;
+  v_dmcu->htim3.Init.Prescaler = 99;
   v_dmcu->htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  v_dmcu->htim3.Init.Period = 9;
+  v_dmcu->htim3.Init.Period = 999;
   v_dmcu->htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   v_dmcu->htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&(v_dmcu->htim3)) != HAL_OK)
@@ -168,7 +168,7 @@ driver_state_t driver_mcu_pwm_init(driver_mcu_t *v_dmcu)
   v_dmcu->htim4.Instance = TIM4;
   v_dmcu->htim4.Init.Prescaler = 9999;
   v_dmcu->htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  v_dmcu->htim4.Init.Period = 9999;
+  v_dmcu->htim4.Init.Period = 99;
   v_dmcu->htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   v_dmcu->htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&(v_dmcu->htim4)) != HAL_OK)
