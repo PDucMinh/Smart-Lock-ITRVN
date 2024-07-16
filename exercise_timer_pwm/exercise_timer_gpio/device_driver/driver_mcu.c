@@ -166,7 +166,7 @@ driver_state_t driver_mcu_pwm_init(driver_mcu_t *v_dmcu)
 
   /* USER CODE END TIM4_Init 1 */
   v_dmcu->htim4.Instance = TIM4;
-  v_dmcu->htim4.Init.Prescaler = 9999;
+  v_dmcu->htim4.Init.Prescaler = 999;
   v_dmcu->htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   v_dmcu->htim4.Init.Period = 99;
   v_dmcu->htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

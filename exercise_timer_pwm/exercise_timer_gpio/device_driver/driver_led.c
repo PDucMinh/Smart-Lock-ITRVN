@@ -45,17 +45,11 @@ driver_state_t driver_led_set(driver_mcu_t *v_dmcu, driver_led_t *v_dled, uint16
   DRIVER_CHECK_RANGE(v_dled_duty, 100, DRIVER_STATE_FAIL);
   if ((v_dled->led_type) == DRIVER_LED_TYPE_KCOMMON)
   {
-    if (v_dled_duty == 100)
-      __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, 99);
-    else
-      __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, v_dled_duty);
+    __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, v_dled_duty);
   }
   else if ((v_dled->led_type) == DRIVER_LED_TYPE_ACOMMON)
   {
-    if (v_dled_duty == 0)
-      __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, 99);
-    else
-      __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, (100 - v_dled_duty));
+    __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, (99 - v_dled_duty));
   }
   else
   {

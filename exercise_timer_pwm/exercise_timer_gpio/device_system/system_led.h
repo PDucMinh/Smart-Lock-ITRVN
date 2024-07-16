@@ -29,7 +29,7 @@ typedef enum
 {
   SYSTEM_LED_EVENT_ORANGE, /**< Description of PUBLIC_ENUM_1 */
   SYSTEM_LED_EVENT_VIOLET, /**< Description of PUBLIC_ENUM_2 */
-  SYSTEM_LED_EVENT_YELLOW,
+  SYSTEM_LED_EVENT_AQUA,
   SYSTEM_LED_EVENT_OFF  /**< Description of PUBLIC_ENUM_3 */
 }
 system_led_event_t;

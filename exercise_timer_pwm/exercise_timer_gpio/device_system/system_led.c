@@ -25,9 +25,9 @@
 /* Public variables --------------------------------------------------- */
 static led_rgb_list[SYSTEM_LED_MAX_COLOR][3] = 
 {
-  /* Orange color */{255, 165, 0},
-  /* Violet color */{238, 130, 238},
-  /* Yellow color */{255, 255, 0},
+  /* Orange color */{255, 26, 0},
+  /* Violet color */{238, 26, 238},
+  /* Aqua color */  {0, 255, 255},
   /* No color */    {0, 0, 0}
 };
 /* Private variables -------------------------------------------------- */
@@ -64,9 +64,9 @@ driver_state_t system_led_set(system_led_t* v_sled, driver_mcu_t* v_dmcu, system
   v_sled->led_rgb_id[1] = led_rgb_list[v_sled_event][1];
   v_sled->led_rgb_id[2] = led_rgb_list[v_sled_event][2];
   
-  ledR_duty = (uint16_t)(round(100.0 * (v_sled->led_rgb_id[0]) / 255));
-  ledG_duty = (uint16_t)(round(100.0 * (v_sled->led_rgb_id[1]) / 255));  
-  ledB_duty = (uint16_t)(round(100.0 * (v_sled->led_rgb_id[2]) / 255));
+  ledR_duty = (uint16_t)(round(99.0 * (v_sled->led_rgb_id[0]) / 255));
+  ledG_duty = (uint16_t)(round(99.0 * (v_sled->led_rgb_id[1]) / 255));  
+  ledB_duty = (uint16_t)(round(99.0 * (v_sled->led_rgb_id[2]) / 255));
   driver_led_set(v_dmcu, &(v_sled->ledR), ledR_duty);
   driver_led_set(v_dmcu, &(v_sled->ledG), ledG_duty);
   driver_led_set(v_dmcu, &(v_sled->ledB), ledB_duty);
