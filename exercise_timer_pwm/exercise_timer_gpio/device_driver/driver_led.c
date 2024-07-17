@@ -25,93 +25,35 @@
 /* Private variables -------------------------------------------------- */
 /* Private function prototypes ---------------------------------------- */
 /* Function definitions ----------------------------------------------- */
-driver_state_t driver_led_init(driver_led_t* v_dled, driver_mcu_t* v_dmcu)
+driver_state_t driver_led_init(driver_led_t *v_dled, driver_mcu_t *v_dmcu)
 {
   DRIVER_CHECK_NULL(v_dled, DRIVER_STATE_FAIL);
   DRIVER_CHECK_NULL(v_dmcu, DRIVER_STATE_FAIL);
-  uint16_t port, pin;
-  GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-  port = ((v_dled->led_pin).io) & 0x00F0;
-  pin = ((v_dled->led_pin).io) & 0x000F;
-  switch (port)
+  if (driver_mcu_pin_init(&(v_dled->led_pin)) == DRIVER_STATE_FAIL)
   {
-  case DRIVER_MCU_PORT_A:
-  {
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    GPIO_InitStruct.Pin = (uint16_t)1 << pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-    driver_led_set(v_dmcu, v_dled, DRIVER_LED_STATE_OFF);
-    break;
+    return DRIVER_STATE_FAIL;
   }
-  case DRIVER_MCU_PORT_D:
-  {
-    __HAL_RCC_GPIOD_CLK_ENABLE();
-    GPIO_InitStruct.Pin = (uint16_t)1 << pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF2_TIM4;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-    HAL_TIM_PWM_Start(&(v_dmcu->htim4),v_dled->led_pin.af);
-    driver_led_set(v_dmcu, v_dled, DRIVER_LED_STATE_OFF);
-    break;
-  }
-  }
+  HAL_TIM_PWM_Start(&(v_dmcu->htim4), v_dled->led_tim_channel);
+  driver_led_set(v_dmcu, v_dled, 0);
   return DRIVER_STATE_PASS;
 }
 
-driver_state_t driver_led_set(driver_mcu_t* v_dmcu, driver_led_t* v_dled, driver_led_state_t dled_state)
+driver_state_t driver_led_set(driver_mcu_t *v_dmcu, driver_led_t *v_dled, uint16_t v_dled_duty)
 {
   DRIVER_CHECK_NULL(v_dled, DRIVER_STATE_FAIL);
   DRIVER_CHECK_NULL(v_dmcu, DRIVER_STATE_FAIL);
-  uint16_t port, pin;
-  port = ((v_dled->led_pin).io) & 0x00F0;
-  pin = ((v_dled->led_pin).io) & 0x000F;
-  switch (port)
+  DRIVER_CHECK_RANGE(v_dled_duty, 100, DRIVER_STATE_FAIL);
+  if ((v_dled->led_type) == DRIVER_LED_TYPE_KCOMMON)
   {
-  case DRIVER_MCU_PORT_A:
-  {
-    if ((v_dled->led_type) == DRIVER_LED_TYPE_ACOMMON)
-    {
-      if (dled_state == DRIVER_LED_STATE_ON)
-        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_RESET);
-      else if (dled_state == DRIVER_LED_STATE_OFF)
-        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_SET);
-    }
-    else if ((v_dled->led_type) == DRIVER_LED_TYPE_KCOMMON)
-    {
-      if (dled_state == DRIVER_LED_STATE_ON)
-        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_SET);
-      else if (dled_state == DRIVER_LED_STATE_OFF)
-        HAL_GPIO_WritePin(GPIOA, ((uint16_t)1 << pin), GPIO_PIN_RESET);
-    }
-    break;
+    __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, v_dled_duty);
   }
-  case DRIVER_MCU_PORT_D:
+  else if ((v_dled->led_type) == DRIVER_LED_TYPE_ACOMMON)
   {
-    if ((v_dled->led_type) == DRIVER_LED_TYPE_ACOMMON)
-    {
-      if (dled_state == DRIVER_LED_STATE_ON)
-        __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_pin.af, 0);
-
-      else if (dled_state == DRIVER_LED_STATE_OFF)
-        __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_pin.af, 9999);
-    }
-    else if ((v_dled->led_type) == DRIVER_LED_TYPE_KCOMMON)
-    {
-      if (dled_state == DRIVER_LED_STATE_ON)
-        __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_pin.af, 9999);
-      else if (dled_state == DRIVER_LED_STATE_OFF)
-        __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_pin.af, 0);
-    }
-    if (dled_state == DRIVER_LED_STATE_BLINK)
-    {
-      __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_pin.af, 4999);
-    }
-    break;
+    __HAL_TIM_SET_COMPARE(&(v_dmcu->htim4), v_dled->led_tim_channel, (99 - v_dled_duty));
   }
+  else
+  {
+    return DRIVER_STATE_FAIL;
   }
   return DRIVER_STATE_PASS;
 }

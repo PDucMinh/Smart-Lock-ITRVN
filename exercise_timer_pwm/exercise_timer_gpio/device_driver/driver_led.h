@@ -24,15 +24,6 @@
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
-/**
- * @brief state ID of led for turning on and turning off led
- */
-typedef enum
-{
-  DRIVER_LED_STATE_ON,  /**< State led is on */
-  DRIVER_LED_STATE_OFF, /**< State led is off */
-  DRIVER_LED_STATE_BLINK
-} driver_led_state_t;
 
 /**
  * @brief the type of led
@@ -50,6 +41,7 @@ typedef struct
 {
   driver_led_type_t led_type; /**< Description of member_2 */
   driver_mcu_pin_t led_pin;   /**< Description of member_3 */
+  driver_mcu_tim_channel_t led_tim_channel;
 } driver_led_t;
 
 /* Public macros ------------------------------------------------------ */
@@ -81,7 +73,7 @@ driver_state_t driver_led_init(driver_led_t* v_dled, driver_mcu_t* v_dmcu);
  *  - DRIVER_PASS: the led is set successfully
  *  - DRIVER_FAIL: the led is set fail
  */
-driver_state_t driver_led_set(driver_mcu_t* v_dmcu, driver_led_t* v_dled, driver_led_state_t v_dled_state);
+driver_state_t driver_led_set(driver_mcu_t* v_dmcu, driver_led_t* v_dled, uint16_t v_dled_duty);
 
 #endif // __DRIVER_LED_H
 

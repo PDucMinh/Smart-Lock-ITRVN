@@ -20,8 +20,6 @@
 /* Includes ----------------------------------------------------------- */
 #include "driver_led.h"
 /* Public defines ----------------------------------------------------- */
-#define PUBLIC_DEFINE_1  (0) /*!< Description of PUBLIC_DEFINE_1 */
-#define PUBLIC_DEFINE_2  (0) /*!< Description of PUBLIC_DEFINE_2 */
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
@@ -29,9 +27,9 @@
  */
 typedef enum 
 {
-  SYSTEM_LED_EVENT_LED1, /**< Description of PUBLIC_ENUM_1 */
-  SYSTEM_LED_EVENT_LED2, /**< Description of PUBLIC_ENUM_2 */
-  SYSTEM_LED_EVENT_LED3,
+  SYSTEM_LED_EVENT_ORANGE, /**< Description of PUBLIC_ENUM_1 */
+  SYSTEM_LED_EVENT_VIOLET, /**< Description of PUBLIC_ENUM_2 */
+  SYSTEM_LED_EVENT_AQUA,
   SYSTEM_LED_EVENT_OFF  /**< Description of PUBLIC_ENUM_3 */
 }
 system_led_event_t;
@@ -41,9 +39,10 @@ system_led_event_t;
  */
 typedef struct 
 {
-  driver_led_t led1; /**< Description of member_1 */
-  driver_led_t led2; /**< Description of member_2 */
-  driver_led_t led3;  /**< Description of member_3 */
+  driver_led_t ledR; /**< Description of member_1 */
+  driver_led_t ledG; /**< Description of member_2 */
+  driver_led_t ledB;  /**< Description of member_3 */
+  uint16_t led_rgb_id[3];
 }
 system_led_t;
 
@@ -53,21 +52,34 @@ system_led_t;
 
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  <Initialize system led>
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     <v_dmcu>  <struct pointer manage MCU's peripheral>
+ * @param[in]     <v_sled>  <struct pointer manage system led>
+ * @param[inout]  <none>
  *
- * @attention  <API attention note>
+ * @attention  <none>
  *
  * @return  
- *  - 0: Success
- *  - 1: Error
+ *  - DRIVER_STATE_PASS: Success
+ *  - DRIVER_STATE_FAIL: Error
  */
  driver_state_t system_led_init(system_led_t* v_sled, driver_mcu_t* v_dmcu);
- driver_state_t system_led_set(system_led_t* v_sled, driver_mcu_t* v_dmcu, system_led_event_t v_sled_event);
 
+/**
+ * @brief  <Set led color base on event ID>
+ *
+ * @param[in]     <v_sled>  <struct pointer manage system led>
+ * @param[in]     <v_dmcu>  <struct pointer manage MCU's peripheral>
+ * @param[in]     <v_sled_event>  <system led event>
+ *
+ * @attention  <none>
+ *
+ * @return  
+ *  - DRIVER_STATE_PASS: Success
+ *  - DRIVER_STATE_FAIL: Error
+ */
+ driver_state_t system_led_set(system_led_t* v_sled, driver_mcu_t* v_dmcu, system_led_event_t v_sled_event);
 #endif // __SYSTEM_LED_H
 
 /* End of file -------------------------------------------------------- */

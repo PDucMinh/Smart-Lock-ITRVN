@@ -21,100 +21,114 @@
 #define __SYSTEM_BUTTON_H
 
 /* Includes ----------------------------------------------------------- */
-#include "DRIVER_BUTTON.h"
+#include "driver_button.h"
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
- * @brief <enum descriptiton>
+ * @brief <return state of system button>
  */
 typedef enum
 {
   SYSTEM_BUTTON_IDLE,
-  SYSTEM_BUTTON_INIT,
   SYSTEM_BUTTON_1CLICK, /**< Description of PUBLIC_ENUM_1 */
   SYSTEM_BUTTON_2CLICK, /**< Description of PUBLIC_ENUM_2 */
   SYSTEM_BUTTON_HOLD,
   SYSTEM_BUTTON_RELEASE /**< Description of PUBLIC_ENUM_3 */
 } system_button_state_t;
 
+/**
+ * @brief <process state of system button>
+ */
+typedef enum
+{
+  SYSTEM_BUTTON_PROCESS_ON_1CLICK,
+  SYSTEM_BUTTON_PROCESS_OFF_1CLICK,
+  SYSTEM_BUTTON_PROCESS_ON_2CLICK,
+  SYSTEM_BUTTON_PROCESS_OFF_2CLICK,
+  SYSTEM_BUTTON_PROCESS_ON_HOLD,
+  SYSTEM_BUTTON_PROCESS_WAIT_RELEASE,
+  SYSTEM_BUTTON_PROCESS_OFF_RELEASE,
+  SYSTEM_BUTTON_PROCESS_FAULT,
+  SYSTEM_BUTTON_PROCESS_INIT
+} system_button_process_t;
+
+/**
+ * @brief <structure manage system button>
+ */
 typedef struct
 {
   system_button_state_t button_state;
-  driver_button_t *button;
-  driver_state_t activate;
+  driver_button_t button;
+  uint8_t active;
+  uint16_t button_time;
+  uint8_t button_timeout;
+  system_button_process_t button_process;
 } system_button_t;
-/**
- * @brief structure manage a button
- */
+
 /* Public macros ------------------------------------------------------ */
-/**
- * @brief  <macro description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
 
 /* Public variables --------------------------------------------------- */
 
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  <Initializing a system button component>
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     <v_sbutton>  <struct pointer manage system button>
+ * @param[out]    none
+ * @param[inout]  none
  *
- * @attention  <API attention note>
+ * @attention  
  *
- * @return
- *  - 0: Success
- *  - 1: Error
+ * @return        none
+ *  
  */
-// void system_button_init(driver_button_t* db);
 void system_button_init(system_button_t *v_sbutton);
+
 /**
- * @brief  <initialize counter before reading number of clicks>
+ * @brief  <reading system button state>
  *
- * @param[in]     driver_button_t struct pointer manage button signal
+ * @param[in]     <v_sbutton>  <struct pointer manage system button> 
  * @param[out]    none
  *
- * @attention  none
+ * @attention     
  *
- * @return
- *  none
+ * @return        
+ *  - SYSTEM_BUTTON_IDLE : Button is not clicked
+ *  - SYSTEM_BUTTON_1CLICK : Button is clicked one time
+ *  - SYSTEM_BUTTON_2CLICK : Button is clicked two times
+ *  - SYSTEM_BUTTON_HOLD : Button is hold
+ *  - SYSTEM_BUTTON_RELEASE : Button is released after being hold
  */
 system_button_state_t system_button_read(system_button_t *v_sbutton);
+
 /**
- * @brief  <read button state>
+ * @brief  <This function will set system button state base on readings 
+ *          from driver button>
  *
  * @param[in]     driver_button_t struct pointer manage button signal
  * @param[out]    system_button_state_t  button behavior number of click or release
  *
- * @attention  none
+ * @attention  <This function need to be executed in while loop in main function>
  *
- * @return
- *  system_button_state_t: number of the button clicks
+ * @return  none
+ *  
  */
 void system_button_loop(system_button_t *v_sbutton);
+
 /**
- * @brief  <button click counter run() in TIMER>
+ * @brief  <This function will set time out base on specification after receive
+ *          a pushed event from driver button>
  *
- * @param[in]     driver_button_t struct pointer manage button signal
+ * @param[in]     <v_sbutton> <struct pointer manage system button>
  * @param[out]    none
  *
- * @attention  none
+ * @attention  <This function need to be executed in timer interrupt routine>
  *
- * @return
- *  none
+ * @return   none
+ *  
  */
-#endif // __CODE_TEMPLATE_H
+void system_button_timeout(system_button_t *v_sbutton);
+#endif // __SYSTEM_BUTTON_H
 
 /* End of file -------------------------------------------------------- */
