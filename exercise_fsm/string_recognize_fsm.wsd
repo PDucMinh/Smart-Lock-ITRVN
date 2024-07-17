@@ -1,0 +1,18 @@
+@startuml string_recognize_fsm
+
+Hide empty description
+
+[*] --> INIT
+INIT --> 1xxxx : string = 1
+INIT --> INIT : string = 0
+1xxxx --> 10xxx : string = 0
+1xxxx --> 1xxxx : string = 1
+10xxx --> INIT : string = 0
+10xxx --> 101xx : string = 1
+101xx --> 10xxx : string = 0
+101xx --> 1011x : string = 1
+1011x --> 10110 : string = 0
+1011x --> 1xxxx : string = 1
+10110 --> [*]
+
+@enduml
