@@ -46,31 +46,39 @@ driver_state_t driver_button_init(driver_button_t* v_dbutton)
 {
   DRIVER_CHECK_NULL(v_dbutton, DRIVER_STATE_FAIL);
   uint16_t port, pin;
-  GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-  port = (v_dbutton->button_pin.io) & 0x00F0;
-  pin = (v_dbutton->button_pin.io) & 0x000F;
-  switch (port)
+  if (driver_mcu_pin_init(&(v_dbutton->button_pin)) == DRIVER_STATE_FAIL)
   {
-  case DRIVER_MCU_PORT_A:
-  {
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    GPIO_InitStruct.Pin = (uint16_t)1 << pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-    v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOA, (uint16_t)1 << pin);
-    break;
+    return DRIVER_STATE_FAIL;
   }
-  case DRIVER_MCU_PORT_D:
+  port = ((v_dbutton->button_pin).io & 0xF0) >> 4;
+  pin = ((v_dbutton->button_pin).io & 0x0F);
+  switch(port)
   {
-    __HAL_RCC_GPIOD_CLK_ENABLE();
-    GPIO_InitStruct.Pin = (uint16_t)1 << pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-    v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOD, (uint16_t)1 << pin);
-    break;
-  }
+    case DRIVER_MCU_PORT_A:
+    {
+      v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOA,(uint16_t)1 << pin);
+      break;
+    }
+    case DRIVER_MCU_PORT_B:
+    {
+      v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOB,(uint16_t)1 << pin);
+      break;
+    }
+    case DRIVER_MCU_PORT_C:
+    {
+      v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOC,(uint16_t)1 << pin);
+      break;
+    }
+    case DRIVER_MCU_PORT_D:
+    {
+      v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOD,(uint16_t)1 << pin);
+      break;
+    }
+    case DRIVER_MCU_PORT_E:
+    {
+      v_dbutton->button_io_preState = HAL_GPIO_ReadPin(GPIOE,(uint16_t)1 << pin);
+      break;
+    }
   }
   return DRIVER_STATE_PASS;
 }
