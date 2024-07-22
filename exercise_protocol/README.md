@@ -30,3 +30,15 @@
 
 ## Transmission Mechanism
 
+### The transmission mechanism will be described in the following transmission diagram:
+- The first diagram denote the case where there is no missing message on transmission line and response message from receiver is sent within time out period:
+
+![no error transmission](https://github.com/user-attachments/assets/41f8a931-8cf5-4246-9cbf-67473eb465d6)
+
+- The second diagram denote the case where there is missing message, the receiver detect the missing message within the time out period of transmitter and return NACK command to request the data to be re-transmitted. 
+
+![FCC_FlowChart-protocol-error-msg drawio](https://github.com/user-attachments/assets/d77d9eee-24ff-4687-8fd1-2e9444df30ac)
+
+- The third diagram denote the case where there is missing message. After time out period, the transmitter does not receive response and starts transmitting the same message again. In the second time, the receiver gets the message correctly but the ACK message is missing on transmission line. There for the transmitter transmits the message a third time after time out. The receiver after receiving the same message, it will not add the message to the buffer and start transmitting ACK message again. Due to receiving the ACK message correctly, the transmitter will reset time out counter, delete transmitted message from buffer.
+
+![FCC_FlowChart-protocol-error-ack drawio](https://github.com/user-attachments/assets/70524bfd-ed78-4a69-b1e5-e04773c6d8bd)
