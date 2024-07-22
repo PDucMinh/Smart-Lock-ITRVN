@@ -1,0 +1,22 @@
+@startuml normal_flow
+
+skinparam sequenceMessageAlign center
+
+participant GUI as gui 
+participant MCU as mcu
+
+gui -> mcu : start transmission
+mcu --> gui : ack accept
+
+loop until all data is sent
+    gui -> mcu : data package
+    mcu -> mcu : package decode
+    mcu -> mcu : pakage verify
+    mcu --> gui : ack complete receive
+end
+
+gui -> mcu : end transmission
+mcu -> mcu : end process
+mcu --> gui : ack end transmission
+
+@enduml
