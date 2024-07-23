@@ -2,10 +2,10 @@
 
 ## Data packet Structure
 
-| HEADER | SEQUENCE | COMMAND | DATA |
-| ------ | -------- | ------- | ---- |
-| A 16-bits value includes the first byte marking the operation of transaction, the last bytes display the length of data payload | A 8-bits value denotes the order of the data packet transferred. This value will increase by one after new message is created and it will be reset to zero after reaching the end of transaction | A 8-bits value have the predefined system command ID | An array of 8-bits value containing the data needing to be transfered |
-| 16 bits | 8 bits | 8 bits | Length * 8 bits |
+| HEADER | SEQUENCE | COMMAND | DATA | CRC |
+| ------ | -------- | ------- | ---- | -- |
+| A 16-bits value includes the first byte marking the operation of transaction, the last bytes display the length of data payload | A 8-bits value denotes the order of the data packet transferred. This value will increase by one after new message is created and it will be reset to zero after reaching the end of transaction | A 8-bits value have the predefined system command ID | An array of 8-bits value containing the data needing to be transfered | On-going |
+| 16 bits | 8 bits | 8 bits | Length * 8 bits | On-going |
 
 
 ## Header field specification
