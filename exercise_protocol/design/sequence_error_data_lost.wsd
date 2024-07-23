@@ -1,0 +1,28 @@
+@startuml error_data_lost
+
+skinparam sequenceMessageAlign center 
+
+participant GUI as gui 
+participant MCU as mcu 
+
+gui -> mcu : start session
+mcu --> gui : ack accept
+
+loop until end session
+    gui -> gui : data package
+    gui -> mcu : send data package
+        mcu -> mcu : package decode 
+        mcu -> mcu : package verify
+        mcu -> gui : ack complete \n verify code
+
+    alt package package error (verify code not match)
+        gui -> mcu : package history delete
+        mcu -> mcu : delete error package
+        mcu --> gui : ack delete
+    else transmission complete 
+        gui -> gui : prepare next package
+    end 
+    gui -> mcu : start new session
+end 
+
+@enduml
