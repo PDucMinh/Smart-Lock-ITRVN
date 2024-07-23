@@ -1,0 +1,33 @@
+@startuml package_error
+skinparam sequenceMessageAlign center 
+
+participant GUI as gui 
+participant MCU as mcu 
+
+gui -> mcu : start session
+mcu --> gui : ack accept
+
+loop until end session
+gui -> gui : data package
+gui -> mcu : send data package
+
+alt MCU time_out 
+mcu -> gui : request data package
+gui --> mcu : ack restart session
+else GUI time_out 
+gui -> mcu : command check package
+    alt package receive
+        mcu --> gui : ack received
+        ' mcu -> mcu : data error check
+    else package lost 
+        mcu --> gui : package lost
+        mcu -> gui : request package
+gui --> mcu : ack restart session
+    end 
+else complete transmission
+    mcu -> mcu : data error check
+    mcu --> gui : ack complete
+end 
+gui -> mcu : start new session
+end 
+@enduml
