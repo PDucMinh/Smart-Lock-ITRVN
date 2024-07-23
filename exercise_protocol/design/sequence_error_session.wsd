@@ -1,4 +1,17 @@
-@startuml error_flow
+@startuml error_start_session
 
+participant GUI as gui 
+participant mcu as mcu 
 
+loop until receive ack accept 
+    gui -> mcu : start transmission
+    alt time out
+        gui -> mcu : start transmission 
+    else over number retransmission
+        gui -> gui : terminate transmission
+    else ack accept
+        mcu --> gui : ack accept
+        gui -> gui : continue operation
+    end
+end 
 @enduml
