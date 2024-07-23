@@ -1,0 +1,26 @@
+@startuml transmission_abstract_view
+
+skinparam sequenceMessageAlign center
+
+actor User as us
+participant GUI as gui 
+participant MCU as mcu 
+
+
+us -> gui : start transmission
+
+us -> gui : data package
+gui -> mcu :  start msg package
+
+mcu --> gui  : ack accept
+gui -> gui : package encode
+
+gui -> mcu : send package
+mcu -> mcu : package decode
+mcu -> mcu : pakage verify
+mcu --> gui : ack complete receive
+
+gui -> gui : process data
+gui --> us : data receive
+
+@enduml
