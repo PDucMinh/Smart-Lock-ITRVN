@@ -16,6 +16,17 @@ The Smart Door Locks will provide all the following features, user can choose ei
     + Household’s rights include opening the door with password or RFID tag, setting up new password, setting up new RFID, view history of door status.
 - The Lock will start sound alarm when user enter correct/wrong password or swipe a card. 
 - The Lock must allow admin to connect to application to manage all information of Lock system.
+- At normal time, the LCD will be off. When user touching the keypad, LCD will be active and display the following options:
+    + Enter password:
+    When user select this option, LCD will display **Please enter your password** and a line of hyphens. Each time user enter a character, the respective hyphens will be changed to dot.
+    + Set new password:
+    When user select this option, LCD will display **Please enter your old password** and a line of hyphens. After entering the correct password, LCD will display **Please enter your new password** and a line of hyphens. At this time, user will enter the new password that user want to set. The password will become valid after pressing enter key.
+    + Access household information:
+    When user select this option, LCD will display **Please enter authentic ID** and a line of hyphens. After entering the correct ID, PC will send command to start receiving household information and display on GUI.
+    + Set new household information:
+    When user select this option, LCD will display **Please enter authentic ID** and a line of hyphens. After entering the correct ID, PC will send command to update the new information entered from GUI.
+    + Access logging information:
+    When user select this option, LCD will display **Please enter authentic ID** and a line of hyphens. After entering the correct ID, PC will send command to start receiving logging information and display on GUI.
 
 ### Should have
 - The Lock should start alarm sound when user enter or swipe wrong password/card more than 3 times (threshold).
