@@ -43,7 +43,8 @@ The Smart Door Locks will provide all the following features, user can choose ei
 - The Lock can detect the state of the door is locked or opened. If it is left opened for more than 5 seconds, the lock will automatically enter locked state.
 - The logging mechanism of the lock will store the information of accessing time, the state of the Lock, the user accessing the lock at the time the user presents RFID tag or enters password.
 - The Lock log the information starting from 20 days before present day. After each day, the system will delete the information on the oldest day.
-- 
+- When user have no more action on keypad for more than 20 seconds, LCD display will be off.
+
 ### Should have
 
 
