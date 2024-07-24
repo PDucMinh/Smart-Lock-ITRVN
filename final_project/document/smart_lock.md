@@ -26,3 +26,8 @@ The SmartDeskClock project includes the following features:
 | Buzzer                   | PWM    |
 | RGB Led                  | PWM    |
 | RTC DS1307               | I2C    |
+
+## Developer team
+1. **Phạm Đức Minh**
+2. **Nguyễn Nhật Hưng**
+3. **Nguyễn Tấn Phát**
