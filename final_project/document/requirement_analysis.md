@@ -26,9 +26,14 @@ The Smart Door Locks will provide all the following features, user can choose ei
 
 ## Non-functional Requirement
 
-- The length of user's password is at least 8 characters which is then encrypted in bencode.
+### Must have
+- The length of user's password is at least 8 characters which is then encrypted (eg: bencode, hash).
 - The Lock allow user enter wrong password or wrong RFID at most 3 times. After user fail at entering password or RFID tag at fourth time, the Lock will enter Double Locked state in 5 minutes.
 - The Lock can detect the state of the door is locked or opened. If it is left opened for more than 5 seconds, the lock will automatically enter locked state.
 - The logging mechanism of the lock will store the information of accessing time, the state of the Lock, the user accessing the lock at the time the user presents RFID tag or enters password.
 - The Lock log the information starting from 20 days before present day. After each day, the system will delete the information on the oldest day.
 - 
+### Should have
+
+
+### Nice to have
