@@ -16,3 +16,13 @@ The SmartDeskClock project includes the following features:
 | RGB Led                  | Status indicator lights for the door              |
 | RTC DS1307               | Real-time clock module for timekeeping            |
 
+## Technologies
+| Module                   |        |
+| -------------------------| -------|
+| RFID NFC 13.56MHz RC522  | SPI    |
+| TTP229 Touch Keypad      | GPIO   |
+| PL2102                   | UART   |
+| OLED LCD 0.96 inch       | I2C    |
+| Buzzer                   | PWM    |
+| RGB Led                  | PWM    |
+| RTC DS1307               | I2C    |
