@@ -4,7 +4,7 @@ Nowadays, Smart Door Locks are integrated completely in many apartments due to t
 # Detailed features
 
 ## Functional Requirement
-
+### Must have
 The Smart Door Locks will provide all the following features, user can choose either method to open the door:
 - The Lock operates in two modes, RFID mode and Password mode:
     + In RFID mode, the lock will open if it sense the correct tag. 
@@ -12,8 +12,17 @@ The Smart Door Locks will provide all the following features, user can choose ei
 - The Lock allows user to set up new password. It will become valid right after the setting complete. 
 - The Lock also support user with setting up new RFID card in case the old one is lost.
 - The Lock provides user hierarchy include two levels of user which are admin and household:
-    + Admin’s rights consist of accessing to logging information, accessing to household information, opening the door independent of household’s password, setting up new household’s information. 
-    + Household’s rights include opening the door with password or RFID tag, setting up new password, setting up new RFID.
+    + Admin’s rights consist of accessing to history information of door status, accessing to household information, opening the door independent of household’s password, setting up new household’s information. 
+    + Household’s rights include opening the door with password or RFID tag, setting up new password, setting up new RFID, view history of door status.
+- The Lock will start sound alarm when user enter correct/wrong password or swipe a card. 
+- The Lock must allow admin to connect to application to manage all information of Lock system.
+
+### Should have
+- The Lock should start alarm sound when user enter or swipe wrong password/card more than 3 times (threshold).
+- The Lock should start successful sound when user complete changing password/card.
+
+### Nice to have 
+- The lock is nice to have mechanism for admin to add new function or remove old function to Lock system through application. 
 
 ## Non-functional Requirement
 
