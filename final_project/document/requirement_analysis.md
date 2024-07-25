@@ -74,3 +74,7 @@ The Smart Door Locks will provide all the following features, user can choose ei
 
 
 ### Nice to have
+
+# Project Timeline 
+
+<!-- add timeline here -->
