@@ -8,8 +8,13 @@
 - [Contributing](#contributing)
 - [Demo Smart Door Lock](#demo-smart-door-lock)
 
-## Purpose
-The purpose of this project is to create a door lock that allows users to unlock it by entering a password or scanning a card. The system will record the chronological status of the door lock, this information is then displayed on the GUI. The system will emit a signal sound when the user unlocks (different sounds when unlocking successfully and vice versa). In this project, a RGB LED is utilized to simulate the status of the door. Furthermore, the system also allows admin rights to access, monitor or change passwords...
+## Technologies
+
+* **STM32 Microcontroller**: This project is based on the STM32 microcontroller platform, which offers a wide range of microcontrollers with different performance levels and features.
+*  **STM32CubeIDE**: This project was developed using popular IDEs which is STM32CubeIDE, provide tools for code development, debugging, and firmware deployment.
+*  **Communication**: This project includes ways to communicate between MCU and modules: UART, I2C, SPI, PWM, GPIO.
+*  **Peripheral Libraries**: The project utilizes peripheral libraries provided by the microcontroller manufacturer or third-party libraries to simplify the integration and configuration of peripherals.
+*  **Other Device**: We intergrated a lot of device to increase experiment of customer and performance of device .
 
 ## Features
 The Smart Door Lock project includes the following features:
