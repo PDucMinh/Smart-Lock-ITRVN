@@ -67,6 +67,7 @@ The Smart Door Locks will provide all the following features, user can choose ei
 | Buzzer                   | Alerts users if the password is correct or not    |
 | RGB Led                  | Status indicator lights for the door              |
 | RTC DS1307               | Real-time clock module for timekeeping            |
+| IR Infrared Obstacle Avoidance | Detect Obstacle            |
 
 ## Technologies
 | Module                   |        |
@@ -78,6 +79,7 @@ The Smart Door Locks will provide all the following features, user can choose ei
 | Buzzer                   | PWM    |
 | RGB Led                  | PWM    |
 | RTC DS1307               | I2C    |
+| IR Infrared Obstacle Avoidance | GPIO |
 
 ## Firmware Architecture
 ![firmware architecture](Layer_Diagram.drawio.png) 
