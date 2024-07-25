@@ -32,7 +32,7 @@ The Smart Door Lock project includes the following features:
 
 1. Clone the project repository from [GitHub ↗](https://github.com/vyluu-itr/06-2024-itr-intern-group-3/tree/main/final_project).
 2. Set up your development environment with the required IDE (STM32CubeIDE) and toolchain and open the project in the chosen IDE.
-3. Read our [wire connect diagram](./wire_connection.png) to connect the necessary peripherals or sensors to the STM32 microcontroller.
+3. Read our [wire connect diagram](./schematic.png) to connect the necessary peripherals or sensors to the STM32 microcontroller.
 4. Deploy the firmware to the STM32 microcontroller using the appropriate flashing method (e.g., ST-Link, DFU, or bootloader).
 
 ## Contributing
