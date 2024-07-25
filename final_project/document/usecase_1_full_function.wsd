@@ -24,6 +24,9 @@ rectangle Lock_System {
         usecase View_system_log as vl 
         usecase View_system_information as vsi 
         usecase View_lock_state as vls  
+        usecase View_user_activity_log as vual
+        vl <. vual : extends
+        vl <.. vls : extends
     }
 }
 
