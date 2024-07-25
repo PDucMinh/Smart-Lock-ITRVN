@@ -75,6 +75,9 @@ The Smart Door Locks will provide all the following features, user can choose ei
 
 ### Nice to have
 
+## Usecase diagram
+![use_case_full_function](use_case_full_function.png) 
+
 # Project Timeline 
 
 <!-- add timeline here -->
