@@ -1,6 +1,31 @@
 # Domain Context
 Nowadays, Smart Door Locks are integrated completely in many apartments due to the convenience and the safety brought to people by it. Each household doesn’t need to use the manual locks which is bulky and vulnerable. Traditional lock is broken easily by mechanical tools, whereas the smart lock hide its actuator for locking inside the door and therefor, it’s hard to pry open the door. Manual lock always needs to go together with a key, that will lead to the risk of losing and we must keep a spare one somewhere else, which make the manual lock even more unfavorable. Smart lock offer more advantageous options which will be described in bellow.
 
+## Required Modules
+| Module                   | Functionality                                     |
+| -------------------------| ------------------------------------------------- |
+| STM32F411VE              | Main microcontroller for the system               |
+| RFID NFC 13.56MHz RC522  | User can unlock system by using key tags          |
+| TTP229 Touch Keypad      | Allows users to enter password                    |
+| PL2102                   | Transmit data between GUI and system              |
+| OLED LCD 0.96 inch       | Display information according to functions        |
+| Buzzer                   | Alerts users if the password is correct or not    |
+| RGB Led                  | Status indicator lights for the door              |
+| RTC DS1307               | Real-time clock module for timekeeping            |
+
+## Technologies
+| Module                   |        |
+| -------------------------| -------|
+| RFID NFC 13.56MHz RC522  | SPI    |
+| TTP229 Touch Keypad      | GPIO   |
+| PL2102                   | UART   |
+| OLED LCD 0.96 inch       | I2C    |
+| Buzzer                   | PWM    |
+| RGB Led                  | PWM    |
+| RTC DS1307               | I2C    |
+
+## Firmware Architecture
+
 # Detailed features
 
 ## Functional Requirement
