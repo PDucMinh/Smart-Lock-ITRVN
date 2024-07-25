@@ -1,5 +1,7 @@
 # SMART DOOR LOCK
-<img src = "smart_door_lock.png" alt = "smart_door_lock" width = "500" height = "300">
+<p align="center">
+  <img src="smart_door_lock.png" alt="smart_door_lock" width="500" height="300">
+</p>
 
 ## Table of Contents
 - [Technologies](#technologies)
