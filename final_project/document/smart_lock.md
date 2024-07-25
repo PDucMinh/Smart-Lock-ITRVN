@@ -17,7 +17,14 @@
 *  **Other Device**: We intergrated a lot of device to increase experiment of customer and performance of device .
 
 ## Features
+
 The Smart Door Lock project includes the following features:
+1. **Unlock by entering password**: Users are able to enter password to unlock the door
+2. **Unlock by scanning card**: Users can also swipe their card to unlock it instead of entering a password
+3. **Record time**: The system can record the status of the door in real time, and then displayed on GUI
+4. **Admin rights**: Admin can unlock all doors, monitor the system, and reset passwords
+5. **Users rights**: Users can open the door with password or RFID tag, set up new password and view history of door status
+6. **Warning sound**: Alert users if the door is unlock or not
 
 
 
