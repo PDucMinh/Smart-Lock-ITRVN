@@ -78,6 +78,8 @@ The Smart Door Locks will provide all the following features, user can choose ei
 ## Usecase diagram
 ![use_case_full_function](use_case_full_function.png) 
 
+## Block diagram for pin connection:
+![block_diagram](schematic.png)
 # Project Timeline 
 
 <!-- add timeline here -->
