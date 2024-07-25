@@ -46,9 +46,8 @@ We welcome contributions to this project! To ensure a smooth contribution proces
 8. Once your Pull Request is approved, thank you for your contribution and support!
 * **Note**: Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please submit a pull request or open an issue on the project's [GitHub repository](https://github.com/vyluu-itr/06-2024-itr-intern-group-3/tree/main/final_project) or contact us [ITR VN](https://itrvn.com/).
 
-
-
-
+## Demo Smart Door Clock 
+Below are a few typical features of Smart Door Lock 
 
 ## Developer team
 1. **Phạm Đức Minh**
