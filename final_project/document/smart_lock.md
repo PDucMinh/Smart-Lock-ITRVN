@@ -28,10 +28,23 @@ The Smart Door Lock project includes the following features:
 
 ## Usage
 
-1. Clone the project repository from [GitHub ↗](https://github.com/vyluu-itr/06-2024-itr-intern-group-3/main/final_project).
+1. Clone the project repository from [GitHub ↗](https://github.com/vyluu-itr/06-2024-itr-intern-group-3/tree/main/final_project).
 2. Set up your development environment with the required IDE (STM32CubeIDE) and toolchain and open the project in the chosen IDE.
 3. Read our [wire connect diagram](./wire_connection.png) to connect the necessary peripherals or sensors to the STM32 microcontroller.
 4. Deploy the firmware to the STM32 microcontroller using the appropriate flashing method (e.g., ST-Link, DFU, or bootloader).
+
+## Contributing
+We welcome contributions to this project! To ensure a smooth contribution process, please follow the guidelines below:
+
+1. Make sure you have read and understood the Contribution Guide before getting started.
+2. Check the Issues to see if there are any existing issues or requested features.
+3. Create a new branch from main to work on your new feature: git checkout -b new-feature.
+4. Make the necessary changes, additions, or bug fixes in the source code.
+5. Double-check the code to ensure there are no errors and that it follows the coding guidelines.
+6. Create a Pull Request with a detailed description of the changes you have made.
+7. Wait for feedback and make any requested changes from the code reviewer.
+8. Once your Pull Request is approved, thank you for your contribution and support!
+* **Note**: Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please submit a pull request or open an issue on the project's [GitHub repository](https://github.com/vyluu-itr/06-2024-itr-intern-group-3/tree/main/final_project) or contact us [ITR VN](https://itrvn.com/).
 
 
 
