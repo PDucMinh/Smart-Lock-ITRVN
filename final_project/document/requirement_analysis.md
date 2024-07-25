@@ -25,7 +25,7 @@ Nowadays, Smart Door Locks are integrated completely in many apartments due to t
 | RTC DS1307               | I2C    |
 
 ## Firmware Architecture
-
+![firmware architecture](Layer_Diagram.drawio.png) 
 # Detailed features
 
 ## Functional Requirement
