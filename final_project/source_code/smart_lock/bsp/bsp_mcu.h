@@ -115,6 +115,9 @@ typedef struct
   USART_HandleTypeDef husart1;
   USART_HandleTypeDef husart2;
   USART_HandleTypeDef husart6;
+  UART_HandleTypeDef huart1;
+  UART_HandleTypeDef huart2;
+  UART_HandleTypeDef huart6;  
   TIM_HandleTypeDef htim1;
   TIM_HandleTypeDef htim2;
   TIM_HandleTypeDef htim3;
