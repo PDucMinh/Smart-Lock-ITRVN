@@ -20,6 +20,7 @@
 #define __BSP_MCU_H
 
 /* Includes ----------------------------------------------------------- */
+#include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
 #define PUBLIC_DEFINE_1 (0) /*!< Description of PUBLIC_DEFINE_1 */
 #define PUBLIC_DEFINE_2 (0) /*!< Description of PUBLIC_DEFINE_2 */
