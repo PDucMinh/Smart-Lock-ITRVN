@@ -75,7 +75,14 @@ typedef struct
   bsp_mcu_periph_t is_i2c_used;
   bsp_mcu_periph_t is_dma_used;
   bsp_mcu_periph_t is_usart_used;
-  bsp_mcu_periph_t is_timer_used;
+  bsp_mcu_periph_t is_tim1_used;
+  bsp_mcu_periph_t is_tim2_used;
+  bsp_mcu_periph_t is_tim3_used;
+  bsp_mcu_periph_t is_tim4_used;
+  bsp_mcu_periph_t is_tim5_used;
+  bsp_mcu_periph_t is_tim9_used;
+  bsp_mcu_periph_t is_tim10_used;
+  bsp_mcu_periph_t is_tim11_used;
 } bsp_mcu_init_t;
 
 /**
