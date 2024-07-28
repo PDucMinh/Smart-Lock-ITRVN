@@ -3,16 +3,17 @@ hide empty description
 
 [*] --> INIT
 INIT --> DOOR_OPEN : door_state = OPEN
+INIT --> DOOR_UNLOCKED : door_state = CLOSE\nlock_state = OPEN
+INIT --> DOOR_LOCKED : door_state = CLOSE\nlock_state = CLOSE
 DOOR_OPEN : Set timeout for 5s
-DOOR_OPEN --> DOOR_ALARM : door_state = OPEN && timeout > 5s
+DOOR_OPEN --> DOOR_ALARM : door_state = OPEN\ntimeout > 5s
 DOOR_ALARM : Set buzzer to play alarm melody
-DOOR_ALARM --> DOOR_UNLOCKED : door_state = CLOSE
-DOOR_OPEN --> DOOR_UNLOCKED : door_state = CLOSE && timeout < 5s
-INIT --> DOOR_UNLOCKED : door_state = CLOSE && lock_state = OPEN
-INIT --> DOOR_LOCKED : door_state = CLOSE && lock_state = CLOSE
+DOOR_ALARM --> DOOR_UNLOCKED : door_state = CLOSE\nlock_state = OPEN
+DOOR_OPEN --> DOOR_UNLOCKED : door_state = CLOSE\nlock_state = OPEN\ntimeout < 5s
+
 DOOR_UNLOCKED : Set timeout for 5s
 DOOR_UNLOCKED --> DOOR_OPEN : door_state = OPEN
-DOOR_UNLOCKED --> DOOR_LOCKED : (lock_state = OPEN && timeout > 5s)\n|| system_event = LOCK_DOOR
+DOOR_UNLOCKED --> DOOR_LOCKED : (lock_state = OPEN\ntimeout > 5s)\nor system_event = LOCK_DOOR
 DOOR_LOCKED --> DOOR_UNLOCKED : system_event = OPEN_DOOR.
 DOOR_LOCKED --> DOOR_DOUBLE_LOCKED : system_event = DOUBLE_LOCK_DOOR
 DOOR_DOUBLE_LOCKED : Set timeout 5 mins
