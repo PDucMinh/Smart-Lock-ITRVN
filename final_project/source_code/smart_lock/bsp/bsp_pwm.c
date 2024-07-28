@@ -28,40 +28,40 @@
 /* Private function prototypes ---------------------------------------- */
 
 /* Function definitions ----------------------------------------------- */
-bsp_pwm_result_t bsp_pwm_start(TIM_HandleTypeDef *htim, uint32_t channel)
+bsp_state_t bsp_pwm_start(TIM_HandleTypeDef *htim, uint32_t channel)
 {
     if (HAL_TIM_PWM_Start(htim, channel) != HAL_OK)
     {
-        return BSP_PWM_FAIL;
+        return BSP_STATE_FAIL;
     }
     else 
     {
-        return BSP_PWM_SUCCESS;
+        return BSP_STATE_PASS;
     }  
 }
 
-bsp_pwm_result_t bsp_pwm_stop(TIM_HandleTypeDef *htim, uint32_t channel)
+bsp_state_t bsp_pwm_stop(TIM_HandleTypeDef *htim, uint32_t channel)
 {
     if (HAL_TIM_PWM_Stop(htim, channel) != HAL_OK)
     {
-        return BSP_PWM_FAIL;
+        return BSP_STATE_FAIL;
     }
     else 
     {
-        return BSP_PWM_SUCCESS;
+        return BSP_STATE_PASS;
     }
 }
 
-bsp_pwm_result_t bsp_pwm_set_duty(TIM_HandleTypeDef *htim, uint32_t channel, uint32_t duty)
+bsp_state_t bsp_pwm_set_duty(TIM_HandleTypeDef *htim, uint32_t channel, uint32_t duty)
 {
     int pulse = (((htim->Init.Period + 1) * duty) / 100) - 1;
     if (__HAL_TIM_SET_COMPARE(htim, channel, pulse) != HAL_OK)
     {
-       return BSP_PWM_FAIL;
+       return BSP_STATE_FAIL;
     }
     else 
     {
-        return BSP_PWM_SUCCESS;
+        return BSP_STATE_PASS;
     }
 }
 
