@@ -6,13 +6,10 @@
  * @date       2024-07-27
  * @author     Hung Nguyen
  *
- * @brief      <A brief description of the content of the file>
+ * @brief      This file contain API for initialize gpio pin
  *
  * @note
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example    
  */
 
 /* Includes ----------------------------------------------------------- */

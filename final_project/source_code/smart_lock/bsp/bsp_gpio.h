@@ -101,7 +101,7 @@ typedef struct
  * @return     none
  *  
  */
- void bsp_gpio_pin_init(bsp_gpio_pin_t* pin);
+ void bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio);
 
 #endif // __BSP_GPIO_H
 
