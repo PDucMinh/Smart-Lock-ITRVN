@@ -6,13 +6,10 @@
  * @date       2024-07-27
  * @author     Hung Nguyen
  *             
- * @brief      <A brief description of the content of the file>
+ * @brief      This file export gpio init API
  *             
  * @note          
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example    
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -95,20 +92,17 @@ typedef struct
 
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  API for init gpio pin
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     pin  struct manage gpio pin
  *
- * @attention  <API attention note>
+ * @attention  This API will be called one time only
  *
- * @return  
- *  - 0: Success
- *  - 1: Error
+ * @return     none
+ *  
  */
  void bsp_gpio_pin_init(bsp_gpio_pin_t* pin);
 
-#endif // __CODE_TEMPLATE_H
+#endif // __BSP_GPIO_H
 
 /* End of file -------------------------------------------------------- */
