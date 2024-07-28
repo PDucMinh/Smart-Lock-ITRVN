@@ -14,8 +14,6 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "bsp_pwm.h"
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_tim.h"
 
 /* Private defines ---------------------------------------------------- */
 
@@ -30,61 +28,40 @@
 /* Private function prototypes ---------------------------------------- */
 
 /* Function definitions ----------------------------------------------- */
-enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint32_t channel)
+bsp_pwm_result_t bsp_pwm_start(TIM_HandleTypeDef *htim, uint32_t channel)
 {
-    htim->Init.Prescaler = 0;
-    htim->Init.CounterMode = TIM_COUNTERMODE_UP;
-    htim->Init.Period = 9999;
-    htim->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    htim->Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-    
-    if (HAL_TIM_PWM_Init(htim) != HAL_OK)
-    {
-        return FAIL;
-    }
-
-    TIM_OC_InitTypeDef sConfigOC = {0};
-    sConfigOC.OCMode = TIM_OCMODE_PWM1;
-    // Init duty cycle = 0
-    sConfigOC.Pulse = 0; 
-    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-    
-    if (HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, channel) != HAL_OK)
-    {
-        return FAIL;
-    }
-
     if (HAL_TIM_PWM_Start(htim, channel) != HAL_OK)
     {
-        return FAIL;
-    }
-
-    return SUCCESS;
-}
-
-enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint32_t channel)
-{
-    if (HAL_TIM_PWM_Stop(htim, channel) != HAL_OK)
-    {
-        return FAIL;
+        return BSP_PWM_FAIL;
     }
     else 
     {
-        return SUCCESS;
+        return BSP_PWM_SUCCESS;
+    }  
+}
+
+bsp_pwm_result_t bsp_pwm_stop(TIM_HandleTypeDef *htim, uint32_t channel)
+{
+    if (HAL_TIM_PWM_Stop(htim, channel) != HAL_OK)
+    {
+        return BSP_PWM_FAIL;
+    }
+    else 
+    {
+        return BSP_PWM_SUCCESS;
     }
 }
 
-enum_result_t bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint32_t channel, uint32_t duty)
+bsp_pwm_result_t bsp_pwm_set_duty(TIM_HandleTypeDef *htim, uint32_t channel, uint32_t duty)
 {
     int pulse = (((htim->Init.Period + 1) * duty) / 100) - 1;
     if (__HAL_TIM_SET_COMPARE(htim, channel, pulse) != HAL_OK)
     {
-       return FAIL;
+       return BSP_PWM_FAIL;
     }
     else 
     {
-        return SUCCESS;
+        return BSP_PWM_SUCCESS;
     }
 }
 
