@@ -17,6 +17,7 @@
 #define __BSP_MCU_H
 
 /* Includes ----------------------------------------------------------- */
+#include "bsp_state.h"
 #include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
 
@@ -146,7 +147,7 @@ typedef struct
  *  
  *  
  */
-void bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu);
+bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu);
 
 #endif // __BSP_MCU_H
 
