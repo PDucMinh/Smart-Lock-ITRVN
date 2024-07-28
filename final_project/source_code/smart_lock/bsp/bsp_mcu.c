@@ -43,11 +43,30 @@
  *  - 1: Error
  */
 static void bsp_mcu_clk_init(void);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static void bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* htim);
 /* Function definitions ----------------------------------------------- */
 void bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
 {
   HAL_Init();
   bsp_mcu_clk_init();
+  if ((mcu_init->is_tim3_used) != BSP_MCU_PERIPH_NONE)
+  {
+    bsp_mcu_pwm_init(mcu_init->is_tim3_used, &(mcu->htim3));
+  }
 }
 /* Private definitions ----------------------------------------------- */
 static void bsp_mcu_clk_init(void)
@@ -84,5 +103,42 @@ static void bsp_mcu_clk_init(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3);
+}
+
+static void bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* htim)
+{
+  if (periph == BSP_MCU_PERIPH_TIM3)
+  {
+    TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
+    TIM_MasterConfigTypeDef sMasterConfig = { 0 };
+    TIM_OC_InitTypeDef sConfigOC = { 0 };
+
+    /* USER CODE BEGIN TIM4_Init 1 */
+
+    /* USER CODE END TIM4_Init 1 */
+    htim->Instance = TIM3;
+    (htim->Init).Prescaler = 999;
+    (htim->Init).CounterMode = TIM_COUNTERMODE_UP;
+    (htim->Init).Period = 99;
+    (htim->Init).ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    (htim->Init).AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    HAL_TIM_Base_Init(htim);
+    
+    sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+    HAL_TIM_ConfigClockSource(htim, &sClockSourceConfig);
+    HAL_TIM_PWM_Init(htim);
+
+    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+    HAL_TIMEx_MasterConfigSynchronization(htim, &sMasterConfig);
+
+    sConfigOC.OCMode = TIM_OCMODE_PWM1;
+    sConfigOC.Pulse = 0;
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+    HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, TIM_CHANNEL_1);
+    HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, TIM_CHANNEL_2);
+    HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, TIM_CHANNEL_3);
+  }
 }
 /* End of file -------------------------------------------------------- */
