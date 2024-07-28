@@ -18,7 +18,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_tim.h"
+
 /* Public defines ----------------------------------------------------- */
 
 /* Phat will define this himself.Will be discussed more */
@@ -29,25 +29,10 @@
  */
 typedef enum 
 {
-  SUCCESS, 
-  FAIL,    
+  BSP_PWM_SUCCESS = 0, 
+  BSP_PWM_FAIL = 1,    
 }
-enum_result_t;
-
-/**
- * @brief <enum definition for TIM_CHANNEL>
- */
-
-/*
-typedef enum 
-{
-  TIM_CHANNEL_1 = 1,
-  TIM_CHANNEL_2 = 2,
-  TIM_CHANNEL_3 = 3,
-  TIM_CHANNEL_4 = 4
-}
-enum_tim_channel_t;
-*/
+bsp_pwm_result_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -63,9 +48,11 @@ enum_tim_channel_t;
  *
  * @attention  <API attention note>
  *
- * @return  SUCCESS or FAIL
+ * @return
+ * - 0: BSP_PWM_SUCCESS
+ * - 1: BSP_PWM_FAIL
  */
- enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint32_t channel);
+ bsp_pwm_result_t bsp_pwm_start(TIM_HandleTypeDef *htim, uint32_t channel);
 
 
  /**
@@ -77,9 +64,11 @@ enum_tim_channel_t;
  *
  * @attention  <API attention note>
  *
- * @return  SUCCESS or FAIL
+ * @return  
+ * - 0: BSP_PWM_SUCCESS
+ * - 1: BSP_PWM_FAIL
  */
- enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint32_t channel);
+ bsp_pwm_result_t bsp_pwm_stop(TIM_HandleTypeDef *htim, uint32_t channel);
 
 
  /**
@@ -92,10 +81,11 @@ enum_tim_channel_t;
  *
  * @attention  <API attention note>
  *
- * @return  SUCCESS or FAIL
+ * @return  
+ * - 0: BSP_PWM_SUCCESS
+ * - 1: BSP_PWM_FAIL
  */
- enum_result_t bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint32_t channel, uint32_t duty);
-
+ bsp_pwm_result_t bsp_pwm_set_duty(TIM_HandleTypeDef *htim, uint32_t channel, uint32_t duty);
 
 #endif // __BSP_PWM_H
 
