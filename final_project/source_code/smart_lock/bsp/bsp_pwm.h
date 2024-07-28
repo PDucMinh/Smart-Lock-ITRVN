@@ -23,6 +23,15 @@
 /* Phat will define this himself.Will be discussed more */
 
 /* Public enumerate/structure ----------------------------------------- */
+/**
+ * @brief <enum definition for result>
+ */
+typedef enum 
+{
+  SUCCESS, 
+  FAIL,    
+}
+enum_result_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -32,44 +41,44 @@
 /**
  * @brief  <Create pwm according to input on htim and channel>
  *
- * @param[in]     <*htim>  <TIM1, TIM2, TIM3,...>
- * @param[in]     <channel>  <CHANNEL_1 or CHANNEL_2 or CHANNEL_3,..>
+ * @param[in]     <*htim>  <htim1, htim2, htim3, or htim4,...>
+ * @param[in]     <channel>  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
  * @param[out]    none
  *
  * @attention  <API attention note>
  *
- * @return  None
+ * @return  SUCCESS or FAIL
  */
- void bsp_pwm_start(TIM_HandleTypedef *htim, uint16_t channel);
+ enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint16_t channel);
 
 
  /**
  * @brief  <Stop pwm according to input on htim and channel>
  *
- * @param[in]     <*htim>  <TIM1, TIM2, TIM3,...>
- * @param[in]     <channel>  <CHANNEL_1 or CHANNEL_2 or CHANNEL_3,..>
+ * @param[in]     <*htim>  <htim1, htim2, htim3, or htim4,...>
+ * @param[in]     <channel>  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
  * @param[out]    none
  *
  * @attention  <API attention note>
  *
- * @return  None
+ * @return  SUCCESS or FAIL
  */
- void bsp_pwm_stop(TIM_HandleTypedef *htim, uint16_t channel);
+ enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint16_t channel);
 
 
  /**
  * @brief  <Set duty cycle for pwm>
  *
- * @param[in]     <*htim>  <TIM1, TIM2, TIM3,...>
- * @param[in]     <channel>  <CHANNEL_1 or CHANNEL_2 or CHANNEL_3,..>
+ * @param[in]     <*htim>  <htim1, htim2, htim3, or htim4,...>
+ * @param[in]     <channel>  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
  * @param[in]     <duty>  <duty cycle: 0-100>
  * @param[out]    none
  *
  * @attention  <API attention note>
  *
- * @return  None
+ * @return  SUCCESS or FAIL
  */
- void bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint16_t channel, uint32_t duty);
+ enum_result_t bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint16_t channel, uint32_t duty);
 
 
 #endif // __BSP_PWM_H
