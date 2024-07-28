@@ -23,27 +23,6 @@
 /* Phat will define this himself.Will be discussed more */
 
 /* Public enumerate/structure ----------------------------------------- */
-/**
- * @brief <enum descriptiton>
- */
-typedef enum 
-{
-  PUBLIC_ENUM_1, /**< Description of PUBLIC_ENUM_1 */
-  PUBLIC_ENUM_2, /**< Description of PUBLIC_ENUM_2 */
-  PUBLIC_ENUM_3  /**< Description of PUBLIC_ENUM_3 */
-}
-public_enum_type_t;
-
-/**
- * @brief <structure descriptiton>
- */
-typedef struct 
-{
-  uint32_t member_1, /**< Description of member_1 */
-  uint32_t member_2, /**< Description of member_2 */
-  uint32_t member_3  /**< Description of member_3 */
-}
-public_struct_type_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -51,21 +30,46 @@ public_struct_type_t;
 
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  <Create pwm according to input on htim and channel>
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     <*htim>  <TIM1, TIM2, TIM3,...>
+ * @param[in]     <channel>  <CHANNEL_1 or CHANNEL_2 or CHANNEL_3,..>
+ * @param[out]    none
  *
  * @attention  <API attention note>
  *
- * @return  
- *  - 0: Success
- *  - 1: Error
+ * @return  None
  */
- void bsp_pwm_start(TIM_HandleTypedef* htim,uint16_t channel);
- void bsp_pwm_stop(TIM_HandleTypedef* htim,uint16_t channel);
- void bsp_pwm_set_duty(TIM_HandleTypedef* htim, uint16_t channel, uint32_t duty);
+ void bsp_pwm_start(TIM_HandleTypedef *htim, uint16_t channel);
+
+
+ /**
+ * @brief  <Stop pwm according to input on htim and channel>
+ *
+ * @param[in]     <*htim>  <TIM1, TIM2, TIM3,...>
+ * @param[in]     <channel>  <CHANNEL_1 or CHANNEL_2 or CHANNEL_3,..>
+ * @param[out]    none
+ *
+ * @attention  <API attention note>
+ *
+ * @return  None
+ */
+ void bsp_pwm_stop(TIM_HandleTypedef *htim, uint16_t channel);
+
+
+ /**
+ * @brief  <Set duty cycle for pwm>
+ *
+ * @param[in]     <*htim>  <TIM1, TIM2, TIM3,...>
+ * @param[in]     <channel>  <CHANNEL_1 or CHANNEL_2 or CHANNEL_3,..>
+ * @param[in]     <duty>  <duty cycle: 0-100>
+ * @param[out]    none
+ *
+ * @attention  <API attention note>
+ *
+ * @return  None
+ */
+ void bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint16_t channel, uint32_t duty);
 
 
 #endif // __BSP_PWM_H
