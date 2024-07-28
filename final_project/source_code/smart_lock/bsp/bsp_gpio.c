@@ -122,14 +122,15 @@ static bsp_gpio_pin_state_t v_gpio_pin_list[BSP_GPIO_NUM_PORT][BSP_GPIO_NUM_PIN]
 };
 /* Private function prototypes ---------------------------------------- */
 /* Function definitions ----------------------------------------------- */
-void bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
+bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
 {
+  BSP_CHECK_NULL(bgpio, BSP_STATE_FAIL);
   uint16_t port, pin;
   port = ((bgpio->io) & 0xF0) >> 4;
   pin = (bgpio->io) & 0x0F;
   if (v_gpio_pin_list[port][pin] != BSP_GPIO_PIN_STATE_FREE)
   {
-    return;
+    return BSP_STATE_FAIL;
   }
   else
   {
@@ -174,6 +175,7 @@ void bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
     break;
   }
   }
+  return BSP_STATE_PASS;
 }
 /* Private definitions ----------------------------------------------- */
 /* End of file -------------------------------------------------------- */

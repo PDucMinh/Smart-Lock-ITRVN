@@ -18,6 +18,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
+#include "bsp_state.h"
 /* Public defines ----------------------------------------------------- */
 /* gpio port ID */
 #define BSP_GPIO_PORT_A (0x00)
@@ -101,7 +102,7 @@ typedef struct
  * @return     none
  *  
  */
- void bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio);
+ bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio);
 
 #endif // __BSP_GPIO_H
 
