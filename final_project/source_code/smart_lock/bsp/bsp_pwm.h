@@ -18,21 +18,13 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
+#include "bsp_state.h"
 
 /* Public defines ----------------------------------------------------- */
 
 /* Phat will define this himself.Will be discussed more */
 
 /* Public enumerate/structure ----------------------------------------- */
-/**
- * @brief <enum definition for result>
- */
-typedef enum 
-{
-  BSP_PWM_SUCCESS = 0, 
-  BSP_PWM_FAIL = 1,    
-}
-bsp_pwm_result_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -49,10 +41,10 @@ bsp_pwm_result_t;
  * @attention  <API attention note>
  *
  * @return
- * - 0: BSP_PWM_SUCCESS
- * - 1: BSP_PWM_FAIL
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
  */
- bsp_pwm_result_t bsp_pwm_start(TIM_HandleTypeDef *htim, uint32_t channel);
+ bsp_state_t bsp_pwm_start(TIM_HandleTypeDef *htim, uint32_t channel);
 
 
  /**
@@ -65,10 +57,10 @@ bsp_pwm_result_t;
  * @attention  <API attention note>
  *
  * @return  
- * - 0: BSP_PWM_SUCCESS
- * - 1: BSP_PWM_FAIL
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
  */
- bsp_pwm_result_t bsp_pwm_stop(TIM_HandleTypeDef *htim, uint32_t channel);
+ bsp_state_t bsp_pwm_stop(TIM_HandleTypeDef *htim, uint32_t channel);
 
 
  /**
@@ -82,10 +74,10 @@ bsp_pwm_result_t;
  * @attention  <API attention note>
  *
  * @return  
- * - 0: BSP_PWM_SUCCESS
- * - 1: BSP_PWM_FAIL
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
  */
- bsp_pwm_result_t bsp_pwm_set_duty(TIM_HandleTypeDef *htim, uint32_t channel, uint32_t duty);
+ bsp_state_t bsp_pwm_set_duty(TIM_HandleTypeDef *htim, uint32_t channel, uint32_t duty);
 
 #endif // __BSP_PWM_H
 
