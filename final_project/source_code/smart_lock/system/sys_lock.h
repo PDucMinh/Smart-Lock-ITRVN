@@ -1,5 +1,5 @@
 /**
- * @file       sys_lockstate.h
+ * @file       sys_lock.h
  * @copyright  Copyright (C) 2019 ITRVN. All rights reserved.
  * @license    
  * @version    1.0.0
@@ -13,8 +13,8 @@
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
-#ifndef __SYS_LOCKSTATE_H
-#define __SYS_LOCKSTATE_H
+#ifndef __SYS_LOCK_H
+#define __SYS_LOCK_H
 
 /* Includes ----------------------------------------------------------- */
 #include "drv_led_rgb.h"
@@ -43,9 +43,9 @@
  *  - 0: Success
  *  - 1: Error
  */
- void sys_lockstate_init(void);
- void sys_lockstate_loop(void);
+ void sys_lock_init(void);
+ void sys_lock_loop(void);
 
-#endif // __CODE_TEMPLATE_H
+#endif // __SYS_LOCK_H
 
 /* End of file -------------------------------------------------------- */
