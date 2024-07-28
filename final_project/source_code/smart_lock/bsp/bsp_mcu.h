@@ -6,13 +6,10 @@
  * @date       2024-07-27
  * @author     Hung Nguyen
  *
- * @brief      <A brief description of the content of the file>
+ * @brief      Export initializing peripheral API for MCU
  *
  * @note
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example    
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -22,12 +19,10 @@
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
-#define PUBLIC_DEFINE_1 (0) /*!< Description of PUBLIC_DEFINE_1 */
-#define PUBLIC_DEFINE_2 (0) /*!< Description of PUBLIC_DEFINE_2 */
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
- * @brief <enum descriptiton>
+ * @brief MCU peripheral ID
  */
 typedef enum
 {
@@ -39,12 +34,12 @@ typedef enum
   BSP_MCU_PERIPH_TIM5,
   BSP_MCU_PERIPH_TIM9,
   BSP_MCU_PERIPH_TIM10,
-  BSP_MCU_PERIPH_TIM11, /**< Description of PUBLIC_ENUM_1 */
+  BSP_MCU_PERIPH_TIM11,
   BSP_MCU_PERIPH_SPI1,
   BSP_MCU_PERIPH_SPI2,
   BSP_MCU_PERIPH_SPI3,
   BSP_MCU_PERIPH_SPI4,
-  BSP_MCU_PERIPH_SPI5, /**< Description of PUBLIC_ENUM_2 */
+  BSP_MCU_PERIPH_SPI5,
   BSP_MCU_PERIPH_I2C1,
   BSP_MCU_PERIPH_I2C2,
   BSP_MCU_PERIPH_I2C3,
@@ -72,19 +67,19 @@ typedef enum
 } bsp_mcu_periph_t;
 
 /**
- * @brief <structure descriptiton>
+ * @brief MCU init struct
  */
 typedef struct
 {
-  bsp_mcu_periph_t is_spi_used; /**< Description of member_1 */
-  bsp_mcu_periph_t is_i2c_used; /**< Description of member_2 */
+  bsp_mcu_periph_t is_spi_used;
+  bsp_mcu_periph_t is_i2c_used;
   bsp_mcu_periph_t is_dma_used;
   bsp_mcu_periph_t is_usart_used;
-  bsp_mcu_periph_t is_timer_used;   /**< Description of member_3 */
+  bsp_mcu_periph_t is_timer_used;
 } bsp_mcu_init_t;
 
 /**
- * @brief <structure descriptiton>
+ * @brief MCU peripheral struct
  */
 typedef struct
 {
@@ -92,12 +87,12 @@ typedef struct
   SPI_HandleTypeDef hspi2;
   SPI_HandleTypeDef hspi3;
   SPI_HandleTypeDef hspi4;
-  SPI_HandleTypeDef hspi5; /**< Description of member_1 */
+  SPI_HandleTypeDef hspi5;
   I2C_HandleTypeDef hi2c1;
   I2C_HandleTypeDef hi2c2;
   I2C_HandleTypeDef hi2c3;
   DMA_HandleTypeDef hdma1_str0;
-  DMA_HandleTypeDef hdma1_str1;/**< Description of member_2 */
+  DMA_HandleTypeDef hdma1_str1;
   DMA_HandleTypeDef hdma1_str2;
   DMA_HandleTypeDef hdma1_str3;
   DMA_HandleTypeDef hdma1_str4;
@@ -117,7 +112,7 @@ typedef struct
   USART_HandleTypeDef husart6;
   UART_HandleTypeDef huart1;
   UART_HandleTypeDef huart2;
-  UART_HandleTypeDef huart6;  
+  UART_HandleTypeDef huart6;
   TIM_HandleTypeDef htim1;
   TIM_HandleTypeDef htim2;
   TIM_HandleTypeDef htim3;
@@ -125,7 +120,7 @@ typedef struct
   TIM_HandleTypeDef htim5;
   TIM_HandleTypeDef htim9;
   TIM_HandleTypeDef htim10;
-  TIM_HandleTypeDef htim11;   /**< Description of member_3 */
+  TIM_HandleTypeDef htim11;
 } bsp_mcu_t;
 /* Public macros ------------------------------------------------------ */
 
@@ -135,8 +130,8 @@ typedef struct
 /**
  * @brief  <function description>
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
+ * @param[in]     mcu_init      list of init option for necessary peripheral
+ * @param[out]    mcu           <param_despcription>
  * @param[inout]  <param_name>  <param_despcription>
  *
  * @attention  <API attention note>
@@ -147,6 +142,6 @@ typedef struct
  */
 void bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu);
 
-#endif // __CODE_TEMPLATE_H
+#endif // __BSP_MCU_H
 
 /* End of file -------------------------------------------------------- */
