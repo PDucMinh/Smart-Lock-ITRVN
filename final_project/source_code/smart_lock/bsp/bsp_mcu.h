@@ -138,14 +138,13 @@ typedef struct
  * @brief  <function description>
  *
  * @param[in]     mcu_init      list of init option for necessary peripheral
- * @param[out]    mcu           <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[out]    mcu           list of peripheral initialized
  *
- * @attention  <API attention note>
+ * @attention  this API will be called one time only 
  *
- * @return
- *  - 0: Success
- *  - 1: Error
+ * @return     none
+ *  
+ *  
  */
 void bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu);
 
