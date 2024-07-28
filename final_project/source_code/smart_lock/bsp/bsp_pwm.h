@@ -18,6 +18,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_tim.h"
 /* Public defines ----------------------------------------------------- */
 
 /* Phat will define this himself.Will be discussed more */
@@ -32,6 +33,21 @@ typedef enum
   FAIL,    
 }
 enum_result_t;
+
+/**
+ * @brief <enum definition for TIM_CHANNEL>
+ */
+
+/*
+typedef enum 
+{
+  TIM_CHANNEL_1 = 1,
+  TIM_CHANNEL_2 = 2,
+  TIM_CHANNEL_3 = 3,
+  TIM_CHANNEL_4 = 4
+}
+enum_tim_channel_t;
+*/
 
 /* Public macros ------------------------------------------------------ */
 
@@ -49,7 +65,7 @@ enum_result_t;
  *
  * @return  SUCCESS or FAIL
  */
- enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint16_t channel);
+ enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint32_t channel);
 
 
  /**
@@ -63,7 +79,7 @@ enum_result_t;
  *
  * @return  SUCCESS or FAIL
  */
- enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint16_t channel);
+ enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint32_t channel);
 
 
  /**
@@ -78,7 +94,7 @@ enum_result_t;
  *
  * @return  SUCCESS or FAIL
  */
- enum_result_t bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint16_t channel, uint32_t duty);
+ enum_result_t bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint32_t channel, uint32_t duty);
 
 
 #endif // __BSP_PWM_H
