@@ -15,6 +15,7 @@
 /* Includes ----------------------------------------------------------- */
 #include "bsp_pwm.h"
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_tim.h"
 
 /* Private defines ---------------------------------------------------- */
 
@@ -29,7 +30,7 @@
 /* Private function prototypes ---------------------------------------- */
 
 /* Function definitions ----------------------------------------------- */
-enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint16_t channel)
+enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint32_t channel)
 {
     htim->Init.Prescaler = 0;
     htim->Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -62,7 +63,7 @@ enum_result_t bsp_pwm_start(TIM_HandleTypedef *htim, uint16_t channel)
     return SUCCESS;
 }
 
-enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint16_t channel)
+enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint32_t channel)
 {
     if (HAL_TIM_PWM_Stop(htim, channel) != HAL_OK)
     {
@@ -74,28 +75,20 @@ enum_result_t bsp_pwm_stop(TIM_HandleTypedef *htim, uint16_t channel)
     }
 }
 
-enum_result_t bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint16_t channel, uint32_t duty)
+enum_result_t bsp_pwm_set_duty(TIM_HandleTypedef *htim, uint32_t channel, uint32_t duty)
 {
-    TIM_OC_InitTypeDef sConfigOC = {0};
-
-    sConfigOC.OCMode = TIM_OCMODE_PWM1;
-    // set duty cycle
-    sConfigOC.Pulse = (((htim->Init.Period + 1) * duty) / 100) - 1; 
-    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-
-    if (HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, channel) != HAL_OK)
+    int pulse = (((htim->Init.Period + 1) * duty) / 100) - 1;
+    if (__HAL_TIM_SET_COMPARE(htim, channel, pulse) != HAL_OK)
     {
-        return FAIL;
+       return FAIL;
     }
-
-    if (HAL_TIM_PWM_Start(htim, channel) != HAL_OK)
+    else 
     {
-        return FAIL;
+        return SUCCESS;
     }
-
-    return SUCCESS;
 }
+
+
 /* Private definitions ----------------------------------------------- */
 
 /* End of file -------------------------------------------------------- */
