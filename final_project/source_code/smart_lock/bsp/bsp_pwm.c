@@ -29,6 +29,14 @@ TIM_HandleTypeDef htim4;
 /* Private function prototypes ---------------------------------------- */
 
 /* Function definitions ----------------------------------------------- */
+bsp_state_t bsp_pwm_init(bsp_mcu_t* mcu)
+{
+  BSP_CHECK_NULL(mcu, BSP_STATE_FAIL);
+  htim3 = mcu->htim3;
+  htim4 = mcu->htim4;
+  return BSP_STATE_PASS;
+}
+
 bsp_state_t bsp_pwm_start(bsp_config_id_t id, uint32_t channel)
 {
   if (id == BSP_CONFIG_ID_LED_RGB)
