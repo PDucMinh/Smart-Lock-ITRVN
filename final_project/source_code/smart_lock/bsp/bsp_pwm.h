@@ -23,8 +23,6 @@
 
 /* Public defines ----------------------------------------------------- */
 
-/* Phat will define this himself.Will be discussed more */
-
 /* Public enumerate/structure ----------------------------------------- */
 
 /* Public macros ------------------------------------------------------ */
@@ -33,11 +31,10 @@
 
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <Create pwm according to input on htim and channel>
+ * @brief  <Starting output pwm pulse with duty cycle base initial configuration>
  *
- * @param[in]     <*htim>  <htim1, htim2, htim3, or htim4,...>
- * @param[in]     <channel>  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
- * @param[out]    none
+ * @param[in]     id       <driver ID to identify which peripheral needed>
+ * @param[in]     channel  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
  *
  * @attention  <API attention note>
  *
@@ -49,11 +46,10 @@
 
 
  /**
- * @brief  <Stop pwm according to input on htim and channel>
+ * @brief  <Stop output pwm pulse>
  *
- * @param[in]     <*htim>  <htim1, htim2, htim3, or htim4,...>
- * @param[in]     <channel>  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
- * @param[out]    none
+ * @param[in]     id       <driver ID to identify which peripheral needed>
+ * @param[in]     channel  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
  *
  * @attention  <API attention note>
  *
@@ -67,10 +63,9 @@
  /**
  * @brief  <Set duty cycle for pwm>
  *
- * @param[in]     <*htim>  <htim1, htim2, htim3, or htim4,...>
- * @param[in]     <channel>  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
- * @param[in]     <duty>  <duty cycle: 0-100>
- * @param[out]    none
+ * @param[in]     id         <driver ID to identify which peripheral needed>
+ * @param[in]     channel  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
+ * @param[in]     duty     <duty cycle: 0-100>
  *
  * @attention  <API attention note>
  *
