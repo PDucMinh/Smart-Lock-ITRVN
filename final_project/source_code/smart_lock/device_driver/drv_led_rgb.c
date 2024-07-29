@@ -93,7 +93,18 @@ drv_led_rgb_func_status_t drv_led_rgb_init()
 
 drv_led_rgb_func_status_t drv_led_rgb_set(drv_led_rgb_state_t color)
 {
-
+  if (color >= NUMBER_OF_COLOR)
+  {
+    return DRV_LED_RGB_ERROR;
+  }
+  led_rgb_state = color;
+  float red_led_duty = (led_rgb_info[color].rgb_code[0] / 255.0) * 100;
+  float green_led_duty = (led_rgb_info[color].rgb_code[1] / 255.0) * 100;
+  float blue_led_duty = (led_rgb_info[color].rgb_code[2] / 255.0) * 100;
+  bsp_pwm_set_duty(&htim1, TIM_CHANNEL_1, red_led_duty);
+  bsp_pwm_set_duty(&htim1, TIM_CHANNEL_2, green_led_duty);
+  bsp_pwm_set_duty(&htim1, TIM_CHANNEL_3, blue_led_duty);
+  return DRV_LED_RGB_OK;
 }
 
 drv_led_rgb_state_t drv_led_rgb_state(void);
