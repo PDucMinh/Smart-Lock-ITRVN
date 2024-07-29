@@ -5,10 +5,10 @@
  * @version    major.minor.patch
  * @date       yyyy-mm-dd
  * @author     Minh Pham Duc
- *             
+ *
  * @brief      <A brief description of the content of the file>
- *             
- * @note          
+ *
+ * @note
  * @example    example_file_1.c
  *             Example_1 description
  * @example    example_file_2.c
@@ -20,17 +20,14 @@
 
 /* Private defines ---------------------------------------------------- */
 
-
 /* Private enumerate/structure ---------------------------------------- */
 /**
  * @brief <enum descriptiton>
  */
 
-
 /**
  * @brief <structure descriptiton>
  */
-
 
 /* Private macros ----------------------------------------------------- */
 /**
@@ -42,17 +39,14 @@
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
 
-
 /* Public variables --------------------------------------------------- */
 
-
 /* Private variables -------------------------------------------------- */
-
 
 /* Private function prototypes ---------------------------------------- */
 /**
@@ -64,16 +58,28 @@
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
 
-
 /* Function definitions ----------------------------------------------- */
+#ifndef __INIT_BY_VALUE
+drv_led_rgb_status_t drv_led_rgb_init()
+{
+  // do something
+}
+#else
+drv_led_rgb_status_t drv_led_rgb_init()
+{
+  // do something
+}
+#endif
 
+drv_led_rgb_status_t drv_led_rgb_set(drv_led_rgb_state_t color);
+
+drv_led_rgb_state_t drv_led_rgb_state(void);
 
 /* Private definitions ----------------------------------------------- */
-
 
 /* End of file -------------------------------------------------------- */
