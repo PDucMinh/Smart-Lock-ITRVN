@@ -19,6 +19,7 @@
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
 #include "bsp_state.h"
+#include "bsp_config.h"
 
 /* Public defines ----------------------------------------------------- */
 
@@ -44,7 +45,7 @@
  * - 0: BSP_STATE_FAIL
  * - 1: BSP_STATE_PASS
  */
- bsp_state_t bsp_pwm_start(TIM_HandleTypeDef *htim, uint32_t channel);
+ bsp_state_t bsp_pwm_start(bsp_config_id_t id, uint32_t channel);
 
 
  /**
@@ -60,7 +61,7 @@
  * - 0: BSP_STATE_FAIL
  * - 1: BSP_STATE_PASS
  */
- bsp_state_t bsp_pwm_stop(TIM_HandleTypeDef *htim, uint32_t channel);
+ bsp_state_t bsp_pwm_stop(bsp_config_id_t id, uint32_t channel);
 
 
  /**
@@ -77,7 +78,7 @@
  * - 0: BSP_STATE_FAIL
  * - 1: BSP_STATE_PASS
  */
- bsp_state_t bsp_pwm_set_duty(TIM_HandleTypeDef *htim, uint32_t channel, uint32_t duty);
+ bsp_state_t bsp_pwm_set_duty(bsp_config_id_t id, uint32_t channel, uint32_t duty);
 
 #endif // __BSP_PWM_H
 
