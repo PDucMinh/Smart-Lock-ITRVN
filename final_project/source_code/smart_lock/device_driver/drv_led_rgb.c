@@ -107,7 +107,10 @@ drv_led_rgb_func_status_t drv_led_rgb_set(drv_led_rgb_state_t color)
   return DRV_LED_RGB_OK;
 }
 
-drv_led_rgb_state_t drv_led_rgb_state(void);
+drv_led_rgb_state_t drv_led_rgb_state(void)
+{
+  return led_rgb_state;
+}
 
 /* Private definitions ----------------------------------------------- */
 
