@@ -20,6 +20,7 @@
 #include "stm32f4xx_hal.h"
 #include "bsp_state.h"
 #include "bsp_config.h"
+#include "bsp_mcu.h"
 
 /* Public defines ----------------------------------------------------- */
 
@@ -30,6 +31,19 @@
 /* Public variables --------------------------------------------------- */
 
 /* Public function prototypes ----------------------------------------- */
+/**
+ * @brief  <initialize private handler for timer>
+ *
+ * @param[in]     mcu       <struct manage MCU peripheral>
+ *
+ * @attention  <This API will be call right after mcu init in system init>
+ *
+ * @return
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
+ */
+bsp_state_t bsp_pwm_init(bsp_mcu_t* mcu);
+
 /**
  * @brief  <Starting output pwm pulse with duty cycle base initial configuration>
  *
