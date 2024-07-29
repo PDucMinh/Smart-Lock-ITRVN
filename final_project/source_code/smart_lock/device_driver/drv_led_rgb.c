@@ -19,11 +19,17 @@
 #include "drv_led_rgb.h"
 
 /* Private defines ---------------------------------------------------- */
-
+#define NUMBER_OF_COLOR (6)
 /* Private enumerate/structure ---------------------------------------- */
+
 /**
- * @brief <enum descriptiton>
+ * @brief manage rbg color table
  */
+typedef struct
+{
+  drv_led_rgb_state_t rgb_color;
+  uint8_t rgb_code[3];
+} drv_led_rgb_info_t;
 
 /**
  * @brief <structure descriptiton>
@@ -47,6 +53,14 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
+static drv_led_rgb_info_t led_rgb_info[6] = {
+  {LED_RGB_OFF, {0, 0, 0}},
+  {LED_RGB_RED, {255, 0, 0}},
+  {LED_RGB_GREEN, {0, 255, 0}},
+  {LED_RGB_BLUE, {0, 0, 255}},
+  {LED_RGB_ORANGE, {255, 165, 0}},
+  {LED_RGB_PURPLE, {255, 0, 255}}
+};
 
 /* Private function prototypes ---------------------------------------- */
 /**
@@ -65,18 +79,22 @@
 
 /* Function definitions ----------------------------------------------- */
 #ifndef __INIT_BY_VALUE
-drv_led_rgb_status_t drv_led_rgb_init()
+  drv_led_rgb_func_status_t
+  drv_led_rgb_init()
 {
   // do something
 }
 #else
-drv_led_rgb_status_t drv_led_rgb_init()
+  drv_led_rgb_func_status_t
+  drv_led_rgb_init()
 {
   // do something
 }
 #endif
 
-drv_led_rgb_status_t drv_led_rgb_set(drv_led_rgb_state_t color);
+drv_led_rgb_func_status_t drv_led_rgb_set(drv_led_rgb_state_t color)
+{
+}
 
 drv_led_rgb_state_t drv_led_rgb_state(void);
 
