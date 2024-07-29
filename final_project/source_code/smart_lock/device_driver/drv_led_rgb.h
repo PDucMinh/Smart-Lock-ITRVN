@@ -17,6 +17,10 @@
 #define __DRV_LED_RGB_H
 
 /* Includes ----------------------------------------------------------- */
+#include "bsp_pwm.h"
+#include "bsp_mcu.h"
+#include "bsp_config.h"
+
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
@@ -25,8 +29,8 @@
  */
 typedef enum 
 {
-  DRV_LED_SUCCESS,
-  DRV_LED_ERROR
+  DRV_LED_RGB_SUCCESS,
+  DRV_LED_RGB_ERROR
 } drv_led_rgb_status_t;
 
 /* Public enumerate/structure ----------------------------------------- */
@@ -35,18 +39,22 @@ typedef enum
  */
 typedef enum 
 {
-  LED_RGB_OFF,
-  LED_RGB_RED,
-  LED_RGB_GREEN,
-  LED_RGB_BLUE,
-  LED_RGB_ORANGE,
-  LED_RGB_PURPLE
-} drv_led_rgb_state_t;
+  DRV_LED_RGB_OFF,
+  DRV_LED_RGB_RED,
+  DRV_LED_RGB_GREEN,
+  DRV_LED_RGB_BLUE,
+  DRV_LED_RGB_ORANGE,
+  DRV_LED_RGB_PURPLE
+} drv_led_rgb_color_t;
 
 /**
  * @brief <structure descriptiton>
  */
-
+typedef struct 
+{
+  bsp_state_t (*pwm_set) (bsp_config_id_t id, uint16_t channel, uint16_t duty);
+  bsp_state_t (*pwm_start) (bsp_config_id_t id, uint16_t channel); 
+} drv_led_rgb_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -66,7 +74,7 @@ typedef enum
  *  - 0: Success
  *  - 1: Error
  */
-drv_led_rgb_status_t drv_led_rgb_init();
+drv_led_rgb_status_t drv_led_rgb_init(drv_led_rgb_t* led);
 
 /* Public function prototypes ----------------------------------------- */
 /**
@@ -82,7 +90,7 @@ drv_led_rgb_status_t drv_led_rgb_init();
  *  - 0: Success
  *  - 1: Error
  */
-drv_led_rgb_status_t drv_led_rgb_set(drv_led_rgb_state_t color);
+drv_led_rgb_status_t drv_led_rgb_set(drv_led_rgb_t* led,drv_led_rgb_color_t color);
 
 /* Public function prototypes ----------------------------------------- */
 /**
@@ -98,7 +106,7 @@ drv_led_rgb_status_t drv_led_rgb_set(drv_led_rgb_state_t color);
  *  - 0: Success
  *  - 1: Error
  */
-drv_led_rgb_state_t drv_led_rgb_state(void);
+drv_led_rgb_color_t drv_led_rgb_state(void);
 
 #endif // __CODE_TEMPLATE_H
 
