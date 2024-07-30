@@ -25,8 +25,9 @@
 typedef enum
 {
   BSP_GPIO_PIN_STATE_FREE,  /**< This pin is not initialized by any module */
+  BSP_GPIO_PIN_STATE_UNUSED, /**< This pin is not allowed to be used        */
   BSP_GPIO_PIN_STATE_USED,  /**< This pin is initialized by another module */
-  BSP_GPIO_PIN_STATE_UNUSED /**< This pin is not allowed to be used        */
+  BSP_GPIO_PIN_STATE_INPUT
 } bsp_gpio_pin_state_t;
 /* Private macros ----------------------------------------------------- */
 
@@ -134,7 +135,14 @@ bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
   }
   else
   {
-    v_gpio_pin_list[port][pin] = BSP_GPIO_PIN_STATE_USED;
+    if (bgpio->mode == BSP_GPIO_INPUT)
+    {
+      v_gpio_pin_list[port][pin] = BSP_GPIO_PIN_STATE_INPUT;
+    }
+    else
+    {
+      v_gpio_pin_list[port][pin] = BSP_GPIO_PIN_STATE_USED;
+    }
   }
   GPIO_InitTypeDef GPIO_InitStruct = { 0 };
   GPIO_InitStruct.Pin = (uint16_t)1 << pin;
@@ -178,17 +186,18 @@ bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
   return BSP_STATE_PASS;
 }
 
-bsp_gpio_pin_state_t bsp_gpio_pin_read(bsp_gpio_pin_t *bgpio)
+uint8_t bsp_gpio_pin_read(uint16_t io)
 {
-  BSP_CHECK_NULL(bgpio, BSP_STATE_FAIL);
-  if ((bgpio->mode) != BSP_GPIO_INPUT)
+  uint16_t port, pin;
+  uint8_t pin_state;
+  port = (io & 0xF0) >> 4;
+  pin = io & 0x0F;
+
+  if (v_gpio_pin_list[port][pin] != BSP_GPIO_PIN_STATE_INPUT)
   {
     return BSP_GPIO_PIN_ERROR;
   }
-  uint16_t port, pin;
-  bsp_gpio_pin_state_t pin_state;
-  port = ((bgpio->io) & 0xF0) >> 4;
-  pin = (bgpio->io) & 0x0F;
+  
   switch (port)
   {
   case BSP_GPIO_PORT_A:
@@ -217,6 +226,7 @@ bsp_gpio_pin_state_t bsp_gpio_pin_read(bsp_gpio_pin_t *bgpio)
     break;
   }
   }
+  return pin_state;
 }
 /* Private definitions ----------------------------------------------- */
 /* End of file -------------------------------------------------------- */
