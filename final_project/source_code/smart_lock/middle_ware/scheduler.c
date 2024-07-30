@@ -57,14 +57,12 @@ typedef struct
 static uint32_t sch_tick_scaler = 1;       /*Scheduler tick scaler*/
 static sch_task_t sch_tasks[SCH_MAX_TASK]; /*Task queue (sch_id from 0 to max_size - 1)*/
 static uint8_t sch_task_id[SCH_MAX_TASK];  /*Array of Active Task sch_id*/
-static uint8_t is_empty_task;              /*Flag to check empty task*/
-static uint8_t sch_active_size = 0;
 
+static uint8_t sch_active_size = 0;
 
 /* Function definitions ----------------------------------------------- */
 void sch_init(void)
 {
-  is_empty_task = 1;
   for (uint32_t index = 0; index < SCH_MAX_TASK; index++)
   {
     sch_tasks[index].task = 0x0000;
@@ -76,12 +74,11 @@ void sch_init(void)
 
 void sch_update(void)
 {
-  if ((sch_tasks[0].task) && (sch_tasks[0].sch_run == 0))
+  if (sch_active_size >)
   {
     if (sch_tasks[0].delay > 0)
-    {
-      sch_tasks[0].delay = sch_tasks[0].delay - 1;
-    }
+      sch_tasks[0].delay--;
+
     if (sch_tasks[0].delay == 0)
     {
       sch_tasks[0].sch_run = 1;
