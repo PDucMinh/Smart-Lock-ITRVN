@@ -54,7 +54,7 @@ typedef struct
 /* Private variables -------------------------------------------------- */
 static drv_led_rgb_info_t led_rgb_info[DRV_LED_RGB_NUMBER_OF_COLOR] = {
   { DRV_LED_RGB_OFF, { 0, 0, 0 } },    { DRV_LED_RGB_RED, { 255, 0, 0 } },      { DRV_LED_RGB_GREEN, { 0, 255, 0 } },
-  { DRV_LED_RGB_BLUE, { 0, 0, 255 } }, { DRV_LED_RGB_ORANGE, { 255, 165, 0 } }, { DRV_LED_RGB_PURPLE, { 255, 0, 255 } }
+  { DRV_LED_RGB_BLUE, { 0, 0, 255 } }, { DRV_LED_RGB_ORANGE, { 255, 127, 0 } }, { DRV_LED_RGB_PURPLE, { 255, 0, 255 } }
 };
 
 static drv_led_rgb_color_t led_rgb_state;
