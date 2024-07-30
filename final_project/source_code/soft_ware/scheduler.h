@@ -56,10 +56,23 @@ void sch_dispatch_task(void);
  * @attention
  *
  * @return
- *  - 0: Error
+ *  - SCH_FAIL: Error
  *  - Others: Task ID
  */
 uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period);
+
+/**
+ * @brief  delete task from scheduler
+ *
+ * @param[in]     (task_id) task ID
+ *
+ * @attention  
+ *
+ * @return  
+ *  - SCH_OK: Success
+ *  - SCH_FAIL: Error
+ */
+ uint8_t sch_delete_task(uint32_t task_id);
 
 #endif // __CODE_TEMPLATE_H
 
