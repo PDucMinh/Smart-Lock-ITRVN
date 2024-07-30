@@ -47,6 +47,7 @@ typedef enum
  */
 typedef struct
 {
+  uint8_t debounce_flag;
   uint32_t debounce_tick_start;              /**< define debounce time */
   uint8_t (*exti_event)(uint16_t exti_line); /**< function pointer to detect external event */
   uint8_t (*gpio_state)(uint16_t pin);       /**< function pointer to detect gpio state */
