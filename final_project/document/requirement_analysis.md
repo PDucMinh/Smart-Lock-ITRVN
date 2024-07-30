@@ -82,7 +82,7 @@ The Smart Door Locks will provide all the following features, user can choose ei
 | IR Infrared Obstacle Avoidance | GPIO |
 
 ## Firmware Architecture
-![firmware architecture](Layer_Diagram.drawio.png) 
+![firmware architecture](Firmware_Architect.png) 
 
 # Project Timeline 
 
