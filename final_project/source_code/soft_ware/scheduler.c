@@ -5,41 +5,29 @@
  * @version    major.minor.patch
  * @date       yyyy-mm-dd
  * @author     Minh Pham Duc
- *             
+ *
  * @brief      <A brief description of the content of the file>
- *             
- * @note          
+ *
+ * @note
  */
 
 /* Includes ----------------------------------------------------------- */
-#include "code_template.h"
+#include "scheduler.h"
 
 /* Private defines ---------------------------------------------------- */
-#define PRIVATE_DEFINE_1  (0) /*!< Description of PRIVATE_DEFINE_1 */
-#define PRIVATE_DEFINE_2  (0) /*!< Description of PRIVATE_DEFINE_2 */
-
-/* Private enumerate/structure ---------------------------------------- */
-/**
- * @brief <enum descriptiton>
- */
-typedef enum 
-{
-  PRIVATE_ENUM_1, /**< Description of PRIVATE_ENUM_1 */
-  PRIVATE_ENUM_2, /**< Description of PRIVATE_ENUM_2 */
-  PRIVATE_ENUM_3  /**< Description of PRIVATE_ENUM_3 */
-}
-private_enum_type_t;
+#define SCH_OK (SCH_MAX_TASK + 2)   /*Success action*/
+#define SCH_FAIL (SCH_MAX_TASK + 1) /*Fail action*/
 
 /**
- * @brief <structure descriptiton>
+ * @brief structure contain task information
  */
-typedef struct 
+typedef struct
 {
-  uint32_t member_1, /**< Description of member_1 */
-  uint32_t member_2, /**< Description of member_2 */
-  uint32_t member_3  /**< Description of member_3 */
-}
-private_struct_type_t;
+  void (*task)(void); /*!< Description of task */
+  uint32_t delay;     /*!< remaining time before execute task */
+  uint32_t period;    /*!< cycle of execution */
+  uint8_t run;        /*!< run flag */
+} sch_task_t;
 
 /* Private macros ----------------------------------------------------- */
 /**
@@ -51,41 +39,73 @@ private_struct_type_t;
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
-#define PRIVATE_MACRO(a)  do_something_with(a)
-
-/* Public variables --------------------------------------------------- */
-int g_var_1;
-int g_var_2;
+#define CHECK_ID(a)        \
+  do                       \
+  {                        \
+    if (a >= SCH_MAX_TASK) \
+    {                      \
+      return SCH_FAIL;     \
+    }                      \
+  } while (0)
 
 /* Private variables -------------------------------------------------- */
-static int var_1; /**< Description of private variable var_1 */
-static int var_2; /**< Description of private variable var_2 */
+static uint32_t sch_tick_scaler = 1; /*Scheduler tick scaler*/
+static sch_task_t sch_tasks[SCH_MAX_TASK]; /*Task queue*/
+static uint8_t sch_task_id[SCH_MAX_TASK] = 0; /*Array of Active Task ID*/
 
 /* Private function prototypes ---------------------------------------- */
 /**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @brief  automatically generate task ID
  *
  * @attention  <API attention note>
  *
- * @return  
- *  - 0: Success
- *  - 1: Error
+ * @return
+ *  - SCH_FAIL: Error
+ *  - Other: Task ID
  */
-static void private_function(void);
+static uint8_t sch_generate_task_id(void);
+
+/**
+ * @brief  check exist task ID
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - SCH_FAIL: Non active task ID
+ *  - Others: Task ID
+ */
+static uint8_t sch_check_exist_id(uint8_t id);
+
 /* Function definitions ----------------------------------------------- */
-void public_function(void)
+void sch_init(void)
+{
+}
+
+void sch_update(void)
+{
+}
+
+void sch_dispatch_task(void)
+{
+}
+
+uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
+{
+}
+
+uint8_t sch_delete_task(uint32_t task_id)
 {
 }
 /* Private definitions ----------------------------------------------- */
-static void private_function(void)
+static uint8_t sch_generate_task_id(void)
+{
+}
+
+stactic uint8_t sch_check_exist_id(uint8_t id)
 {
 }
 /* End of file -------------------------------------------------------- */
