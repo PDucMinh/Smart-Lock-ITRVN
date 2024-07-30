@@ -104,7 +104,7 @@ void sch_dispatch_task(void)
   }
 }
 
-uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
+uint8_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
 {
   if (sch_active_size == SCH_MAX_TASK - 1)
     return SCH_FAIL;
@@ -151,10 +151,10 @@ uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
 
 uint8_t sch_delete_task(uint32_t task_id)
 {
-  if (sch_tasks[task_id].pTask == 0)
-    return;
+  if (sch_tasks[task_id].task == 0)
+    return SCH_FAIL;
 
-  sch_tasks[task_id + 1].Delay += sch_tasks[task_id].Delay;
+  sch_tasks[task_id + 1].delay += sch_tasks[task_id].delay;
 
   for (uint32_t temp = task_id; temp < sch_active_size - 1; temp++)
   {
@@ -163,6 +163,7 @@ uint8_t sch_delete_task(uint32_t task_id)
   }
 
   sch_active_size -= 1;
+  return SCH_OK;
 }
 /* Private definitions ----------------------------------------------- */
 
