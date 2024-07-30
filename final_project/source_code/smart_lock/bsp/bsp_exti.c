@@ -52,6 +52,10 @@ bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type)
   {
     bgpio_init.mode = BSP_GPIO_IT_RISING;
   }
+  else if (event_type == BSP_EXTI_FALLING_RISING_EDGE)
+  {
+    bgpio_init.mode = BSP_GPIO_IT_RISING_FALLING;
+  }
   else
   {
     return BSP_STATE_FAIL;
