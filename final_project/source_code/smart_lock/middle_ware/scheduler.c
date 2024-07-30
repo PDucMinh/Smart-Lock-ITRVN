@@ -104,6 +104,15 @@ uint8_t sch_delete_task(uint32_t task_id)
 /* Private definitions ----------------------------------------------- */
 static uint8_t sch_generate_task_id(void)
 {
+  for (uint8_t i = 0; i < SCH_MAX_TASK; i++)
+  {
+    if (sch_task_id[i] == 0)
+    {
+      sch_task_id[i] = 1;
+      return i;
+    }
+  }
+  return SCH_FAIL;
 }
 
 static uint8_t sch_check_exist_id(uint8_t id)
