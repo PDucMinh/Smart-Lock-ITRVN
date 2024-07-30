@@ -108,6 +108,17 @@ void sch_update(void)
 
 void sch_dispatch_task(void)
 {
+  if (sch_tasks[0].run > 0)
+  {
+    (*sch_tasks[0].task)();
+    sch_tasks[0].run = 0;
+    sch_task_t temp_task = sch_tasks[0];
+    sch_delete_task(0);
+    if (temp_task.period > 0)
+    {
+      sch_add_task(temp_task.task, temp_task.period, temp_task.period);
+    }
+  }
 }
 
 uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
