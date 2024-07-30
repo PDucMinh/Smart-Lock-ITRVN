@@ -177,5 +177,46 @@ bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
   }
   return BSP_STATE_PASS;
 }
+
+bsp_gpio_pin_state_t bsp_gpio_pin_read(bsp_gpio_pin_t *bgpio)
+{
+  BSP_CHECK_NULL(bgpio, BSP_STATE_FAIL);
+  if ((bgpio->mode) != BSP_GPIO_INPUT)
+  {
+    return BSP_GPIO_PIN_ERROR;
+  }
+  uint16_t port, pin;
+  bsp_gpio_pin_state_t pin_state;
+  port = ((bgpio->io) & 0xF0) >> 4;
+  pin = (bgpio->io) & 0x0F;
+  switch (port)
+  {
+  case BSP_GPIO_PORT_A:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOA, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_B:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOB, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_C:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOC, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_D:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOD, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_E:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOE, (uint16_t)1<<pin);
+    break;
+  }
+  }
+}
 /* Private definitions ----------------------------------------------- */
 /* End of file -------------------------------------------------------- */
