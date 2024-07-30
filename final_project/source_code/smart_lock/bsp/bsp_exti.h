@@ -39,7 +39,8 @@ typedef enum
 {
   BSP_EXTI_NO_EDGE, /**< Description of PUBLIC_ENUM_1 */
   BSP_EXTI_RISING_EDGE, /**< Description of PUBLIC_ENUM_2 */
-  BSP_EXTI_FALLING_EDGE  /**< Description of PUBLIC_ENUM_3 */
+  BSP_EXTI_FALLING_EDGE,  /**< Description of PUBLIC_ENUM_3 */
+  BSP_EXTI_FALLING_RISING_EDGE
 }
 bsp_exti_event_t;
 
