@@ -75,8 +75,8 @@ static uint8_t sch_generate_task_id(void);
  * @attention  <API attention note>
  *
  * @return
- *  - SCH_FAIL: Non active task ID
- *  - Others: Task ID
+ *  - SCH_FAIL: Task ID not activated
+ *  - Others: Task ID activated
  */
 static uint8_t sch_check_exist_id(uint8_t id);
 
@@ -105,7 +105,12 @@ static uint8_t sch_generate_task_id(void)
 {
 }
 
-stactic uint8_t sch_check_exist_id(uint8_t id)
+static uint8_t sch_check_exist_id(uint8_t id)
 {
+    if (sch_task_id[id] == 0)
+    {
+        return SCH_FAIL;
+    }
+    return id;
 }
 /* End of file -------------------------------------------------------- */
