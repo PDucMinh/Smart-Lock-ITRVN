@@ -53,10 +53,10 @@ typedef struct
   } while (0)
 
 /* Private variables -------------------------------------------------- */
-static uint32_t sch_tick_scaler = 1;          /*Scheduler tick scaler*/
-static sch_task_t sch_tasks[SCH_MAX_TASK];    /*Task queue (id from 0 to max_size - 1)*/
-static uint8_t sch_task_id[SCH_MAX_TASK]; /*Array of Active Task ID*/
-static uint8_t is_empty_task;             /*Flag to check empty task*/
+static uint32_t sch_tick_scaler = 1;       /*Scheduler tick scaler*/
+static sch_task_t sch_tasks[SCH_MAX_TASK]; /*Task queue (id from 0 to max_size - 1)*/
+static uint8_t sch_task_id[SCH_MAX_TASK];  /*Array of Active Task ID*/
+static uint8_t is_empty_task;              /*Flag to check empty task*/
 /* Private function prototypes ---------------------------------------- */
 /**
  * @brief  automatically generate task ID
@@ -93,6 +93,17 @@ void sch_init(void)
 
 void sch_update(void)
 {
+  if ((sch_tasks[0].task != NULL) && (sch_tasks[0].run == 0))
+  {
+    if (sch_tasks[0].delay > 0)
+    {
+      sch_tasks[0].delay = sch_tasks[0].delay - 1;
+    }
+    if (sch_tasks[0].delay == 0)
+    {
+      sch_tasks[0].run = 1;
+    }
+  }
 }
 
 void sch_dispatch_task(void)
