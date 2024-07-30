@@ -1,11 +1,11 @@
 /**
  * @file       drv_ir.h
- * @copyright  
- * @license    
+ * @copyright
+ * @license
  * @version    1.0.0
  * @date       2024-07-30
  * @author     Phat Nguyen Tan
- * @author    
+ * @author
  *
  * @brief      <This file is header file for module infrared sensor>
  *
@@ -32,9 +32,7 @@ typedef enum
 {
   DRV_IR_STATE_IS_OBSTACLE,
   DRV_IR_STATE_NO_OBSTACLE,
-} 
-drv_ir_state_t;
-
+} drv_ir_state_t;
 
 /**
  * @brief <structure descriptiton>
@@ -44,8 +42,7 @@ typedef struct
   uint32_t debounce_tick_start;           /**< define debounce time */
   bool (*exti_event)(uint16_t exti_line); /**< function pointer to detect external event */
   bool (*gpio_state)(uint16_t pin);       /**< function pointer to detect gpio state */
-} 
-drv_ir_t;
+} drv_ir_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -61,12 +58,11 @@ drv_ir_t;
  *
  * @attention  <API attention note>
  *
- * @return 
+ * @return
  * - 0: BSP_STATE_FAIL
  * - 1: BSP_STATE_PASS
  */
-bsp_state_t drv_ir_init(drv_ir_t *ir);
-
+bsp_state_t drv_ir_init(drv_ir_t* ir);
 
 /**
  * @brief  <this function utilized to get sensor status>
@@ -78,7 +74,7 @@ bsp_state_t drv_ir_init(drv_ir_t *ir);
  *  - 0: DRV_IR_STATE_IS_OBSTACLE
  *  - 1: DRV_IR_STATE_NO_OBSTACLE
  */
-drv_ir_state_t drv_ir_state(void);
+drv_ir_state_t drv_ir_state(drv_ir_t* ir);
 
 #endif // __CODE_TEMPLATE_H
 
