@@ -86,10 +86,12 @@ static uint8_t sch_check_exist_id(uint8_t sch_id);
 void sch_init(void)
 {
   is_empty_task = 1;
-  for (int i = 0; i < SCH_MAX_TASK; i++)
-  {
-    sch_task_id[i] = 0;
-  }
+	for(uint32_t index = 0; index < SCH_MAX_TASK; index++) {
+		sch_tasks[index].task = 0x0000;
+		sch_tasks[index].delay = 0;
+		sch_tasks[index].period = 0;
+		sch_tasks[index].sch_run = 0;
+	}
 }
 
 void sch_update(void)
