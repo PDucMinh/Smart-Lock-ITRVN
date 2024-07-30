@@ -18,7 +18,7 @@
 /* Includes ----------------------------------------------------------- */
 /* Public defines ----------------------------------------------------- */
 #define SCH_MAX_TASK (10) /*Maximum of queue*/
-#define NO_TASK_ID (0)    /*Empty flag*/
+#define NO_TASK_ID (-1)    /*Empty flag*/
 
 /* Public function prototypes ----------------------------------------- */
 /**
