@@ -23,6 +23,13 @@
 #include "bsp_gpio.h"
 #include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
+#define BSP_EXTI_LINE_0 (0u)
+#define BSP_EXTI_LINE_1 (1u)
+#define BSP_EXTI_LINE_2 (2u)
+#define BSP_EXTI_LINE_3 (3u)
+#define BSP_EXTI_LINE_4 (4u)
+#define BSP_EXTI_LINE_5_9 (5u)
+#define BSP_EXTI_LINE_10_15 (6u)
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
@@ -56,7 +63,7 @@ bsp_exti_event_t;
  *  - 1: Error
  */
  bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type);
- bsp_exti_event_t bsp_exti_event(uint16_t exti_line);
+ uint8_t bsp_exti_event(uint16_t exti_line);
 
 #endif // __CODE_TEMPLATE_H
 
