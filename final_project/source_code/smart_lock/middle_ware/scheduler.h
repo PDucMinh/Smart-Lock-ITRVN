@@ -68,7 +68,7 @@ uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period);
  * @attention
  *
  * @return
- *  - Other: task ID
+ *  - SCH_OK: Success
  *  - SCH_FAIL: Error
  */
 uint8_t sch_delete_task(uint32_t task_id);
