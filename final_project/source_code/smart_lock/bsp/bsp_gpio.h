@@ -81,7 +81,8 @@
 typedef enum
 {
   BSP_GPIO_SET = GPIO_PIN_SET,
-  BSP_GPIO_RESET = GPIO_PIN_RESET
+  BSP_GPIO_RESET = GPIO_PIN_RESET,
+  BSP_GPIO_PIN_ERROR
 } bsp_gpio_pin_state_t;
 
 /**
