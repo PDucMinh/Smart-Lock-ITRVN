@@ -22,10 +22,15 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
+#include "bsp_exti.h"
+#include "bsp_gpio.h"
 /* Public defines ----------------------------------------------------- */
 #define BSP_CONFIG_LED_RED   TIM_CHANNEL_1
 #define BSP_CONFIG_LED_GREEN TIM_CHANNEL_2
 #define BSP_CONFIG_LED_BLUE  TIM_CHANNEL_3
+
+#define BSP_CONFIG_IR_IT_LINE  BSP_EXTI_LINE_2
+#define BSP_CONFIG_IR_PIN      ((BSP_GPIO_PORT_A << 4) | BSP_GPIO_PIN_2)
 /* Public enumerate/structure ----------------------------------------- */
 typedef enum
 {
