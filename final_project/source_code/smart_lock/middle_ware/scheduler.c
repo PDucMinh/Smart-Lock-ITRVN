@@ -27,6 +27,7 @@ typedef struct
   uint32_t delay;     /*!< remaining time before execute task */
   uint32_t period;    /*!< cycle of execution */
   uint8_t run;        /*!< run flag */
+  uint8_t id;         /*!< task ID */
 } sch_task_t;
 
 /* Private macros ----------------------------------------------------- */
@@ -113,7 +114,7 @@ void sch_dispatch_task(void)
     (*sch_tasks[0].task)();
     sch_tasks[0].run = 0;
     sch_task_t temp_task = sch_tasks[0];
-    sch_delete_task(0);
+    sch_delete_task(temp_task.id);
     if (temp_task.period > 0)
     {
       sch_add_task(temp_task.task, temp_task.period, temp_task.period);
