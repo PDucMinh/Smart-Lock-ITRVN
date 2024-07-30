@@ -21,28 +21,23 @@
 /* Private defines ---------------------------------------------------- */
 
 /* Private enumerate/structure ---------------------------------------- */
-
 /* Private macros ----------------------------------------------------- */
 
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
-
+struct
+{
+  uint8_t exti0_detector; /**< Description of PUBLIC_ENUM_1 */
+  uint8_t exti1_detector; /**< Description of PUBLIC_ENUM_2 */
+  uint8_t exti2_detector; /**< Description of PUBLIC_ENUM_3 */
+  uint8_t exti3_detector;
+  uint8_t exti4_detector;
+  uint8_t exti5_9_detector;
+  uint8_t exti10_15_detector;
+} bsp_exti_detector;
 /* Private function prototypes ---------------------------------------- */
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-static void private_function(void);
+
 /* Function definitions ----------------------------------------------- */
 bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type)
 {
@@ -67,42 +62,42 @@ bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type)
     return BSP_STATE_FAIL;
   }
   pin = io & 0x0F;
-  switch(pin)
+  switch (pin)
   {
-    case BSP_GPIO_PIN_0:
+  case BSP_GPIO_PIN_0:
     HAL_NVIC_SetPriority(EXTI0_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(EXTI0_IRQn);
     break;
-    case BSP_GPIO_PIN_1:
+  case BSP_GPIO_PIN_1:
     HAL_NVIC_SetPriority(EXTI1_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(EXTI1_IRQn);
     break;
-    case BSP_GPIO_PIN_2:
+  case BSP_GPIO_PIN_2:
     HAL_NVIC_SetPriority(EXTI3_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(EXTI3_IRQn);
     break;
-    case BSP_GPIO_PIN_3:
+  case BSP_GPIO_PIN_3:
     HAL_NVIC_SetPriority(EXTI4_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(EXTI4_IRQn);
     break;
-    case BSP_GPIO_PIN_4:
+  case BSP_GPIO_PIN_4:
     HAL_NVIC_SetPriority(EXTI5_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(EXTI5_IRQn);
     break;
-    case BSP_GPIO_PIN_5:
-    case BSP_GPIO_PIN_6:
-    case BSP_GPIO_PIN_7:
-    case BSP_GPIO_PIN_8:
-    case BSP_GPIO_PIN_9:
+  case BSP_GPIO_PIN_5:
+  case BSP_GPIO_PIN_6:
+  case BSP_GPIO_PIN_7:
+  case BSP_GPIO_PIN_8:
+  case BSP_GPIO_PIN_9:
     HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
     break;
-    case BSP_GPIO_PIN_10:
-    case BSP_GPIO_PIN_11:
-    case BSP_GPIO_PIN_12:
-    case BSP_GPIO_PIN_13:
-    case BSP_GPIO_PIN_14:
-    case BSP_GPIO_PIN_15:
+  case BSP_GPIO_PIN_10:
+  case BSP_GPIO_PIN_11:
+  case BSP_GPIO_PIN_12:
+  case BSP_GPIO_PIN_13:
+  case BSP_GPIO_PIN_14:
+  case BSP_GPIO_PIN_15:
     HAL_NVIC_SetPriority(EXTI15_10_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
     break;
@@ -110,7 +105,48 @@ bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type)
   return BSP_STATE_PASS;
 }
 /* Private definitions ----------------------------------------------- */
-static void private_function(void)
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+  uint16_t pin_pos = BSP_GPIO_PIN_0;
+  if (GPIO_Pin != (uint16_t)1)
+  {
+    while ((GPIO_Pin >> 1) != (uint16_t)1)
+    {
+      pin_pos++;
+    }
+  }
+  switch (pin_pos)
+  {
+  case BSP_GPIO_PIN_0:
+    bsp_exti_detector.exti0_detector = 1;
+    break;
+  case BSP_GPIO_PIN_1:
+    bsp_exti_detector.exti1_detector = 1;
+    break;
+  case BSP_GPIO_PIN_2:
+    bsp_exti_detector.exti2_detector = 1;
+    break;
+  case BSP_GPIO_PIN_3:
+    bsp_exti_detector.exti3_detector = 1;
+    break;
+  case BSP_GPIO_PIN_4:
+    bsp_exti_detector.exti4_detector = 1;
+    break;
+  case BSP_GPIO_PIN_5:
+  case BSP_GPIO_PIN_6:
+  case BSP_GPIO_PIN_7:
+  case BSP_GPIO_PIN_8:
+  case BSP_GPIO_PIN_9:
+    bsp_exti_detector.exti5_9_detector = 1;
+    break;
+  case BSP_GPIO_PIN_10:
+  case BSP_GPIO_PIN_11:
+  case BSP_GPIO_PIN_12:
+  case BSP_GPIO_PIN_13:
+  case BSP_GPIO_PIN_14:
+  case BSP_GPIO_PIN_15:
+    bsp_exti_detector.exti10_15_detector = 1;
+    break;
+  }
 }
 /* End of file -------------------------------------------------------- */
