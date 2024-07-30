@@ -104,7 +104,7 @@ void sch_dispatch_task(void)
   }
 }
 
-uint8_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
+uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
 {
   if (sch_active_size == SCH_MAX_TASK - 1)
     return SCH_FAIL;
