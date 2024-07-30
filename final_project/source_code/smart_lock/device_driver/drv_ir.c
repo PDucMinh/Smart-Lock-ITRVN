@@ -22,7 +22,6 @@
 /* Private macros ----------------------------------------------------- */
 
 /* Public variables --------------------------------------------------- */
-uint8_t flag = 0;
 /* Private variables -------------------------------------------------- */
 
 /* Private function prototypes ---------------------------------------- */
@@ -34,7 +33,7 @@ drv_ir_status_t drv_ir_init(drv_ir_t* ir)
   {
     return DRV_IR_STATUS_FAIL;
   }
-
+  ir->debounce_flag = 0;
   ir->debounce_tick_start = 0;
   ir->exti_event = bsp_exti_event;
   ir->gpio_state = bsp_gpio_pin_read;
@@ -44,20 +43,20 @@ drv_ir_status_t drv_ir_init(drv_ir_t* ir)
 
 drv_ir_state_t drv_ir_state(drv_ir_t* ir)
 {
-  if ((ir.exti_event(BSP_CONFIG_IR_LINE) == true) && (flag == 0))
+  if ((ir->exti_event(BSP_CONFIG_IR_LINE) == true) && (ir->debounce_flag == 0))
   {
     // Update debounce tick start
-    ir.debounce_tick_start = HAL_GetTick();
-    flag = 1;
+    ir->debounce_tick_start = HAL_GetTick();
+    ir->debounce_flag = 1;
   }
 
   // Check debounce state
-  if (flag == 1)
+  if (ir->debounce_flag == 1)
   {
-    if ((HAL_GetTick() - ir.debounce_tick_start) >= 100)
+    if ((HAL_GetTick() - ir->debounce_tick_start) >= 100)
     {
-      flag = 0;
-      if (ir.gpio_state(BSP_CONFIG_IR_PIN) == 0)
+      ir->debounce_flag = 0;
+      if (ir->gpio_state(BSP_CONFIG_IR_PIN) == 0)
       {
         return DRV_IR_STATE_IS_OBSTACLE;
       }
