@@ -54,9 +54,9 @@ typedef struct
 
 /* Private variables -------------------------------------------------- */
 static uint32_t sch_tick_scaler = 1;          /*Scheduler tick scaler*/
-static sch_task_t sch_tasks[SCH_MAX_TASK];    /*Task queue*/
-static uint8_t sch_task_id[SCH_MAX_TASK] = 0; /*Array of Active Task ID*/
-
+static sch_task_t sch_tasks[SCH_MAX_TASK];    /*Task queue (id from 0 to max_size - 1)*/
+static uint8_t sch_task_id[SCH_MAX_TASK]; /*Array of Active Task ID*/
+static uint8_t is_empty_task;             /*Flag to check empty task*/
 /* Private function prototypes ---------------------------------------- */
 /**
  * @brief  automatically generate task ID
@@ -84,6 +84,11 @@ static uint8_t sch_check_exist_id(uint8_t id);
 /* Function definitions ----------------------------------------------- */
 void sch_init(void)
 {
+  is_empty_task = 1;
+  for (int i = 0; i < SCH_MAX_TASK; i++)
+  {
+    sch_task_id[i] = 0;
+  }
 }
 
 void sch_update(void)
