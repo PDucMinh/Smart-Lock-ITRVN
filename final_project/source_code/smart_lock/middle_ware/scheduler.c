@@ -26,8 +26,8 @@ typedef struct
   void (*task)(void); /*!< Description of task */
   uint32_t delay;     /*!< remaining time before execute task */
   uint32_t period;    /*!< cycle of execution */
-  uint8_t sch_run;        /*!< sch_run flag */
-  uint8_t sch_id;         /*!< task sch_id */
+  uint8_t sch_run;    /*!< sch_run flag */
+  uint8_t sch_id;     /*!< task sch_id */
 } sch_task_t;
 
 /* Private macros ----------------------------------------------------- */
@@ -59,17 +59,6 @@ static sch_task_t sch_tasks[SCH_MAX_TASK]; /*Task queue (sch_id from 0 to max_si
 static uint8_t sch_task_id[SCH_MAX_TASK];  /*Array of Active Task sch_id*/
 static uint8_t is_empty_task;              /*Flag to check empty task*/
 static uint8_t sch_active_size = 0;
-/* Private function prototypes ---------------------------------------- */
-/**
- * @brief  automatically generate task sch_id
- *
- * @attention  <API attention note>
- *
- * @return
- *  - SCH_FAIL: Error
- *  - Other: Task sch_id
- */
-static uint8_t sch_generate_task_id(void);
 
 /**
  * @brief  check exist task sch_id
@@ -87,12 +76,13 @@ static uint8_t sch_check_exist_id(uint8_t sch_id);
 void sch_init(void)
 {
   is_empty_task = 1;
-	for(uint32_t index = 0; index < SCH_MAX_TASK; index++) {
-		sch_tasks[index].task = 0x0000;
-		sch_tasks[index].delay = 0;
-		sch_tasks[index].period = 0;
-		sch_tasks[index].sch_run = 0;
-	}
+  for (uint32_t index = 0; index < SCH_MAX_TASK; index++)
+  {
+    sch_tasks[index].task = 0x0000;
+    sch_tasks[index].delay = 0;
+    sch_tasks[index].period = 0;
+    sch_tasks[index].sch_run = 0;
+  }
 }
 
 void sch_update(void)
@@ -127,58 +117,53 @@ void sch_dispatch_task(void)
 
 uint32_t sch_add_task(void(*task), uint32_t delay, uint32_t period)
 {
-	if(sch_active_size == SCH_MAX_TASK - 1) return SCH_FAIL;
+  if (sch_active_size == SCH_MAX_TASK - 1)
+    return SCH_FAIL;
 
-	uint8_t flag = 0;
-	uint32_t index = 0;
+  uint8_t flag = 0;
+  uint32_t index = 0;
 
-	for(index = 0; index < sch_active_size && flag == 0; index++) {
-		if(DELAY > SCH_tasks_G[index].Delay) {
-			DELAY -= SCH_tasks_G[index].Delay;
-		}
-		else {
-			flag = 1;
-			SCH_tasks_G[index].Delay -= DELAY;
-			if(SCH_tasks_G[index].Delay == 0) {
-				SCH_tasks_G[index].RunMe = 1;
-			}
-		}
-	}
+  for (index = 0; index < sch_active_size && flag == 0; index++)
+  {
+    if (delay > sch_tasks[index].delay)
+    {
+      delay -= sch_tasks[index].delay;
+    }
+    else
+    {
+      flag = 1;
+      sch_tasks[index].delay -= delay;
+      if (sch_tasks[index].delay == 0)
+      {
+        sch_tasks[index].sch_run = 1;
+      }
+    }
+  }
 
-	if(flag == 1) {
-		index -= 1;
-		for(uint32_t temp = sch_active_size; temp > index; temp--) {
-			SCH_tasks_G[temp] = SCH_tasks_G[temp - 1];
-			SCH_tasks_G[temp].TaskID += 1;
-		}
-	}
-	SCH_tasks_G[index].pTask = pFunction;
-	SCH_tasks_G[index].Delay = DELAY;
-	SCH_tasks_G[index].Period = PERIOD;
-	SCH_tasks_G[index].RunMe = (DELAY == 0) ? 1 : 0;
-	SCH_tasks_G[index].TaskID = index;
+  if (flag == 1)
+  {
+    index -= 1;
+    for (uint32_t temp = sch_active_size; temp > index; temp--)
+    {
+      sch_tasks[temp] = sch_tasks[temp - 1];
+      sch_tasks[temp].TaskID += 1;
+    }
+  }
+  sch_tasks[index].task = task;
+  sch_tasks[index].delay = delay;
+  sch_tasks[index].period = period;
+  sch_tasks[index].sch_run = (delay == 0) ? 1 : 0;
+  sch_tasks[index].sch_id = index;
 
-	sch_active_size += 1;
+  sch_active_size += 1;
 
-	return index;
+  return index;
 }
 
 uint8_t sch_delete_task(uint32_t task_id)
 {
 }
 /* Private definitions ----------------------------------------------- */
-static uint8_t sch_generate_task_id(void)
-{
-  for (uint8_t i = 0; i < SCH_MAX_TASK; i++)
-  {
-    if (sch_task_id[i] == 0)
-    {
-      sch_task_id[i] = 1;
-      return i;
-    }
-  }
-  return SCH_FAIL;
-}
 
 static uint8_t sch_check_exist_id(uint8_t sch_id)
 {
