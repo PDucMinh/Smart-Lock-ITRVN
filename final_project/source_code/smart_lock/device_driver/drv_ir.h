@@ -25,6 +25,15 @@
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
+ * @brief infrared sensor API status
+ */
+typedef enum
+{
+  DRV_IR_STATUS_FAIL,
+  DRV_IR_STATUS_SUCCESS
+} drv_ir_status_t;
+
+/**
  * @brief infrared sensor state
  */
 typedef enum
@@ -38,7 +47,7 @@ typedef enum
  */
 typedef struct
 {
-  uint32_t debounce_tick_start;           /**< define debounce time */
+  uint32_t debounce_tick_start;              /**< define debounce time */
   uint8_t (*exti_event)(uint16_t exti_line); /**< function pointer to detect external event */
   uint8_t (*gpio_state)(uint16_t pin);       /**< function pointer to detect gpio state */
 } drv_ir_t;
@@ -61,7 +70,7 @@ typedef struct
  * - 0: BSP_STATE_FAIL
  * - 1: BSP_STATE_PASS
  */
-bsp_state_t drv_ir_init(drv_ir_t* ir);
+drv_ir_status_t drv_ir_init(drv_ir_t* ir);
 
 /**
  * @brief  <this function utilized to get sensor status>
