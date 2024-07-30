@@ -53,8 +53,8 @@ typedef struct
   } while (0)
 
 /* Private variables -------------------------------------------------- */
-static uint32_t sch_tick_scaler = 1; /*Scheduler tick scaler*/
-static sch_task_t sch_tasks[SCH_MAX_TASK]; /*Task queue*/
+static uint32_t sch_tick_scaler = 1;          /*Scheduler tick scaler*/
+static sch_task_t sch_tasks[SCH_MAX_TASK];    /*Task queue*/
 static uint8_t sch_task_id[SCH_MAX_TASK] = 0; /*Array of Active Task ID*/
 
 /* Private function prototypes ---------------------------------------- */
@@ -75,7 +75,8 @@ static uint8_t sch_generate_task_id(void);
  * @attention  <API attention note>
  *
  * @return
- *  - SCH_FAIL: Task ID not activated
+ *  - SCH_OK: Task ID not activated
+ *  - SCH_FAIL: Error ID
  *  - Others: Task ID activated
  */
 static uint8_t sch_check_exist_id(uint8_t id);
@@ -107,10 +108,11 @@ static uint8_t sch_generate_task_id(void)
 
 static uint8_t sch_check_exist_id(uint8_t id)
 {
-    if (sch_task_id[id] == 0)
-    {
-        return SCH_FAIL;
-    }
-    return id;
+  CHECK_ID(id);
+  if (sch_task_id[id] == 0)
+  {
+    return SCH_OK;
+  }
+  return id;
 }
 /* End of file -------------------------------------------------------- */
