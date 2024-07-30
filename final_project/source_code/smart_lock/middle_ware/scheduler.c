@@ -74,7 +74,7 @@ void sch_init(void)
 
 void sch_update(void)
 {
-  if (sch_active_size >)
+  if (sch_active_size > 0)
   {
     if (sch_tasks[0].delay > 0)
       sch_tasks[0].delay--;
