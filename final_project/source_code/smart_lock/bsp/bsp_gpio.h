@@ -76,18 +76,11 @@
 #define BSP_GPIO_AF10 (0x0A)
 #define BSP_GPIO_AF12 (0x0C)
 #define BSP_GPIO_AF15 (0x0F)
-
+/* gpio pin state ID */
+#define BSP_GPIO_RESET (0u)
+#define BSP_GPIO_SET (1u)
+#define BSP_GPIO_PIN_ERROR (2u)
 /* Public enumerate/structure ----------------------------------------- */
-/**
- * @brief enum definition for gpio pin state
- */
-typedef enum
-{
-  BSP_GPIO_SET = GPIO_PIN_SET,
-  BSP_GPIO_RESET = GPIO_PIN_RESET,
-  BSP_GPIO_PIN_ERROR
-} bsp_gpio_pin_state_t;
-
 /**
  * @brief struct manage gpio pin
  */
@@ -127,7 +120,7 @@ bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t *bgpio);
  * @return     none
  *
  */
-bsp_gpio_pin_state_t bsp_gpio_pin_read(bsp_gpio_pin_t *bgpio);
+uint8_t bsp_gpio_pin_read(uint16_t io);
 #endif // __BSP_GPIO_H
 
 /* End of file -------------------------------------------------------- */
