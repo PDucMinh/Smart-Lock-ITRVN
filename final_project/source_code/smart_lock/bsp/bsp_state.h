@@ -68,7 +68,7 @@ typedef enum
 #define BSP_CHECK_RANGE(A, __RANGE__, B) \
   do                                        \
   {                                         \
-    if (!(A < __RANGE__))                   \
+    if (!(A <= __RANGE__))                   \
       return B;                             \
   } while (0)
 

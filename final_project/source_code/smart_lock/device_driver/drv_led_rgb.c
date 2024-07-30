@@ -103,9 +103,9 @@ drv_led_rgb_status_t drv_led_rgb_set(drv_led_rgb_t* led,drv_led_rgb_color_t colo
   float red_led_duty = (led_rgb_info[color].rgb_code[0] / 255.0) * 100;
   float green_led_duty = (led_rgb_info[color].rgb_code[1] / 255.0) * 100;
   float blue_led_duty = (led_rgb_info[color].rgb_code[2] / 255.0) * 100;
-  led->pwm_set(BSP_CONFIG_ID_LED_RGB, BSP_CONFIG_LED_RED, red_led_duty);
-  led->pwm_set(BSP_CONFIG_ID_LED_RGB, BSP_CONFIG_LED_GREEN, green_led_duty);
-  led->pwm_set(BSP_CONFIG_ID_LED_RGB, BSP_CONFIG_LED_BLUE, blue_led_duty);
+  led->pwm_set(BSP_CONFIG_ID_LED_RGB, BSP_CONFIG_LED_RED, (uint32_t)red_led_duty);
+  led->pwm_set(BSP_CONFIG_ID_LED_RGB, BSP_CONFIG_LED_GREEN, (uint32_t)green_led_duty);
+  led->pwm_set(BSP_CONFIG_ID_LED_RGB, BSP_CONFIG_LED_BLUE, (uint32_t)blue_led_duty);
   return DRV_LED_RGB_SUCCESS;
 }
 
