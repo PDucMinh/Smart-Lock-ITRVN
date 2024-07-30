@@ -17,7 +17,6 @@
 #define __DRV_IR_H
 
 /* Includes ----------------------------------------------------------- */
-#include <stdbool.h>
 #include "bsp_config.h"
 #include "bsp_exti.h"
 #include "bsp_gpio.h"
@@ -40,8 +39,8 @@ typedef enum
 typedef struct
 {
   uint32_t debounce_tick_start;           /**< define debounce time */
-  bool (*exti_event)(uint16_t exti_line); /**< function pointer to detect external event */
-  bool (*gpio_state)(uint16_t pin);       /**< function pointer to detect gpio state */
+  uint8_t (*exti_event)(uint16_t exti_line); /**< function pointer to detect external event */
+  uint8_t (*gpio_state)(uint16_t pin);       /**< function pointer to detect gpio state */
 } drv_ir_t;
 
 /* Public macros ------------------------------------------------------ */
