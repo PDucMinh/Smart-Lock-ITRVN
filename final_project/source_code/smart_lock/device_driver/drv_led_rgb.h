@@ -17,30 +17,44 @@
 #define __DRV_LED_RGB_H
 
 /* Includes ----------------------------------------------------------- */
+#include "bsp_pwm.h"
+#include "bsp_mcu.h"
+#include "bsp_config.h"
+
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
- * @brief <enum descriptiton>
+ * @brief function status after execution
  */
 typedef enum 
 {
-  PUBLIC_ENUM_1, /**< Description of PUBLIC_ENUM_1 */
-  PUBLIC_ENUM_2, /**< Description of PUBLIC_ENUM_2 */
-  PUBLIC_ENUM_3  /**< Description of PUBLIC_ENUM_3 */
-}
-public_enum_type_t;
+  DRV_LED_RGB_SUCCESS,
+  DRV_LED_RGB_ERROR
+} drv_led_rgb_status_t;
+
+/* Public enumerate/structure ----------------------------------------- */
+/**
+ * @brief RGB support color
+ */
+typedef enum 
+{
+  DRV_LED_RGB_OFF,
+  DRV_LED_RGB_RED,
+  DRV_LED_RGB_GREEN,
+  DRV_LED_RGB_BLUE,
+  DRV_LED_RGB_ORANGE,
+  DRV_LED_RGB_PURPLE
+} drv_led_rgb_color_t;
 
 /**
  * @brief <structure descriptiton>
  */
 typedef struct 
 {
-  uint32_t member_1, /**< Description of member_1 */
-  uint32_t member_2, /**< Description of member_2 */
-  uint32_t member_3  /**< Description of member_3 */
-}
-public_struct_type_t;
+  bsp_state_t (*pwm_set) (bsp_config_id_t id, uint16_t channel, uint16_t duty);
+  bsp_state_t (*pwm_start) (bsp_config_id_t id, uint16_t channel); 
+} drv_led_rgb_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -48,7 +62,7 @@ public_struct_type_t;
 
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  initial prototype 
  *
  * @param[in]     <param_name>  <param_despcription>
  * @param[out]    <param_name>  <param_despcription>
@@ -60,9 +74,39 @@ public_struct_type_t;
  *  - 0: Success
  *  - 1: Error
  */
-void drv_led_rgb_init(drv_mcu_pin_t* pin);
-void drv_led_rgb_set(drv_mcu_t* mcu, uint16_t color);
-drv_led_rgb_state_t drv_led_rgb_state(void);
+drv_led_rgb_status_t drv_led_rgb_init(drv_led_rgb_t* led);
+
+/* Public function prototypes ----------------------------------------- */
+/**
+ * @brief  set state for rgb led 
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ *  - 0: Success
+ *  - 1: Error
+ */
+drv_led_rgb_status_t drv_led_rgb_set(drv_led_rgb_t* led,drv_led_rgb_color_t color);
+
+/* Public function prototypes ----------------------------------------- */
+/**
+ * @brief  check rgb led state
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ *  - 0: Success
+ *  - 1: Error
+ */
+drv_led_rgb_color_t drv_led_rgb_state(void);
 
 #endif // __CODE_TEMPLATE_H
 
