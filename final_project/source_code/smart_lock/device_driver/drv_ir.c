@@ -43,7 +43,7 @@ drv_ir_status_t drv_ir_init(drv_ir_t* ir)
 
 drv_ir_state_t drv_ir_state(drv_ir_t* ir)
 {
-  if ((ir->exti_event(BSP_CONFIG_IR_LINE) == true) && (ir->debounce_flag == 0))
+  if ((ir->exti_event(BSP_CONFIG_IR_IT_LINE) == 1) && (ir->debounce_flag == 0))
   {
     // Update debounce tick start
     ir->debounce_tick_start = HAL_GetTick();
