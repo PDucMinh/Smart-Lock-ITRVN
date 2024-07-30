@@ -104,6 +104,43 @@ bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type)
   }
   return BSP_STATE_PASS;
 }
+
+uint8_t bsp_exti_event(uint16_t exti_line)
+{
+  uint8_t event_ret = 0;
+  switch (exti_line)
+  {
+    case BSP_EXTI_LINE_0:
+    event_ret = bsp_exti_detector.exti0_detector;
+    bsp_exti_detector.exti0_detector = 0;
+    break;
+    case BSP_EXTI_LINE_1:
+    event_ret = bsp_exti_detector.exti1_detector;
+    bsp_exti_detector.exti1_detector = 0;
+    break;
+    case BSP_EXTI_LINE_2:
+    event_ret = bsp_exti_detector.exti2_detector;
+    bsp_exti_detector.exti2_detector = 0;
+    break;
+    case BSP_EXTI_LINE_3:
+    event_ret = bsp_exti_detector.exti3_detector;
+    bsp_exti_detector.exti3_detector = 0;
+    break;
+    case BSP_EXTI_LINE_4:
+    event_ret = bsp_exti_detector.exti4_detector;
+    bsp_exti_detector.exti4_detector = 0;
+    break;
+    case BSP_EXTI_LINE_5_9:
+    event_ret = bsp_exti_detector.exti5_9_detector;
+    bsp_exti_detector.exti5_9_detector = 0;
+    break;
+    case BSP_EXTI_LINE_10_15:
+    event_ret = bsp_exti_detector.exti10_15_detector;
+    bsp_exti_detector.exti10_15_detector = 0;
+    break;
+  }
+  return event_ret;
+}
 /* Private definitions ----------------------------------------------- */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
