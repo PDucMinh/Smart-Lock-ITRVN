@@ -1,11 +1,11 @@
 /**
  * @file       drv_ir.c
- * @copyright  
- * @license    
+ * @copyright
+ * @license
  * @version    1.0.0
  * @date       2024-07-30
  * @author     Phat Nguyen Tan
- * @author    
+ * @author
  *
  * @brief      <This file is source code file to define functions for module infrared sensor>
  *
@@ -22,50 +22,51 @@
 /* Private macros ----------------------------------------------------- */
 
 /* Public variables --------------------------------------------------- */
-drv_ir_t ir_sensor;
-uint8_t flag = 0; 
+uint8_t flag = 0;
 /* Private variables -------------------------------------------------- */
 
 /* Private function prototypes ---------------------------------------- */
 
 /* Function definitions ----------------------------------------------- */
-bsp_state_t drv_ir_init(drv_ir_t *ir)
+drv_ir_status_t drv_ir_init(drv_ir_t* ir)
 {
-  if (ir == NULL) 
+  if (ir == NULL)
   {
-    return BSP_STATE_FAIL;
+    return DRV_IR_STATUS_FAIL;
   }
-    
-  ir->debounce_tick_start = 0;
-  ir->exti_event = a;        /////////////////// thay ten ham
-  ir->gpio_state = b;        /////////////////// thay ten ham
 
-  return BSP_STATE_PASS;
+  ir->debounce_tick_start = 0;
+  ir->exti_event = bsp_exti_event;
+  ir->gpio_state = bsp_gpio_pin_read;
+
+  return DRV_IR_STATUS_SUCCESS;
 }
 
-drv_ir_state_t drv_ir_state(void)
+drv_ir_state_t drv_ir_state(drv_ir_t* ir)
 {
-  if ((ir_sensor.exti_event(GPIO_EXTI2) == true) && (flag == 0))
+  if ((ir.exti_event(BSP_CONFIG_IR_LINE) == true) && (flag == 0))
   {
-    // Update debounce tick start 
-    ir_sensor.debounce_tick_start = HAL_GetTick();
+    // Update debounce tick start
+    ir.debounce_tick_start = HAL_GetTick();
     flag = 1;
   }
-  
+
   // Check debounce state
-  if ((HAL_GetTick() - ir_sensor.debounce_tick_start) >= 100)
+  if (flag == 1)
   {
-    flag = 0;
-    if (ir_sensor.gpio_state(GPIO_PIN_2) == 0)
+    if ((HAL_GetTick() - ir.debounce_tick_start) >= 100)
     {
-      return DRV_IR_STATE_IS_OBSTACLE;
-    }
-    else 
-    {
-      return DRV_IR_STATE_NO_OBSTACLE;
+      flag = 0;
+      if (ir.gpio_state(BSP_CONFIG_IR_PIN) == 0)
+      {
+        return DRV_IR_STATE_IS_OBSTACLE;
+      }
+      else
+      {
+        return DRV_IR_STATE_NO_OBSTACLE;
+      }
     }
   }
-
   return DRV_IR_STATE_NO_OBSTACLE;
 }
 /* Private definitions ----------------------------------------------- */
