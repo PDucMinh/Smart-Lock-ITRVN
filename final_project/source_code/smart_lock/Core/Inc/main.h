@@ -31,6 +31,9 @@ extern "C" {
 #include "drv_led_rgb.h"
 #include "bsp_pwm.h"
 #include "bsp_gpio.h"
+#include "drv_ir.h"
+#include "bsp_exti.h"
+#include "scheduler.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 

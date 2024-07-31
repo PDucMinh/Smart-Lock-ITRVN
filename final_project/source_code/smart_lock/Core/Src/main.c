@@ -45,6 +45,8 @@ drv_led_rgb_t dled_rgb;
 bsp_gpio_pin_t bled_pin_r;
 bsp_gpio_pin_t bled_pin_g;
 bsp_gpio_pin_t bled_pin_b;
+drv_ir_t dir_sensor;
+drv_ir_state_t dir_state;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -67,9 +69,17 @@ bsp_gpio_pin_t bled_pin_b;
 int main(void)
 {
   bsp_mcu_init_t bstmf411_init;
-  bstmf411_init.is_tim3_used = BSP_MCU_PERIPH_TIM3;
+  // bstmf411_init.is_tim3_used = BSP_MCU_PERIPH_TIM3;
+  bstmf411_init.is_tim2_used = BSP_MCU_PERIPH_TIM2;
   bsp_mcu_init(&bstmf411_init, &bstmf411);
-  bled_pin_r.af = BSP_GPIO_AF2;
+  bsp_exti_init((BSP_GPIO_PORT_A << 4)|BSP_GPIO_PIN_2, BSP_EXTI_FALLING_RISING_EDGE);
+  drv_ir_init(&dir_sensor);
+  bsp_timer_init(&bstmf411);
+  bsp_timer_register_callback(sch_update);
+  bsp_timer_start(&bstmf411);
+  
+
+  /* bled_pin_r.af = BSP_GPIO_AF2;
   bled_pin_r.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_4;
   bled_pin_r.mode = BSP_GPIO_AF_PP;
   bled_pin_r.pull_type = BSP_GPIO_NOPULL;
@@ -92,12 +102,13 @@ int main(void)
   
   bsp_pwm_init(&bstmf411);
   drv_led_rgb_init(&dled_rgb);
-  drv_led_rgb_set(&dled_rgb, DRV_LED_RGB_ORANGE);
+  drv_led_rgb_set(&dled_rgb, DRV_LED_RGB_ORANGE); */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-
+    sch_dispatch_task();
+    dir_state = drv_ir_state(&dir_sensor);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
