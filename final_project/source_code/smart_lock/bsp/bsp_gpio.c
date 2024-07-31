@@ -25,8 +25,9 @@
 typedef enum
 {
   BSP_GPIO_PIN_STATE_FREE,  /**< This pin is not initialized by any module */
+  BSP_GPIO_PIN_STATE_UNUSED, /**< This pin is not allowed to be used        */
   BSP_GPIO_PIN_STATE_USED,  /**< This pin is initialized by another module */
-  BSP_GPIO_PIN_STATE_UNUSED /**< This pin is not allowed to be used        */
+  BSP_GPIO_PIN_STATE_INPUT
 } bsp_gpio_pin_state_t;
 /* Private macros ----------------------------------------------------- */
 
@@ -176,6 +177,49 @@ bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
   }
   }
   return BSP_STATE_PASS;
+}
+
+uint8_t bsp_gpio_pin_read(uint16_t io)
+{
+  uint16_t port, pin;
+  uint8_t pin_state;
+  port = (io & 0xF0) >> 4;
+  pin = io & 0x0F;
+
+  if (v_gpio_pin_list[port][pin] != BSP_GPIO_PIN_STATE_USED)
+  {
+    return BSP_GPIO_PIN_ERROR;
+  }
+  
+  switch (port)
+  {
+  case BSP_GPIO_PORT_A:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOA, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_B:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOB, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_C:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOC, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_D:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOD, (uint16_t)1<<pin);
+    break;
+  }
+  case BSP_GPIO_PORT_E:
+  {
+    pin_state = HAL_GPIO_ReadPin(GPIOE, (uint16_t)1<<pin);
+    break;
+  }
+  }
+  return pin_state;
 }
 /* Private definitions ----------------------------------------------- */
 /* End of file -------------------------------------------------------- */

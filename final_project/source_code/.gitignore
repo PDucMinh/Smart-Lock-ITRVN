@@ -2,3 +2,5 @@
 .metadata/
 .Drivers/
 .settings/
+.cproject
+Debug/
