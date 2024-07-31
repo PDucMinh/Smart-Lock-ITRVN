@@ -126,6 +126,7 @@ uint8_t fifo_pop(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *dest_data)
 
 uint8_t fifo_size(fifo_buffer_info_t *fifo_buffer)
 {
+  return fifo_buffer->tail - fifo_buffer->head;
 }
 /* Private definitions ----------------------------------------------- */
 fifo_return_t fifo_set_head(fifo_buffer_info_t *fifo_buffer, uint8_t head)
