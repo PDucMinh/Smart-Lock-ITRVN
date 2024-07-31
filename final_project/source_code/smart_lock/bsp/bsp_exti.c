@@ -69,31 +69,31 @@ bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type)
   switch (pin)
   {
   case BSP_GPIO_PIN_0:
-    HAL_NVIC_SetPriority(EXTI0_IRQn, 1, 0);
+    HAL_NVIC_SetPriority(EXTI0_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(EXTI0_IRQn);
     break;
   case BSP_GPIO_PIN_1:
-    HAL_NVIC_SetPriority(EXTI1_IRQn, 1, 0);
+    HAL_NVIC_SetPriority(EXTI1_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(EXTI1_IRQn);
     break;
   case BSP_GPIO_PIN_2:
-    HAL_NVIC_SetPriority(EXTI3_IRQn, 1, 0);
-    HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+    HAL_NVIC_SetPriority(EXTI2_IRQn, 2, 0);
+    HAL_NVIC_EnableIRQ(EXTI2_IRQn);
     break;
   case BSP_GPIO_PIN_3:
-    HAL_NVIC_SetPriority(EXTI4_IRQn, 1, 0);
-    HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+    HAL_NVIC_SetPriority(EXTI3_IRQn, 2, 0);
+    HAL_NVIC_EnableIRQ(EXTI3_IRQn);
     break;
   case BSP_GPIO_PIN_4:
-    HAL_NVIC_SetPriority(EXTI5_IRQn, 1, 0);
-    HAL_NVIC_EnableIRQ(EXTI5_IRQn);
+    HAL_NVIC_SetPriority(EXTI4_IRQn, 2, 0);
+    HAL_NVIC_EnableIRQ(EXTI4_IRQn);
     break;
   case BSP_GPIO_PIN_5:
   case BSP_GPIO_PIN_6:
   case BSP_GPIO_PIN_7:
   case BSP_GPIO_PIN_8:
   case BSP_GPIO_PIN_9:
-    HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
+    HAL_NVIC_SetPriority(EXTI9_5_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
     break;
   case BSP_GPIO_PIN_10:
@@ -102,7 +102,7 @@ bsp_state_t bsp_exti_init(uint16_t io, bsp_exti_event_t event_type)
   case BSP_GPIO_PIN_13:
   case BSP_GPIO_PIN_14:
   case BSP_GPIO_PIN_15:
-    HAL_NVIC_SetPriority(EXTI15_10_IRQn, 1, 0);
+    HAL_NVIC_SetPriority(EXTI15_10_IRQn, 2, 0);
     HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
     break;
   }
@@ -151,9 +151,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   uint16_t pin_pos = BSP_GPIO_PIN_0;
   if (GPIO_Pin != (uint16_t)1)
   {
-    while ((GPIO_Pin >> 1) != (uint16_t)1)
+    while (GPIO_Pin != (uint16_t)1)
     {
-      pin_pos++;
+      GPIO_Pin = GPIO_Pin >> 1;
+    	pin_pos++;
     }
   }
   switch (pin_pos)
