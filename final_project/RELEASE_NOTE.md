@@ -8,4 +8,10 @@
 - Issue in generate PWM pulse with 0% duty cycle
 - Issue in casting float data type to uint32 data type when driver calling to bsp API for generating PWM pulse.
 - Choosing approriate brightness of led red, led green, led blue to have the correct color
- 
+## Version 1.0.1
+### New Features
+- Driver for IR sensor detection
+- Middle ware layer: scheduler support timer
+### Bug Fixes
+- Issue in reading IR sensor state
+- Issue in checking gpio mode when apply scheduler to read input
