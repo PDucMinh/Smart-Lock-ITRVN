@@ -70,7 +70,37 @@ static bsp_state_t bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* 
  *  - 0: Success
  *  - 1: Error
  */
+static void bsp_mcu_pwm_mspinit(TIM_HandleTypeDef* htim);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
 static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* htim);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static void bsp_mcu_timer_mspinit(TIM_HandleTypeDef* htim);
 /* Function definitions ----------------------------------------------- */
 bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
 {
@@ -159,6 +189,7 @@ static bsp_state_t bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* 
     (htim->Init).Period = 99;
     (htim->Init).ClockDivision = TIM_CLOCKDIVISION_DIV1;
     (htim->Init).AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    htim->Base_MspInitCallback = bsp_mcu_pwm_mspinit;
     if (HAL_TIM_Base_Init(htim) != HAL_OK)
     {
       return BSP_STATE_FAIL;
@@ -218,7 +249,7 @@ static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef
     (htim->Init).Period = 999;
     (htim->Init).ClockDivision = TIM_CLOCKDIVISION_DIV1;
     (htim->Init).AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-    
+    htim->Base_MspInitCallback = bsp_mcu_timer_mspinit;
     if (HAL_TIM_Base_Init(htim) != HAL_OK)
     {
       return BSP_STATE_FAIL;
@@ -236,5 +267,30 @@ static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef
     }
   }
   return BSP_STATE_PASS;
+}
+
+static void bsp_mcu_pwm_mspinit(TIM_HandleTypeDef* htim)
+{
+  if (htim->Instance == TIM3)
+  {
+    __HAL_RCC_TIM3_CLK_ENABLE();
+  }
+}
+
+static void bsp_mcu_timer_mspinit(TIM_HandleTypeDef* htim)
+{
+  if (htim->Instance == TIM2)
+  {
+    __HAL_RCC_TIM2_CLK_ENABLE();
+    /* TIM2 interrupt Init */
+    HAL_NVIC_SetPriority(TIM2_IRQn, 1, 0);
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
+  }
+}
+
+void HAL_MspInit(void)
+{
+  __HAL_RCC_SYSCFG_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
 }
 /* End of file -------------------------------------------------------- */
