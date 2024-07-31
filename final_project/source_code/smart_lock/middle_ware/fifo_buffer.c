@@ -85,9 +85,17 @@ void fifo_empty(fifo_buffer_info_t *fifo_buffer)
 
 uint8_t fifo_push(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *source_data)
 {
-  if (fifo_buffer->tail == fifo_buffer->size - 1)
+  if (fifo_buffer->tail >= fifo_buffer->size)
   {
     return FIFO_FAIL;
+  }
+  else 
+  {
+    fifo_buffer_info_t *temp_buffer = fifo_buffer;
+    temp_buffer = temp_buffer + fifo_buffer->tail;
+    temp_buffer = source_data;
+    fifo_buffer->tail = fifo_buffer->tail + 1;
+    fifo_set_tail(fifo_buffer, fifo_buffer->tail);
   }
   // something
 }
@@ -119,7 +127,7 @@ fifo_return_t fifo_set_tail(fifo_buffer_info_t *fifo_buffer, uint8_t tail)
   {
     return FIFO_FAIL;
   }
-  if (tail >= fifo_buffer->fifo_size)
+  if (tail > fifo_buffer->fifo_size)
   {
     tail = 0;
   }

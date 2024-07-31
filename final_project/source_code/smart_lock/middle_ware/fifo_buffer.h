@@ -43,7 +43,7 @@ typedef struct
   //something here
   uint32_t fifo_size; // max size of sub fifo
   uint8_t head;
-  uint8_t tail;
+  uint8_t tail; // tail <= size aka tail = next empty slot
 } fifo_buffer_info_t;
 
 /* Public macros ------------------------------------------------------ */
