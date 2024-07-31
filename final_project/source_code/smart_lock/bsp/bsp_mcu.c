@@ -56,6 +56,21 @@ static bsp_state_t bsp_mcu_clk_init(void);
  *  - 1: Error
  */
 static bsp_state_t bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* htim);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* htim);
 /* Function definitions ----------------------------------------------- */
 bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
 {
@@ -141,7 +156,7 @@ static bsp_state_t bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* 
     {
       return BSP_STATE_FAIL;
     }
-    
+
     sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
     if (HAL_TIM_ConfigClockSource(htim, &sClockSourceConfig) != HAL_OK)
     {
@@ -172,6 +187,43 @@ static bsp_state_t bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* 
       return BSP_STATE_FAIL;
     }
     if (HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  return BSP_STATE_PASS;
+}
+
+static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* htim)
+{
+  BSP_CHECK_NULL(htim, BSP_STATE_FAIL);
+  if (periph == BSP_MCU_PERIPH_TIM2)
+  {
+    TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
+    TIM_MasterConfigTypeDef sMasterConfig = { 0 };
+
+    /* USER CODE BEGIN TIM2_Init 1 */
+
+    /* USER CODE END TIM2_Init 1 */
+    (htim->Instance) = TIM2;
+    (htim->Init).Prescaler = 99;
+    (htim->Init).CounterMode = TIM_COUNTERMODE_UP;
+    (htim->Init).Period = 999;
+    (htim->Init).ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    (htim->Init).AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    
+    if (HAL_TIM_Base_Init(htim) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+    sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+    if (HAL_TIM_ConfigClockSource(htim, &sClockSourceConfig) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+    if (HAL_TIMEx_MasterConfigSynchronization(htim, &sMasterConfig) != HAL_OK)
     {
       return BSP_STATE_FAIL;
     }
