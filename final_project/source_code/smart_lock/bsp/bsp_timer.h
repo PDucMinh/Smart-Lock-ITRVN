@@ -44,8 +44,8 @@
  *  - 1: Error
  */
 bsp_state_t bsp_timer_init(bsp_mcu_t* mcu);
-bsp_state_t bsp_timer_start(void);
-bsp_state_t bsp_timer_register_callback(void (*callback)(void), bsp_mcu_t* mcu);
+bsp_state_t bsp_timer_start(bsp_mcu_t* mcu);
+bsp_state_t bsp_timer_register_callback(void (*callback)(void));
 #endif // __CODE_TEMPLATE_H
 
 /* End of file -------------------------------------------------------- */
