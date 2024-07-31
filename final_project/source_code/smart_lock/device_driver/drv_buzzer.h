@@ -23,7 +23,7 @@
 /* Includes ----------------------------------------------------------- */
 #include "bsp_config.h"
 #include "bsp_pwm.h"
-
+#include "scheduler.h"
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
@@ -42,10 +42,9 @@ drv_buzzer_status_t;
  */
 typedef struct 
 {
-  uint8_t (*pwm_set_freq)(bsp_config_id_t id, uint32_t channel, uint32_t period); /**< Set timer cycle */
-  uint8_t (*pwm_start)(bsp_config_id_t id, uint32_t channel); /**< Start pwm channel, depend on user set */
-  uint8_t (*pwm_stop)(bsp_config_id_t id, uint32_t channel);  /**< Stop pwm channel, depend on user set */
-  uint32_t (*timer_set)((void *)callback, uint32_t delay, uint32_t duration); /**< Set the duration of the above frequency */
+  bsp_state_t (*pwm_set_freq)(bsp_config_id_t id, uint32_t channel, uint32_t period); /**< Set timer cycle */
+  bsp_state_t (*pwm_start)(bsp_config_id_t id, uint32_t channel); /**< Start pwm channel, depend on user set */
+  bsp_state_t (*pwm_stop)(bsp_config_id_t id, uint32_t channel);  /**< Stop pwm channel, depend on user set */
 }
 drv_buzzer_t;
 
@@ -85,7 +84,7 @@ drv_buzzer_t;
  *  - 0: DRV_BUZZER_STATUS_FAIL
  *  - 1: DRV_BUZZER_STATUS_SUCCESS
  */
- drv_buzzer_status_t drv_buzzer_set_note(drv_buzzer_t *buzzer, uint32_t note, uint32_t duration);
+ drv_buzzer_status_t drv_buzzer_set_note(drv_buzzer_t *buzzer, uint16_t note, uint32_t duration);
 
 
 /**
