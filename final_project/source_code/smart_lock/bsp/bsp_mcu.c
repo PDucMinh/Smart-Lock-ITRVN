@@ -88,6 +88,13 @@ bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
       return BSP_STATE_FAIL;
     }
   }
+  if ((mcu_init->is_tim2_used) != BSP_MCU_PERIPH_NONE)
+  {
+    if (bsp_mcu_timer_init(mcu_init->is_tim2_used, &(mcu->htim2)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
   return BSP_STATE_PASS;
 }
 /* Private definitions ----------------------------------------------- */
