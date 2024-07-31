@@ -23,51 +23,51 @@
 
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
-
+uint8_t callback_flag = 0;
 /* Private function prototypes ---------------------------------------- */
-
+static void drv_ir_debounce_callback(void);
 /* Function definitions ----------------------------------------------- */
-drv_ir_status_t drv_ir_init(drv_ir_t* ir)
+drv_ir_status_t drv_ir_init(drv_ir_t *ir)
 {
   if (ir == NULL)
   {
     return DRV_IR_STATUS_FAIL;
   }
   ir->debounce_flag = 0;
-  ir->debounce_tick_start = 0;
   ir->exti_event = bsp_exti_event;
   ir->gpio_state = bsp_gpio_pin_read;
 
   return DRV_IR_STATUS_SUCCESS;
 }
 
-drv_ir_state_t drv_ir_state(drv_ir_t* ir)
+drv_ir_state_t drv_ir_state(drv_ir_t *ir)
 {
   if ((ir->exti_event(BSP_CONFIG_IR_IT_LINE) == 1) && (ir->debounce_flag == 0))
   {
     // Update debounce tick start
-    ir->debounce_tick_start = HAL_GetTick();
     ir->debounce_flag = 1;
+    sch_add_task(drv_ir_debounce_callback, 1, 100);
   }
 
   // Check debounce state
-  if (ir->debounce_flag == 1)
+  if ((ir->debounce_flag == 1) && (callback_flag == 1))
   {
-    if ((HAL_GetTick() - ir->debounce_tick_start) >= 100)
+    ir->debounce_flag = 0;
+    callback_flag = 0;
+    if (ir->gpio_state(BSP_CONFIG_IR_PIN) == 0)
     {
-      ir->debounce_flag = 0;
-      if (ir->gpio_state(BSP_CONFIG_IR_PIN) == 0)
-      {
-        return DRV_IR_STATE_IS_OBSTACLE;
-      }
-      else
-      {
-        return DRV_IR_STATE_NO_OBSTACLE;
-      }
+      return DRV_IR_STATE_IS_OBSTACLE;
+    }
+    else
+    {
+      return DRV_IR_STATE_NO_OBSTACLE;
     }
   }
   return DRV_IR_STATE_NO_OBSTACLE;
 }
 /* Private definitions ----------------------------------------------- */
-
+static void drv_ir_debounce_callback(void)
+{
+  callback_flag = 1;
+}
 /* End of file -------------------------------------------------------- */
