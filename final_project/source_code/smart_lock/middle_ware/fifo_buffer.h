@@ -107,7 +107,7 @@ void fifo_empty(fifo_buffer_info_t *fifo_buffer);
  *  - 0: Success
  *  - 1: Error
  */
-uint8_t fifo_push(fifo_buffer_info_t *fifo_buffer, void *source_data);
+uint8_t fifo_push(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *source_data);
 
 /**
  * @brief  get data from fifo buffer and delete it
