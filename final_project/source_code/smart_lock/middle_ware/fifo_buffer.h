@@ -42,8 +42,8 @@ typedef struct
 {
   //something here
   uint32_t fifo_size; // max size of sub fifo
-  uint8_t fifo_type; // 0: data, 1: task
-  uint8_t
+  uint8_t head;
+  uint8_t tail;
 } fifo_buffer_info_t;
 
 /* Public macros ------------------------------------------------------ */
