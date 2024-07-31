@@ -85,23 +85,43 @@ void fifo_empty(fifo_buffer_info_t *fifo_buffer)
 
 uint8_t fifo_push(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *source_data)
 {
-  if (fifo_buffer->tail >= fifo_buffer->size)
+  if (fifo_buffer->tail >= fifo_buffer->fifo_size)
   {
     return FIFO_FAIL;
   }
   else 
   {
     fifo_buffer_info_t *temp_buffer = fifo_buffer;
-    temp_buffer = temp_buffer + fifo_buffer->tail;
-    temp_buffer = source_data;
+    // temp_buffer = temp_buffer + fifo_buffer->tail;
+    // temp_buffer = source_data;
+    *(temp_buffer + fifo_buffer->tail) = *source_data;
     fifo_buffer->tail = fifo_buffer->tail + 1;
     fifo_set_tail(fifo_buffer, fifo_buffer->tail);
   }
   // something
+  return FIFO_OK;
 }
 
-uint8_t fifo_pop(fifo_buffer_info_t *fifo_buffer, void *dest_data)
+uint8_t fifo_pop(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *dest_data)
 {
+  if (fifo_buffer->head == fifo_buffer->tail)
+  {
+    return FIFO_FAIL;
+  }
+  else 
+  {
+    *dest_data = *(fifo_buffer + fifo_buffer->head);
+    fifo_buffer_info_t *temp_data = fifo_buffer + fifo_buffer->head;
+    for (uint16_t i = 0; i < fifo_buffer->fifo_size - 1; i++)
+    {
+      *temp_data = *(temp_data + 1);
+      temp_data++;
+    }
+    fifo_buffer->tail = fifo_buffer->tail - 1;
+    fifo_set_tail(fifo_buffer, fifo_buffer->tail);
+  }
+  // something
+  return FIFO_OK;
 }
 
 uint8_t fifo_size(fifo_buffer_info_t *fifo_buffer)

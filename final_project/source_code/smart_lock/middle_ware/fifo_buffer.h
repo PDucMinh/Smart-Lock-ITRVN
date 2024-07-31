@@ -122,7 +122,7 @@ uint8_t fifo_push(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *source_da
  *  - 0: Success
  *  - 1: Error
  */
-uint8_t fifo_pop(fifo_buffer_info_t *fifo_buffer, void *dest_data);
+uint8_t fifo_pop(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *dest_data);
 
 /**
  * @brief  get activated size of fifo buffer
