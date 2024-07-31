@@ -100,7 +100,7 @@ bsp_state_t bsp_pwm_set_duty(bsp_config_id_t id, uint32_t channel, uint32_t duty
  * - 0: BSP_STATE_FAIL
  * - 1: BSP_STATE_PASS
  */
-bsp_state_t bsp_pwm_set_duty(bsp_config_id_t id, uint32_t channel, uint32_t period);
+bsp_state_t bsp_pwm_set_freq(bsp_config_id_t id, uint32_t channel, uint32_t period);
 #endif // __BSP_PWM_H
 
 /* End of file -------------------------------------------------------- */
