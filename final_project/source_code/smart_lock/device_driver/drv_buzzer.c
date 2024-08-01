@@ -55,7 +55,7 @@ drv_buzzer_status_t drv_buzzer_set_note(drv_buzzer_t* buzzer, uint16_t note, uin
 
   // Set cycle
   float cycle_in_ms = (1.0 / note) * 1000;
-  buzzer->pwm_set_freq(BSP_CONFIG_ID_BUZZER, BSP_CONFIG_BUZZER_CHANNEL, cycle_in_ms);
+  buzzer->pwm_set_freq(BSP_CONFIG_ID_BUZZER, BSP_CONFIG_BUZZER_CHANNEL, (uint32_t)cycle_in_ms);
 
   // Start PWM
   buzzer->pwm_start(BSP_CONFIG_ID_BUZZER, BSP_CONFIG_BUZZER_CHANNEL);
