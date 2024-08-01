@@ -27,17 +27,17 @@
 /**
  * @brief <structure descriptiton>
  */
-typedef struct
-{
-  uint16_t* pnote_array;
-  uint32_t size;
-} melody_t;
 
 typedef struct
 {
   uint16_t note_freq;
   uint16_t duration_ms;
 } note_t;
+typedef struct
+{
+  note_t* pnote_array;
+  uint32_t size;
+} melody_t;
 
 /* Public macros ------------------------------------------------------ */
 
