@@ -16,7 +16,8 @@
 #define __SYSTEM_NOTIFY_H
 
 /* Includes ----------------------------------------------------------- */
-
+#include "drv_buzzer.h"
+#include "melody.h"
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
@@ -26,9 +27,10 @@
 typedef enum 
 {
   UNLOCKED,
-  LOCKED,
+  DOUBLE_LOCKED,
   WRONG_PASSWORD,
-  CORRECT_PASSWORD
+  CORRECT_PASSWORD,
+  NEED_LOCK
 } system_notify_state_t;
 
 typedef enum
