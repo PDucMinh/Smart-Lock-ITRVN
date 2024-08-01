@@ -34,6 +34,8 @@ extern "C" {
 #include "drv_ir.h"
 #include "bsp_exti.h"
 #include "scheduler.h"
+#include "drv_buzzer.h"
+#include "melody.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
