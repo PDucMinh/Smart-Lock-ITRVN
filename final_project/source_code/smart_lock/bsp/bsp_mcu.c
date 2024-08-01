@@ -118,6 +118,13 @@ bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
       return BSP_STATE_FAIL;
     }
   }
+  if ((mcu_init->is_tim4_used) != BSP_MCU_PERIPH_NONE)
+  {
+    if (bsp_mcu_pwm_init(mcu_init->is_tim4_used, &(mcu->htim4)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
   if ((mcu_init->is_tim2_used) != BSP_MCU_PERIPH_NONE)
   {
     if (bsp_mcu_timer_init(mcu_init->is_tim2_used, &(mcu->htim2)) == BSP_STATE_FAIL)
@@ -229,6 +236,53 @@ static bsp_state_t bsp_mcu_pwm_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef* 
       return BSP_STATE_FAIL;
     }
   }
+  else if (periph == BSP_MCU_PERIPH_TIM4)
+  {
+    TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
+    TIM_MasterConfigTypeDef sMasterConfig = { 0 };
+    TIM_OC_InitTypeDef sConfigOC = { 0 };
+
+    /* USER CODE BEGIN TIM4_Init 1 */
+
+    /* USER CODE END TIM4_Init 1 */
+    htim->Instance = TIM4;
+    (htim->Init).Prescaler = 999;
+    (htim->Init).CounterMode = TIM_COUNTERMODE_UP;
+    (htim->Init).Period = 9999;
+    (htim->Init).ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    (htim->Init).AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    htim->Base_MspInitCallback = bsp_mcu_pwm_mspinit;
+    if (HAL_TIM_Base_Init(htim) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+
+    sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+    if (HAL_TIM_ConfigClockSource(htim, &sClockSourceConfig) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+    if (HAL_TIM_PWM_Init(htim) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+
+    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+    if (HAL_TIMEx_MasterConfigSynchronization(htim, &sMasterConfig) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+
+    sConfigOC.OCMode = TIM_OCMODE_PWM1;
+    sConfigOC.Pulse = 4999;
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+    if (HAL_TIM_PWM_ConfigChannel(htim, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
   return BSP_STATE_PASS;
 }
 
@@ -274,6 +328,10 @@ static void bsp_mcu_pwm_mspinit(TIM_HandleTypeDef* htim)
   if (htim->Instance == TIM3)
   {
     __HAL_RCC_TIM3_CLK_ENABLE();
+  }
+  else if (htim->Instance == TIM4)
+  {
+    __HAL_RCC_TIM4_CLK_ENABLE();
   }
 }
 
