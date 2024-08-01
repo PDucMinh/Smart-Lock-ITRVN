@@ -81,6 +81,10 @@ drv_keypad_button_t drv_keypad_read(drv_keypad_t *keypad)
       if (key_value & (1 << i)) 
       {
         buttons_pressed[i] = 1;
+
+        // Count the number of button pressed and returned the location
+        count_buttons_pressed = count_buttons_pressed + 1;
+        btn_pressed_position = i + 1;
       }
     }
   } 
@@ -88,16 +92,7 @@ drv_keypad_button_t drv_keypad_read(drv_keypad_t *keypad)
   {
     return DRV_KEYPAD_ERROR;
   }
-  
-  // Count the number of button pressed and returned to the location
-  for (uint8_t i = 0; i < 16; i++) 
-  {
-    if (buttons_pressed[i] == 1) 
-    {
-      count_buttons_pressed = count_buttons_pressed + 1;
-      btn_pressed_position = i + 1;
-    }
-  }
+
 
   // Only 1 button is allowed per time point
   if ((count_buttons_pressed = 0) || (count_buttons_pressed > 1))
@@ -109,6 +104,7 @@ drv_keypad_button_t drv_keypad_read(drv_keypad_t *keypad)
     }
     return DRV_KEYPAD_ERROR;
   }
+
 
   // Check if button was received before
   // If button is held, it will receive 1 time
