@@ -38,7 +38,7 @@ drv_buzzer_status_t drv_buzzer_init(drv_buzzer_t* buzzer)
   buzzer->pwm_start = bsp_pwm_start;
   buzzer->pwm_stop = bsp_pwm_stop;
   buzzer->pwm_set_freq = bsp_pwm_set_freq;
-  buzzer->owm_set_duty = bsp_pwm_set_duty;
+  buzzer->pwm_set_duty = bsp_pwm_set_duty;
   duration_flag = 0;
 
   return DRV_BUZZER_STATUS_SUCCESS;
@@ -50,9 +50,6 @@ drv_buzzer_status_t drv_buzzer_set_note(drv_buzzer_t* buzzer, uint16_t note, uin
   {
     return DRV_BUZZER_STATUS_FAIL;
   }
-
-  // Reset duration_flag before set note
-  duration_flag = 0;
 
   // Set cycle
   if (note == 0)
@@ -83,7 +80,6 @@ uint8_t drv_buzzer_duration_cplt(drv_buzzer_t* buzzer)
   if (duration_flag == 1)
   {
     duration_flag = 0;
-    buzzer->pwm_stop(BSP_CONFIG_ID_BUZZER, BSP_CONFIG_BUZZER_CHANNEL);
   }
   // Set duration_flag to indicate completion
 
