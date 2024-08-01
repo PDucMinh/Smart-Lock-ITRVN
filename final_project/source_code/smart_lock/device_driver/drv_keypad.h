@@ -68,7 +68,7 @@ typedef enum
 typedef struct
 {
   /**< This function pointer utilized to receive output data from TTP229 module */
-  uint8_t (*usart_rx)(bsp_config_id_t id, uint8_t* pdata, uint8_t size); 
+  uint8_t (*usart_rx)(bsp_config_id_t id, uint8_t *pdata, uint8_t size); 
   uint32_t pre_btn[16];
 } drv_keypad_t;
 
