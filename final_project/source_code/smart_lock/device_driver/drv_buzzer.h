@@ -45,6 +45,7 @@ typedef struct
   bsp_state_t (*pwm_set_freq)(bsp_config_id_t id, uint32_t channel, uint32_t period); /**< Set timer cycle */
   bsp_state_t (*pwm_start)(bsp_config_id_t id, uint32_t channel); /**< Start pwm channel, depend on user set */
   bsp_state_t (*pwm_stop)(bsp_config_id_t id, uint32_t channel);  /**< Stop pwm channel, depend on user set */
+  bsp_state_t (*pwm_set_duty)(bsp_config_id_t id, uint32_t channel, uint32_t duty);
 }
 drv_buzzer_t;
 
