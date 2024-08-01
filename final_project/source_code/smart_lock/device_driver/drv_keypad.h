@@ -8,7 +8,7 @@
  * @author     
  *
  * @brief      <This file is header file for TTP 229 keypad module>
- *             <Using 16 inputs, 16 serial outputs, single key mode>
+ *             <Using 16 inputs, 16 serial outputs, single key mode, active low>
  * @note
  * @example    
  *             
