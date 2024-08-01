@@ -5,10 +5,10 @@
  * @version    major.minor.patch
  * @date       yyyy-mm-dd
  * @author     Minh Pham Duc
- *             
+ *
  * @brief      <A brief description of the content of the file>
- *             
- * @note          
+ *
+ * @note
  */
 
 /* Includes ----------------------------------------------------------- */
@@ -35,7 +35,7 @@ static system_notify_state_t system_notify_state;
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
@@ -43,17 +43,14 @@ static void private_function(void);
 /* Function definitions ----------------------------------------------- */
 void system_notify_init(void)
 {
-
 }
 
-system_notify_return_t system_notify_set(system_notify_state_t state);
+system_notify_return_t system_notify_set(system_notify_state_t state)
 {
-
 }
 
 system_notify_state_t system_notify_get_state(void)
 {
-
 }
 /* Private definitions ----------------------------------------------- */
 
