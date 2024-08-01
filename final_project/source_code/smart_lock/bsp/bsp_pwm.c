@@ -93,18 +93,32 @@ bsp_state_t bsp_pwm_set_duty(bsp_config_id_t id, uint32_t channel, uint32_t duty
   BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
   BSP_CHECK_RANGE(duty, 100, BSP_STATE_FAIL);
 
-  int pulse;
+  int pulse, period;
   if (id == BSP_CONFIG_ID_LED_RGB)
   {
-	  if(duty > 0)
+	  period = __HAL_TIM_GET_AUTORELOAD(&htim3);
+    if(duty > 0)
     {
-      pulse = (((htim3.Init.Period + 1) * duty) / 100) - 1;
+      pulse = (((period + 1) * duty) / 100) - 1;
     } 
     else
     {
       pulse = 0;
     } 
 	  __HAL_TIM_SET_COMPARE(&htim3, channel, pulse);
+  }
+  else if (id == BSP_CONFIG_ID_BUZZER)
+  {
+	  period = __HAL_TIM_GET_AUTORELOAD(&htim4);
+    if(duty > 0)
+    {
+      pulse = (((period + 1) * duty) / 100) - 1;
+    } 
+    else
+    {
+      pulse = 0;
+    } 
+	  __HAL_TIM_SET_COMPARE(&htim4, channel, pulse);
   }
   return BSP_STATE_PASS;
 }
