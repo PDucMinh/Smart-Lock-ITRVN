@@ -100,6 +100,31 @@ drv_buzzer_t;
  */
  uint8_t drv_buzzer_duration_cplt(drv_buzzer_t *buzzer);
 
+/**
+ * @brief  <This function utilized to to receive flag duration callback and stop pwm>
+ *
+ * @param[in]     <drv_buzzer_t *buzzer>  <pointer to a struct type>
+ * @param[out]    None
+ * @param[inout]  None
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ */
+drv_buzzer_status_t drv_buzzer_active(drv_buzzer_t *buzzer);
+
+/**
+ * @brief  <This function utilized to to receive flag duration callback and stop pwm>
+ *
+ * @param[in]     <drv_buzzer_t *buzzer>  <pointer to a struct type>
+ * @param[out]    None
+ * @param[inout]  None
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ */
+drv_buzzer_status_t drv_buzzer_deactive(drv_buzzer_t *buzzer);
 #endif // __DRV_BUZZER_H
 
 /* End of file -------------------------------------------------------- */
