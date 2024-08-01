@@ -23,6 +23,7 @@
 #define MELODY_ID_SECOND_SONG (1u)
 #define MELODY_ID_THIRD_SONG (2u)
 #define MELODY_ID_FOURTH_SONG (3u)
+#define MELODY_ID_FIFTH_SONG (5u)
 /* Public enumerate/structure ----------------------------------------- */
 /**
  * @brief <structure descriptiton>
