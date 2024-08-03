@@ -71,6 +71,7 @@ typedef struct
   /**< This function pointer utilized to receive output data from TTP229 module */
   bsp_state_t (*usart_rx_active)(bsp_config_id_t id, uint8_t *pdata, uint8_t size); 
   bsp_state_t (*usart_rx_cplt)(bsp_config_id_t id);
+  uint32_t (*timer_set)(void (*callback)(void), uint32_t delay, uint32_t period);
   uint8_t pre_btn[2];
 } drv_keypad_t;
 
@@ -94,6 +95,20 @@ typedef struct
  */
 drv_keypad_status_t drv_keypad_init(drv_keypad_t *keypad);
 
+/**
+ * @brief  <This function utilized to init keypad>
+ *
+ * @param[in]     <drv_keypad_t *keypad>  <pointer to a struct type>
+ * @param[out]    None
+ * @param[inout]  None
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: DRV_KEYPAD_STATUS_FAIL
+ *  - 1: DRV_KEYPAD_STATUS_SUCCESS
+ */
+drv_keypad_status_t drv_keypad_startup_state(drv_keypad_t *keypad);
 
 /**
  * @brief  <This function utilized to read data from TTP229 module by polling method>
