@@ -22,7 +22,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "bsp_config.h"
-#include "bsp_usart.h"
+#include "bsp_state.h"
 
 /* Public defines ----------------------------------------------------- */
 
@@ -83,9 +83,8 @@ typedef struct
 /**
  * @brief  <This function utilized to init keypad>
  *
- * @param[in]     <drv_keypad_t *keypad>  <pointer to a struct type>
- * @param[out]    None
- * @param[inout]  None
+ * @param[in]     keypad  <pointer to a struct manage keypad>
+ * 
  *
  * @attention  <API attention note>
  *
@@ -96,11 +95,10 @@ typedef struct
 drv_keypad_status_t drv_keypad_init(drv_keypad_t *keypad);
 
 /**
- * @brief  <This function utilized to init keypad>
+ * @brief  <This function utilized to check start up state after power on>
  *
- * @param[in]     <drv_keypad_t *keypad>  <pointer to a struct type>
- * @param[out]    None
- * @param[inout]  None
+ * @param[in]     keypad  <pointer to a struct manage keypad>
+ * 
  *
  * @attention  <API attention note>
  *
@@ -113,28 +111,28 @@ drv_keypad_status_t drv_keypad_startup_state(drv_keypad_t *keypad);
 /**
  * @brief  <This function utilized to read data from TTP229 module by polling method>
  *
- * @param[in]     <drv_keypad_t *keypad>  <pointer to a struct type>
- * @param[out]    None
- * @param[inout]  None
+ * @param[in]     keypad  <pointer to a struct manage keypad>
+ * 
  *
  * @attention  <API attention note>
  *
- * @return a value of enum defined above
+ * @return enum type button ID
  */
 drv_keypad_button_t drv_keypad_read(drv_keypad_t *keypad);
 
 /**
- * @brief  <This function utilized to read data from TTP229 module by polling method>
+ * @brief  <This function utilized to start sending clk to scan data from TTP229>
  *
- * @param[in]     <drv_keypad_t *keypad>  <pointer to a struct type>
- * @param[out]    None
- * @param[inout]  None
+ * @param[in]     keypad  <pointer to a struct manage keypad>
+ * 
  *
  * @attention  <API attention note>
  *
- * @return a value of enum defined above
+ * @return 
+ *  - 0: DRV_KEYPAD_STATUS_FAIL
+ *  - 1: DRV_KEYPAD_STATUS_SUCCESS
  */
-drv_keypad_button_t drv_keypad_scan(drv_keypad_t *keypad);
+drv_keypad_status_t drv_keypad_scan(drv_keypad_t *keypad);
 #endif // __DRV_KEYPAD_H
 
 /* End of file -------------------------------------------------------- */
