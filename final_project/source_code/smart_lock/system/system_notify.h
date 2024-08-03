@@ -18,6 +18,8 @@
 /* Includes ----------------------------------------------------------- */
 #include "drv_buzzer.h"
 #include "melody.h"
+#include "bsp_gpio.h"
+#include "bsp_mcu.h"
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */

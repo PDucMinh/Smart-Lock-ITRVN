@@ -15,7 +15,7 @@
 #include "system_notify.h"
 
 /* Private defines ---------------------------------------------------- */
-
+#define __EXTERNAL_MODULE_ENABLE
 /* Private enumerate/structure ---------------------------------------- */
 
 /* Private macros ----------------------------------------------------- */
@@ -24,6 +24,16 @@
 
 /* Private variables -------------------------------------------------- */
 static system_notify_state_t system_notify_state;
+
+#ifdef __EXTERNAL_MODULE_ENABLE
+bsp_gpio_pin_t bbuzzer_pin;
+drv_buzzer_t dbuzzer;
+melody_t sound;
+// bsp_mcu_init_t bstmf411_init;
+#else
+drv_buzzer_t dbuzzer;
+melody_t sound;
+#endif
 
 /* Private function prototypes ---------------------------------------- */
 /**
@@ -41,9 +51,23 @@ static system_notify_state_t system_notify_state;
  */
 static void private_function(void);
 /* Function definitions ----------------------------------------------- */
+#ifdef __EXTERNAL_MODULE_ENABLE
+void system_notify_init(void)
+{
+  bbuzzer_pin.io = (BSP_GPIO_PORT_D << 4) | BSP_GPIO_PIN_12;
+  bbuzzer_pin.mode = BSP_GPIO_AF_PP;
+  bbuzzer_pin.af = BSP_GPIO_AF2;
+  bbuzzer_pin.pull_type = BSP_GPIO_NOPULL;
+  bbuzzer_pin.speed = BSP_GPIO_FREQ_LOW;
+  bsp_gpio_pin_init(&bbuzzer_pin);
+  drv_buzzer_init(&dbuzzer);
+  drv_buzzer_active(&dbuzzer);
+}
+#else
 void system_notify_init(void)
 {
 }
+#endif
 
 system_notify_return_t system_notify_set(system_notify_state_t state)
 {

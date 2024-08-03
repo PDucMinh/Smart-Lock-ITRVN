@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "system_notify.h": "c"
+        "system_notify.h": "c",
+        "bsp_gpio.h": "c"
     }
 }
