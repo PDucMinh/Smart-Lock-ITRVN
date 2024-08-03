@@ -58,7 +58,22 @@ bsp_state_t bsp_usart_init(bsp_mcu_t* mcu);
  *  - 0: Success
  *  - 1: Error
  */
-bsp_state_t bsp_usart_receive(bsp_config_id_t id, uint8_t* pdata, uint16_t size);
+bsp_state_t bsp_usart_receive_active(bsp_config_id_t id, uint8_t* pdata, uint16_t size);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+bsp_state_t bsp_usart_receive_cplt(bsp_config_id_t id);
 #endif // __BSP_USART_H
 
 /* End of file -------------------------------------------------------- */
