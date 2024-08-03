@@ -58,6 +58,7 @@ typedef enum
   DRV_KEYPAD_BUTTON_UP,
   DRV_KEYPAD_BUTTON_DOWN,
   DRV_KEYPAD_BUTTON_ENTER,
+  DRV_KEYPAD_NONE,
   DRV_KEYPAD_ERROR,
 } drv_keypad_button_t;
 
@@ -68,8 +69,9 @@ typedef enum
 typedef struct
 {
   /**< This function pointer utilized to receive output data from TTP229 module */
-  uint8_t (*usart_rx)(bsp_config_id_t id, uint8_t *pdata, uint8_t size); 
-  uint32_t pre_btn[16];
+  bsp_state_t (*usart_rx_active)(bsp_config_id_t id, uint8_t *pdata, uint8_t size); 
+  bsp_state_t (*usart_rx_cplt)(bsp_config_id_t id);
+  uint8_t pre_btn[2];
 } drv_keypad_t;
 
 /* Public macros ------------------------------------------------------ */
@@ -105,6 +107,19 @@ drv_keypad_status_t drv_keypad_init(drv_keypad_t *keypad);
  * @return a value of enum defined above
  */
 drv_keypad_button_t drv_keypad_read(drv_keypad_t *keypad);
+
+/**
+ * @brief  <This function utilized to read data from TTP229 module by polling method>
+ *
+ * @param[in]     <drv_keypad_t *keypad>  <pointer to a struct type>
+ * @param[out]    None
+ * @param[inout]  None
+ *
+ * @attention  <API attention note>
+ *
+ * @return a value of enum defined above
+ */
+drv_keypad_button_t drv_keypad_scan(drv_keypad_t *keypad);
 #endif // __DRV_KEYPAD_H
 
 /* End of file -------------------------------------------------------- */
