@@ -47,6 +47,30 @@ void system_notify_init(void)
 
 system_notify_return_t system_notify_set(system_notify_state_t state)
 {
+  switch (state)
+  {
+  case NO_NOTIFY:
+    /* code */
+    break;
+  case UNLOCKED:
+    /* code */
+    break;
+  case DOUBLE_LOCKED:
+    /* code */
+    break;
+  case WRONG_PASSWORD:
+    /* code */
+    break;
+  case CORRECT_PASSWORD:
+    /* code */
+    break;
+  case NEED_LOCK:
+    /* code */
+    break;
+  default:
+    state = NO_NOTIFY;
+    break;
+  }
 }
 
 system_notify_state_t system_notify_get_state(void)

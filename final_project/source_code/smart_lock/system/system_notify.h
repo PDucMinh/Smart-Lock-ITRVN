@@ -30,7 +30,8 @@ typedef enum
   DOUBLE_LOCKED,
   WRONG_PASSWORD,
   CORRECT_PASSWORD,
-  NEED_LOCK
+  NEED_LOCK,
+  NO_NOTIFY
 } system_notify_state_t;
 
 typedef enum
@@ -93,6 +94,22 @@ system_notify_return_t system_notify_set(system_notify_state_t state);
  */
 
 system_notify_state_t system_notify_get_state(void);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ *  - 0: Success
+ *  - 1: Error
+ */
+
+system_notify_return_t system_notify_loop(void);
 
 #endif // __CODE_TEMPLATE_H
 
