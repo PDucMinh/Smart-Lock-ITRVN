@@ -72,7 +72,7 @@ typedef struct
   bsp_state_t (*usart_rx_active)(bsp_config_id_t id, uint8_t *pdata, uint8_t size); 
   bsp_state_t (*usart_rx_cplt)(bsp_config_id_t id);
   uint32_t (*timer_set)(void (*callback)(void), uint32_t delay, uint32_t period);
-  uint8_t pre_btn[2];
+  uint16_t pre_btn;
 } drv_keypad_t;
 
 /* Public macros ------------------------------------------------------ */
