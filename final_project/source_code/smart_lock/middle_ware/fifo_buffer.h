@@ -1,19 +1,15 @@
 /**
  * @file       fifo_buffer.h
  * @copyright  Copyright (C) 2019 ITRVN. All rights reserved.
- * @license    This project is released under the Fiot License.
- * @version    major.minor.patch
- * @date       yyyy-mm-dd
- * @author     <first_name_1> <last_name_1>
- * @author     <first_name_2> <last_name_2>
+ * @license
+ * @version    1.0.0
+ * @date       2024-08-04
+ * @author     Minh Pham
  *
  * @brief      <A brief description of the content of the file>
  *
  * @note
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -24,7 +20,7 @@
 #include <stdio.h>
 /* Public defines ----------------------------------------------------- */
 #define FIFO_MAX_SIZE (100) /* MAX OF FIFO SIZE */
-#define FIFO_MAX_NUM  (10)
+#define FIFO_MAX_NUM (10)
 /* Public enumerate/structure ----------------------------------------- */
 /**
  * @brief return message of fifo buffer
@@ -54,76 +50,68 @@ typedef struct
 /**
  * @brief  initialize blank fifo buffer
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[in]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]      info_size    <size of a data item>
+ * @param[in]      fifo_size    <number of data item inside fifo>
+ * @param[inout]   fifo_buffer  <struct pointer to a fifo buffer>
  *
  * @attention  <API attention note>
  *
- * @return     
- *  
+ * @return     none
+ *
  */
 void fifo_init(fifo_buffer_info_t* fifo_buffer, uint16_t fifo_size, uint32_t info_size);
 
 /**
  * @brief  clear fifo buffer
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[inout]  fifo_buffer  <struct pointer to fifo buffer>
  *
  * @attention  <API attention note>
  *
- * @return
- *  - 0: Success
- *  - 1: Error
+ * @return     none
+ *
  */
-void fifo_empty(fifo_buffer_info_t *fifo_buffer);
+void fifo_empty(fifo_buffer_info_t* fifo_buffer);
 
 /**
- * @brief  add new data to fifo buffer
+ * @brief  add new item data to fifo buffer
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     source_data  <pointer to source data buffer>
+ * @param[inout]  fifo_buffer  <struct pointer to fifo buffer>
  *
  * @attention  <API attention note>
  *
  * @return
- *  - 0: Success
- *  - 1: Error
+ *  - 0: FIFO_OK
+ *  - 1: FIFO_FAIL
  */
 fifo_return_t fifo_push(fifo_buffer_info_t* fifo_buffer, void* source_data);
 
 /**
  * @brief  get data from fifo buffer and delete it
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     dest_data    <pointer to data buffer receive item from fifo>
+ * @param[inout]  fifo_buffer  <struct pointer to fifo buffer>
  *
  * @attention  <API attention note>
  *
  * @return
- *  - 0: Success
- *  - 1: Error
+ *  - 0: FIFO_OK
+ *  - 1: FIFO_FAIL
  */
-fifo_return_t fifo_pop(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *dest_data);
+fifo_return_t fifo_pop(fifo_buffer_info_t* fifo_buffer, fifo_buffer_info_t* dest_data);
 
 /**
  * @brief  get activated size of fifo buffer
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[inout]  fifo_buffer  <struct pointer to fifo buffer>
  *
  * @attention  <API attention note>
  *
- * @return
- *  - 0: Success
- *  - 1: Error
+ * @return     number of item inside a fifo
+ *  
  */
-uint8_t fifo_size(fifo_buffer_info_t *fifo_buffer);
-#endif // __CODE_TEMPLATE_H
+uint8_t fifo_size(fifo_buffer_info_t* fifo_buffer);
+#endif // __FIFO_BUFFER_H
 
 /* End of file -------------------------------------------------------- */
