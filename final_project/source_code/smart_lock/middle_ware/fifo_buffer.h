@@ -99,7 +99,7 @@ fifo_return_t fifo_push(fifo_buffer_info_t* fifo_buffer, void* source_data);
  *  - 0: FIFO_OK
  *  - 1: FIFO_FAIL
  */
-fifo_return_t fifo_pop(fifo_buffer_info_t* fifo_buffer, fifo_buffer_info_t* dest_data);
+fifo_return_t fifo_pop(fifo_buffer_info_t* fifo_buffer, void* dest_data);
 
 /**
  * @brief  get activated size of fifo buffer
