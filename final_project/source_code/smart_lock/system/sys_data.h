@@ -17,7 +17,6 @@
 #define __SYS_DATA_H
 
 /* Includes ----------------------------------------------------------- */
-#include "fifo_buffer.h"
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
@@ -83,35 +82,7 @@ typedef union
 /* Public variables --------------------------------------------------- */
 
 /* Public function prototypes ----------------------------------------- */
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-sys_data_status_t sys_data_add(sys_data_t* data, fifo_buffer_info_t* buf_info);
 
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-sys_data_t sys_data_get(fifo_buffer_info_t* buf_info);
 #endif // __SYS_DATA_H
 
 /* End of file -------------------------------------------------------- */
