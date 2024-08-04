@@ -75,24 +75,71 @@ system_notify_return_t system_notify_set(system_notify_state_t state)
   {
   case NO_NOTIFY:
     /* code */
+    drv_buzzer_set_note(/*something to turn off buzzer*/);
     break;
   case UNLOCKED:
     /* code */
+    sound = melody_read(MELODY_ID_THIRD_SONG);
+    for (int index = 0; index < sound.size; index)
+    {
+      drv_buzzer_set_note(&dbuzzer, sound.pnote_array[index].note_freq, sound.pnote_array[index].duration_ms);
+      if (drv_buzzer_duration_cplt(&dbuzzer))
+      {
+        index++;
+      }
+    }
     break;
   case DOUBLE_LOCKED:
     /* code */
+    sound = melody_read(MELODY_ID_FIRST_SONG);
+    for (int index = 0; index < sound.size; index)
+    {
+      drv_buzzer_set_note(&dbuzzer, sound.pnote_array[index].note_freq, sound.pnote_array[index].duration_ms);
+      if (drv_buzzer_duration_cplt(&dbuzzer))
+      {
+        index++;
+      }
+    }
     break;
   case WRONG_PASSWORD:
     /* code */
+    sound = melody_read(MELODY_ID_FOURTH_SONG);
+    for (int index = 0; index < sound.size; index)
+    {
+      drv_buzzer_set_note(&dbuzzer, sound.pnote_array[index].note_freq, sound.pnote_array[index].duration_ms);
+      if (drv_buzzer_duration_cplt(&dbuzzer))
+      {
+        index++;
+      }
+    }
     break;
   case CORRECT_PASSWORD:
     /* code */
+    sound = melody_read(MELODY_ID_FIFTH_SONG);
+    for (int index = 0; index < sound.size; index)
+    {
+      drv_buzzer_set_note(&dbuzzer, sound.pnote_array[index].note_freq, sound.pnote_array[index].duration_ms);
+      if (drv_buzzer_duration_cplt(&dbuzzer))
+      {
+        index++;
+      }
+    }
     break;
   case NEED_LOCK:
     /* code */
+    sound = melody_read(MELODY_ID_SECOND_SONG);
+    for (int index = 0; index < sound.size; index)
+    {
+      drv_buzzer_set_note(&dbuzzer, sound.pnote_array[index].note_freq, sound.pnote_array[index].duration_ms);
+      if (drv_buzzer_duration_cplt(&dbuzzer))
+      {
+        index++;
+      }
+    }
     break;
   default:
     state = NO_NOTIFY;
+    //some code to turn off buzzer
     break;
   }
 }
@@ -100,6 +147,14 @@ system_notify_return_t system_notify_set(system_notify_state_t state)
 system_notify_state_t system_notify_get_state(void)
 {
 }
+
+#ifdef __EXTERNAL_MODULE_ENABLE
+
+system_notify_return_t system_notify_loop(void)
+{
+}
+
+#endif
 /* Private definitions ----------------------------------------------- */
 
 /* End of file -------------------------------------------------------- */

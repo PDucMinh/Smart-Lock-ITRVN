@@ -66,6 +66,7 @@ typedef enum
  */
 void system_notify_init(void);
 
+
 /**
  * @brief  <function description>
  *
@@ -79,6 +80,7 @@ void system_notify_init(void);
  *  - 0: Success
  *  - 1: Error
  */
+
 system_notify_return_t system_notify_set(system_notify_state_t state); 
 
 /**
@@ -97,6 +99,8 @@ system_notify_return_t system_notify_set(system_notify_state_t state);
 
 system_notify_state_t system_notify_get_state(void);
 
+#ifdef __EXTERNAL_MODULE_ENABLE
+
 /**
  * @brief  <function description>
  *
@@ -112,6 +116,8 @@ system_notify_state_t system_notify_get_state(void);
  */
 
 system_notify_return_t system_notify_loop(void);
+
+#endif
 
 #endif // __CODE_TEMPLATE_H
 
