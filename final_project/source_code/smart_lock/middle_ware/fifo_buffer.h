@@ -21,10 +21,10 @@
 #define __FIFO_BUFFER_H
 
 /* Includes ----------------------------------------------------------- */
-
+#include <stdio.h>
 /* Public defines ----------------------------------------------------- */
-#define FIFO_MAX_SIZE (10) /* MAX OF FIFO SIZE */
-
+#define FIFO_MAX_SIZE (100) /* MAX OF FIFO SIZE */
+#define FIFO_MAX_NUM  (10)
 /* Public enumerate/structure ----------------------------------------- */
 /**
  * @brief return message of fifo buffer
@@ -40,26 +40,13 @@ typedef enum
  */
 typedef struct
 {
-  //something here
+  uint8_t* pbuf;
   uint32_t fifo_size; // max size of sub fifo
-  uint8_t head;
+  uint32_t info_size;
   uint8_t tail; // tail <= size aka tail = next empty slot
 } fifo_buffer_info_t;
 
 /* Public macros ------------------------------------------------------ */
-/**
- * @brief  <macro description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
 
 /* Public variables --------------------------------------------------- */
 
@@ -73,11 +60,10 @@ typedef struct
  *
  * @attention  <API attention note>
  *
- * @return
- *  - 0: Success
- *  - 1: Error
+ * @return     
+ *  
  */
-void fifo_init(fifo_buffer_info_t *fifo_buffer, uint32_t fifo_size);
+void fifo_init(fifo_buffer_info_t* fifo_buffer, uint16_t fifo_size, uint32_t info_size);
 
 /**
  * @brief  clear fifo buffer
@@ -107,7 +93,7 @@ void fifo_empty(fifo_buffer_info_t *fifo_buffer);
  *  - 0: Success
  *  - 1: Error
  */
-uint8_t fifo_push(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *source_data);
+fifo_return_t fifo_push(fifo_buffer_info_t* fifo_buffer, void* source_data);
 
 /**
  * @brief  get data from fifo buffer and delete it
@@ -122,7 +108,7 @@ uint8_t fifo_push(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *source_da
  *  - 0: Success
  *  - 1: Error
  */
-uint8_t fifo_pop(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *dest_data);
+fifo_return_t fifo_pop(fifo_buffer_info_t *fifo_buffer, fifo_buffer_info_t *dest_data);
 
 /**
  * @brief  get activated size of fifo buffer
