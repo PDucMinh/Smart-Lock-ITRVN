@@ -113,9 +113,7 @@ drv_rtc_status_t drv_rtc_init(drv_rtc_t *rtc);
  *
  * @attention  <API attention note>
  *
- * @return
- *  - 0: DRV_RTC_STATUS_FAIL
- *  - 1: DRV_RTC_STATUS_OK
+ * @return a struct
  */
 drv_rtc_time_t drv_rtc_read(drv_rtc_t *rtc);
 
@@ -124,6 +122,7 @@ drv_rtc_time_t drv_rtc_read(drv_rtc_t *rtc);
  * @brief  <This function utilized to write time data to DS1307 RTC module>
  *
  * @param[in]     <drv_rtc_t *rtc>  <pointer to a struct type>
+ * @param[in]     <drv_rtc_time_t time>  <data of time which user set>
  * @param[out]    None
  * @param[inout]  None
  *
