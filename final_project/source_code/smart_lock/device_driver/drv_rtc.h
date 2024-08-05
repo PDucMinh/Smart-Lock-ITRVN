@@ -26,6 +26,8 @@
 #include "bsp_i2c.h"
 
 /* Public defines ----------------------------------------------------- */
+#define DS1307_ADDRESS       (0x68 << 1) 
+
 /* rtc register ID */
 #define DRV_RTC_REG_SECOND   (0x00)
 #define DRV_RTC_REG_MINUTE   (0x01)
@@ -100,22 +102,6 @@ typedef struct
  *  - 1: DRV_RTC_STATUS_OK
  */
 drv_rtc_status_t drv_rtc_init(drv_rtc_t *rtc);
-
-
-/**
- * @brief  <This function utilized to allow create square clock signal from DS1307 RTC module>
- *
- * @param[in]     <drv_rtc_t *rtc>  <pointer to a struct type>
- * @param[out]    None
- * @param[inout]  None
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: DRV_RTC_STATUS_FAIL
- *  - 1: DRV_RTC_STATUS_OK
- */
-drv_rtc_status_t drv_rtc_enable_clk(drv_rtc_t *rtc);
 
 
 /**
