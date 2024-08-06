@@ -79,6 +79,9 @@ char *encode_log_info(log_info_t *log_info)
 
 int str_len(char *str)
 {
+  int len = 0;
+  for (len; str[len] != '\0'; len++);
+  return len;
 }
 /* Private definitions ----------------------------------------------- */
 
