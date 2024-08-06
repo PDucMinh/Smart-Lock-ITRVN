@@ -1,0 +1,47 @@
+@startuml usecase_1_full_function
+left to right direction
+actor Admin as ad 
+actor User as us 
+actor Guest as gu 
+rectangle Lock_System {
+    rectangle Authentication {
+        usecase Login as lg  
+        usecase Lock as l 
+        usecase Unlock as unl 
+        usecase Logout as lo 
+        unl .> lg : <<include>>
+        l ..> lo : <<include>>
+    }
+    rectangle User_management {
+        usecase Change_personal_info as cpi
+        usecase Change_system_info as csi 
+        usecase change_password
+        usecase change_rfid
+        cpi <.. change_password : extends
+        cpi <.. change_rfid : extends
+    }
+    rectangle System_information {
+        usecase View_system_log as vl 
+        usecase View_system_information as vsi 
+        usecase View_lock_state as vls  
+        usecase View_user_activity_log as vual
+        vl <. vual : extends
+        vl <.. vls : extends
+    }
+}
+
+us --|> gu 
+ad --|> us 
+
+gu -- lg 
+gu -- l 
+gu -- vls 
+
+us -- unl 
+us -- cpi
+us -- vl
+
+ad -- vsi 
+ad -- csi 
+
+@enduml
