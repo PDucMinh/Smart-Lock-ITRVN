@@ -4,16 +4,9 @@
  * @license    This project is released under the Fiot License.
  * @version    major.minor.patch
  * @date       yyyy-mm-dd
- * @author     <first_name_1> <last_name_1>
- * @author     <first_name_2> <last_name_2>
+ * @author     Minh Pham Duc
  *
  * @brief      <A brief description of the content of the file>
- *
- * @note
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
  */
 
 /* Includes ----------------------------------------------------------- */
@@ -93,7 +86,8 @@ int decode_number(const char *bencoded_value)
   if ((integer_e != 0) && (integer_i != 0))
   {
     int length = (int)(integer_e - integer_i) - 1;
-    char decoded_str[MAX_ENCODED_STRING_SIZE];
+    char 
+    decoded_str[MAX_ENCODED_STRING_SIZE];
     strncpy(decoded_str, start, length);
     decoded_str[length] = '\0';
     return atoi(decoded_str);

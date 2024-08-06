@@ -4,16 +4,9 @@
  * @license    This project is released under the Fiot License.
  * @version    major.minor.patch
  * @date       yyyy-mm-dd
- * @author     <first_name_1> <last_name_1>
- * @author     <first_name_2> <last_name_2>
+ * @author     Minh Pham Duc
  *             
  * @brief      <A brief description of the content of the file>
- *             
- * @note          
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
