@@ -5,9 +5,9 @@
  * @version    major.minor.patch
  * @date       yyyy-mm-dd
  * @author     Minh Pham Duc
- *             
+ *
  * @brief      <A brief description of the content of the file>
- *             
+ *
  */
 
 /* Includes ----------------------------------------------------------- */
@@ -15,9 +15,7 @@
 
 /* Private defines ---------------------------------------------------- */
 
-
 /* Private enumerate/structure ---------------------------------------- */
-
 
 /* Private macros ----------------------------------------------------- */
 
@@ -35,25 +33,22 @@
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Success
  *  - 1: Error
  */
 static void private_function(void);
 /* Function definitions ----------------------------------------------- */
-void read_data_frame(data_frame_t *dest_data_frame, char *src_data_string)
+void read_data_frame_from_string(data_frame_t *dest_data_frame, char *src_data_string)
 {
-
 }
 
-char write_data_frame(data_frame_t *src_data_frame)
+char write_data_frame_to_string(data_frame_t *src_data_frame)
 {
-
 }
 
 void sys_protocol_loop(/*something here*/)
 {
-  
 }
 /* Private definitions ----------------------------------------------- */
 
