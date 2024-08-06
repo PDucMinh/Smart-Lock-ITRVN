@@ -63,12 +63,10 @@ char *encode_number(const int *number)
 char *encode_log_info(log_info_t *log_info)
 {
   char time[MAX_ENCODED_STRING_SIZE];
-  char temp[MAX_ENCODED_STRING_SIZE];
   char encoded[MAX_ENCODED_STRING_SIZE];
   for (int i = 0; i < 6; i++)
   {
-    sprintf(temp, "i%de", log_info->time_stamp[i]);
-    strcat(time, temp);
+    strcat(time, encode_number(log_info->time_stamp[i]));
   }
   sprintf(encoded,
           "%s%d:%s%d:%s%d:%s",
