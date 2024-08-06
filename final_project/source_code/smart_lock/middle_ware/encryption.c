@@ -93,7 +93,7 @@ int decode_number(const char *bencoded_value)
   if ((integer_e != 0) && (integer_i != 0))
   {
     int length = (int)(integer_e - integer_i) - 1;
-    char *decoded_str = (char *)malloc(length + 1);
+    char *decoded_str[MAX_ENCODED_STRING_SIZE];
     strncpy(decoded_str, start, length);
     decoded_str[length] = '\0';
     return atoi(decoded_str);
