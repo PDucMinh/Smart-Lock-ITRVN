@@ -60,7 +60,7 @@ char *encode_number(const int *number)
   return encoded;
 }
 
-char *encode_log_info(log_info_t *log_info)
+char *encode_log_info(const log_info_t *log_info)
 {
   char time[MAX_ENCODED_STRING_SIZE];
   char encoded[MAX_ENCODED_STRING_SIZE];
@@ -77,11 +77,31 @@ char *encode_log_info(log_info_t *log_info)
   return encoded;
 }
 
-int str_len(char *str)
+int str_len(const char *str)
 {
   int len = 0;
-  for (len; str[len] != '\0'; len++);
+  for (len; str[len] != '\0'; len++)
+    ;
   return len;
+}
+
+int decode_number(const char *bencoded_value)
+{
+  const char *integer_e = strstr(bencoded_value, "e");
+  const char *integer_i = strstr(bencoded_value, "i");
+  const char *start = integer_i + 1;
+  if ((integer_e != 0) && (integer_i != 0))
+  {
+    int length = (int)(integer_e - integer_i) - 1;
+    char *decoded_str = (char *)malloc(length + 1);
+    strncpy(decoded_str, start, length);
+    decoded_str[length] = '\0';
+    return atoi(decoded_str);
+  }
+  else
+  {
+    return -1;
+  }
 }
 /* Private definitions ----------------------------------------------- */
 

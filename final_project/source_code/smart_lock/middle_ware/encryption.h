@@ -91,10 +91,10 @@ char *encode_number(const int *number);
  *  - 0: Error
  *  - l<data>e : Encoded log information
  */
-char *encode_log_info(log_info_t *log_info);
+char *encode_log_info(const log_info_t *log_info);
 
 /**
- * @brief  <function description>
+ * @brief  count string length
  *
  * @param[in]     str array of character
  * @param[out]    str_len length of string
@@ -103,7 +103,19 @@ char *encode_log_info(log_info_t *log_info);
  *
  * @return  
  */
-int str_len(char *str);
+int str_len(const char *str);
+
+/**
+ * @brief  decode string to number
+ *
+ * @param[in]     str array of character
+ * @param[out]    decode_number number after decode
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ */
+int decode_number(const char *str);
 
 
 #endif // __CODE_TEMPLATE_H
