@@ -69,14 +69,11 @@ char *encode_log_info(log_info_t *log_info)
     strcat(time, encode_number(log_info->time_stamp[i]));
   }
   sprintf(encoded,
-          "%s%d:%s%d:%s%d:%s",
+          "%s%s%s%s",
           time,
-          str_len(log_info->user_name),
-          log_info->user_name,
-          str_len(log_info->access),
-          log_info->access,
-          str_len(log_info->user_hierarchy),
-          log_info->user_hierarchy);
+          encode_string(log_info->user_name),
+          encode_string(log_info->access),
+          encode_string(log_info->user_hierarchy));
   return encoded;
 }
 
