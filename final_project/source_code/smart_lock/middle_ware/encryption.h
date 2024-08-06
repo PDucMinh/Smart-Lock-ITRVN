@@ -64,7 +64,7 @@ typedef struct
  *
  * @return  
  *  - 0: Error
- *  - Others: Encoded string
+ *  - <size>:<string> : encoded string
  */
 char *encode_string(const char *string);
 
@@ -78,7 +78,7 @@ char *encode_string(const char *string);
  *
  * @return  
  *  - 0: Error
- *  - Others: Encoded number
+ *  - i<number>e : Encoded number
  */
 char *encode_number(const int *number);
 
@@ -89,7 +89,7 @@ char *encode_number(const int *number);
  *
  * @return  
  *  - 0: Error
- *  - Others: Encoded log information
+ *  - l<data>e : Encoded log information
  */
 char *encode_log_info(log_info_t *log_info);
 

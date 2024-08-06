@@ -69,7 +69,7 @@ char *encode_log_info(log_info_t *log_info)
     strcat(time, encode_number(log_info->time_stamp[i]));
   }
   sprintf(encoded,
-          "%s%s%s%s",
+          "l%s%s%s%se",
           time,
           encode_string(log_info->user_name),
           encode_string(log_info->access),
