@@ -79,41 +79,20 @@ drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time)
   second = ds1307_encode_BCD(time.second);
 
   // Buffer to transmit
-  uint8_t transmit_data[1] = {0};
+  uint8_t transmit_data[7] = {second,
+                              minute,
+                              hour,
+                              day,
+                              date,
+                              month,
+                              year};
+  
+  // Define the starting register address for the data
+  uint16_t start_reg_addr = DRV_RTC_REG_SECOND;
 
-  // Set year
+  // Set time 
   transmit_data[0] = year;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_YEAR, &transmit_data[0], sizeof(transmit_data)) != BSP_STATE_PASS)
-    return DRV_RTC_STATUS_FAIL;
-
-  // Set month
-  transmit_data[0] = month;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MONTH, &transmit_data[0], sizeof(transmit_data)) != BSP_STATE_PASS)
-    return DRV_RTC_STATUS_FAIL;
-
-  // Set date
-  transmit_data[0] = date;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DATE, &transmit_data[0], sizeof(transmit_data)) != BSP_STATE_PASS)
-    return DRV_RTC_STATUS_FAIL;
-
-  // Set day
-  transmit_data[0] = day;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DAY, &transmit_data[0], sizeof(transmit_data)) != BSP_STATE_PASS)
-    return DRV_RTC_STATUS_FAIL;
-
-  // Set hour
-  transmit_data[0] = hour;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_HOUR, &transmit_data[0], sizeof(transmit_data)) != BSP_STATE_PASS)
-    return DRV_RTC_STATUS_FAIL;
-
-  // Set minute
-  transmit_data[0] = minute;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MINUTE, &transmit_data[0], sizeof(transmit_data)) != BSP_STATE_PASS)
-    return DRV_RTC_STATUS_FAIL;
-
-  // Set second
-  transmit_data[0] = second;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_SECOND, &transmit_data[0], sizeof(transmit_data)) != BSP_STATE_PASS)
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, start_reg_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   return DRV_RTC_STATUS_OK;
