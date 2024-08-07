@@ -25,25 +25,6 @@
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
-/**
- * @brief <enum descriptiton>
- */
-typedef enum
-{
-  PUBLIC_ENUM_1, /**< Description of PUBLIC_ENUM_1 */
-  PUBLIC_ENUM_2, /**< Description of PUBLIC_ENUM_2 */
-  PUBLIC_ENUM_3  /**< Description of PUBLIC_ENUM_3 */
-} public_enum_type_t;
-
-/**
- * @brief <structure descriptiton>
- */
-typedef struct
-{
-  uint32_t member_1,   /**< Description of member_1 */
-    uint32_t member_2, /**< Description of member_2 */
-    uint32_t member_3  /**< Description of member_3 */
-} public_struct_type_t;
 
 /* Public macros ------------------------------------------------------ */
 
