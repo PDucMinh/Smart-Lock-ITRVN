@@ -19,6 +19,13 @@
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
+#define SYS_ELEMENT_KEYPAD   (0u)
+#define SYS_ELEMENT_NOTIFY   (1u)
+#define SYS_ELEMENT_DISPLAY  (2u)
+#define SYS_ELEMENT_LOCK     (3u)
+#define SYS_ELEMENT_LOG      (4u)
+#define SYS_ELEMENT_PROTOCOL (5u)
+#define SYS_ELEMENT_MAX SYS_ELEMENT_PROTOCOL
 
 /* Public enumerate/structure ----------------------------------------- */
 
@@ -55,7 +62,9 @@ typedef enum
   SYS_EVENT_LOG_SET_COMPLETE,
   SYS_EVENT_PROTOCOL_SEND,
   SYS_EVENT_PROTOCOL_RECEIVE,
-  SYS_EVENT_PROTOCOL_COMPLETE
+  SYS_EVENT_PROTOCOL_COMPLETE,
+  SYS_EVENT_PROTOCOL_ERASE_USER,
+  SYS_EVENT_PROTOCOL_ERASE_ACCESS
 } sys_event_t;
 
 /**
@@ -101,7 +110,7 @@ typedef enum
 /**
  * @brief <structure descriptiton>
  */
-typedef struct
+typedef union
 {
   struct
   {
