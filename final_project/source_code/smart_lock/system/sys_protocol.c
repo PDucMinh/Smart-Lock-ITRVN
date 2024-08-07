@@ -147,7 +147,7 @@ void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest
 }
 
 
-void sys_protocol_loop(/*something here*/)
+void sys_protocol_loop(fifo_buffer_info_t *fifo_request)
 {
 }
 /* Private definitions ----------------------------------------------- */

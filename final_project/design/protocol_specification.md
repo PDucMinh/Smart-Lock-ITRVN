@@ -16,10 +16,10 @@ This field contains 2 bytes of data:
 | -- | -- | -- |
 | 0x01 | START | Start Session |
 | 0x10 | TERMINATE | Terminate Session |
-| 0x11 | DELETE | Delete data buffer have just sent | 
 | 0x12 | END | Complete session or operation |
 | 0x20 | REQUEST | Request data packet or operation |
-| 0x21 | SEND | Send data packet or operation |
+| 0x21 | SEND | Send data packet or command operation |
+<!-- | 0x11 | DELETE | Delete data buffer have just sent |  -->
 
 ## Sequence field specification
 This field running from 0x00 to 0xFF
@@ -44,7 +44,9 @@ Default data is 0x00
 | 0xFF | NONE | No command |
 | | DELETE | Delete data at local |
 | | SET | Write data to local |
-| | REQUEST | Get data from local |
+| | ACK | ACK with message |
+| | NACK | NACK with message |
+<!-- | | REQUEST | Get data from local | -->
 
 ## Some example 
 

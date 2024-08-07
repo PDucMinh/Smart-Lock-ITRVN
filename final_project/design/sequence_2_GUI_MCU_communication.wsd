@@ -1,0 +1,33 @@
+@startuml GUI_MCU_communication
+skinparam SequenceMessageAlignment center
+
+participant GUI as gui 
+
+participant system_protocol as protocol 
+participant bsp_uart as uart
+
+loop until receive start session complete
+protocol -> uart : receive data
+uart --> protocol : receive data complete
+
+protocol -> protocol : check start session
+
+alt start session 
+gui -> protocol : start session
+uart --> protocol : receive data complete
+protocol -> protocol : check start session
+protocol --> protocol : receive start session 
+protocol -> uart : transmit ack accept
+
+else 
+protocol ->uart : receive data
+uart --> protocol : receive data complete
+protocol -> protocol : check start session
+
+end 
+
+end
+
+
+
+@enduml
