@@ -101,6 +101,96 @@ static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef
  *  - 1: Error
  */
 static void bsp_mcu_timer_mspinit(TIM_HandleTypeDef* htim);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static bsp_state_t bsp_mcu_usart_init(bsp_mcu_periph_t periph, USART_HandleTypeDef* husart);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static void bsp_mcu_usart_mspinit(USART_HandleTypeDef* husart);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, UART_HandleTypeDef* huart);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static void bsp_mcu_uart_mspinit(USART_HandleTypeDef* huart);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static bsp_state_t bsp_mcu_i2c_init(bsp_mcu_periph_t periph, I2C_HandleTypeDef* hi2c);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static void bsp_mcu_i2c_mspinit(I2C_HandleTypeDef* hi2c);
 /* Function definitions ----------------------------------------------- */
 bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
 {
@@ -128,6 +218,28 @@ bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
   if ((mcu_init->is_tim2_used) != BSP_MCU_PERIPH_NONE)
   {
     if (bsp_mcu_timer_init(mcu_init->is_tim2_used, &(mcu->htim2)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  if ((mcu_init->is_usart2_used) == BSP_MCU_PERIPH_USART2_SYNCH)
+  {
+    if (bsp_mcu_usart_init(mcu_init->is_usart2_used, &(mcu->husart2)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  if ((mcu_init->is_usart6_used) == BSP_MCU_PERIPH_USART6_ASYNCH)
+  {
+    if (bsp_mcu_uart_init(mcu_init->is_usart2_used, &(mcu->huart6)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+
+  if ((mcu_init->is_i2c1_used) == BSP_MCU_PERIPH_I2C1)
+  {
+    if (bsp_mcu_i2c_init(mcu_init->is_i2c1_used, &(mcu->hi2c1)) == BSP_STATE_FAIL)
     {
       return BSP_STATE_FAIL;
     }
@@ -323,6 +435,68 @@ static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef
   return BSP_STATE_PASS;
 }
 
+static bsp_state_t bsp_mcu_usart_init(bsp_mcu_periph_t periph, USART_HandleTypeDef* husart)
+{
+  BSP_CHECK_NULL(husart, BSP_STATE_FAIL);
+  if (periph == BSP_MCU_PERIPH_USART2_SYNCH)
+  {
+    husart->Instance = USART2;
+    (husart->Init).BaudRate = 115200;
+    (husart->Init).WordLength = USART_WORDLENGTH_8B;
+    (husart->Init).StopBits = USART_STOPBITS_1;
+    (husart->Init).Parity = USART_PARITY_NONE;
+    (husart->Init).Mode = USART_MODE_TX_RX;
+    (husart->Init).CLKPolarity = USART_POLARITY_HIGH;
+    (husart->Init).CLKPhase = USART_PHASE_2EDGE;
+    (husart->Init).CLKLastBit = USART_LASTBIT_DISABLE;
+    husart->MspInitCallback = bsp_mcu_usart_mspinit;
+    if (HAL_USART_Init(husart) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  return BSP_STATE_FAIL;
+}
+
+static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, UART_HandleTypeDef* huart)
+{
+  BSP_CHECK_NULL(huart, BSP_STATE_FAIL);
+  if (periph == BSP_MCU_PERIPH_USART6_ASYNCH)
+  {
+    (huart->Instance) = USART6;
+    (huart->Init).BaudRate = 115200;
+    (huart->Init).WordLength = UART_WORDLENGTH_8B;
+    (huart->Init).StopBits = UART_STOPBITS_1;
+    (huart->Init).Parity = UART_PARITY_NONE;
+    (huart->Init).Mode = UART_MODE_TX_RX;
+    (huart->Init).HwFlowCtl = UART_HWCONTROL_NONE;
+    (huart->Init).OverSampling = UART_OVERSAMPLING_16;
+    huart->MspInitCallback = bsp_mcu_uart_mspinit;
+    if (HAL_UART_Init(huart) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+}
+
+static bsp_state_t bsp_mcu_i2c_init(bsp_mcu_periph_t periph, I2C_HandleTypeDef* hi2c)
+{
+  (hi2c->Instance) = I2C1;
+  (hi2c->Init).ClockSpeed = 100000;
+  (hi2c->Init).DutyCycle = I2C_DUTYCYCLE_2;
+  (hi2c->Init).OwnAddress1 = 0;
+  (hi2c->Init).AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  (hi2c->Init).DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  (hi2c->Init).OwnAddress2 = 0;
+  (hi2c->Init).GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  (hi2c->Init).NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  hi2c->MspInitCallback = bsp_mcu_i2c_mspinit;
+  if (HAL_I2C_Init(hi2c) != HAL_OK)
+  {
+    return BSP_STATE_FAIL;
+  }
+}
+
 static void bsp_mcu_pwm_mspinit(TIM_HandleTypeDef* htim)
 {
   if (htim->Instance == TIM3)
@@ -343,6 +517,35 @@ static void bsp_mcu_timer_mspinit(TIM_HandleTypeDef* htim)
     /* TIM2 interrupt Init */
     HAL_NVIC_SetPriority(TIM2_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(TIM2_IRQn);
+  }
+}
+
+static void bsp_mcu_usart_mspinit(USART_HandleTypeDef* husart)
+{
+  if (husart->Instance == USART2)
+  {
+    __HAL_RCC_USART2_CLK_ENABLE();
+    HAL_NVIC_SetPriority(USART2_IRQn, 3, 0);
+    HAL_NVIC_EnableIRQ(USART2_IRQn);
+  }
+}
+static void bsp_mcu_uart_mspinit(UART_HandleTypeDef* huart)
+{
+  if (huart->Instance == USART6)
+  {
+    __HAL_RCC_USART6_CLK_ENABLE();
+    HAL_NVIC_SetPriority(USART6_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(USART6_IRQn);
+  }
+}
+
+static void bsp_mcu_i2c_mspinit(I2C_HandleTypeDef* hi2c)
+{
+  if (hi2c->Instance == I2C1)
+  {
+    __HAL_RCC_I2C1_CLK_ENABLE();
+    HAL_NVIC_SetPriority(I2C1_EV_IRQn, 6, 0);
+    HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
   }
 }
 

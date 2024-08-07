@@ -60,9 +60,12 @@ typedef enum
   BSP_MCU_PERIPH_DMA2_STREAM5,
   BSP_MCU_PERIPH_DMA2_STREAM6,
   BSP_MCU_PERIPH_DMA2_STREAM7,
-  BSP_MCU_PERIPH_USART1,
-  BSP_MCU_PERIPH_USART2,
-  BSP_MCU_PERIPH_USART6,
+  BSP_MCU_PERIPH_USART1_SYNCH,
+  BSP_MCU_PERIPH_USART1_ASYNCH,
+  BSP_MCU_PERIPH_USART2_SYNCH,
+  BSP_MCU_PERIPH_USART2_ASYNCH,
+  BSP_MCU_PERIPH_USART6_SYNCH,
+  BSP_MCU_PERIPH_USART6_ASYNCH,
   BSP_MCU_PERIPH_EXTI,
   BSP_MCU_PERIPH_FLASH,
 } bsp_mcu_periph_t;
@@ -73,9 +76,10 @@ typedef enum
 typedef struct
 {
   bsp_mcu_periph_t is_spi_used;
-  bsp_mcu_periph_t is_i2c_used;
+  bsp_mcu_periph_t is_i2c1_used;
   bsp_mcu_periph_t is_dma_used;
-  bsp_mcu_periph_t is_usart_used;
+  bsp_mcu_periph_t is_usart2_used;
+  bsp_mcu_periph_t is_usart6_used;
   bsp_mcu_periph_t is_tim1_used;
   bsp_mcu_periph_t is_tim2_used;
   bsp_mcu_periph_t is_tim3_used;
