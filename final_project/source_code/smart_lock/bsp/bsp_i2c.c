@@ -64,9 +64,9 @@ static void bsp_i2c_receive_handler(I2C_HandleTypeDef* hi2c);
 bsp_state_t bsp_i2c_init(bsp_mcu_t* mcu)
 {
   BSP_CHECK_NULL(mcu, BSP_STATE_FAIL);
-  hi2c1 = mcu->hi2c1;
-  hi2c1.MemTxCpltCallback = bsp_i2c_transmit_handler;
-  hi2c1.MemRxCpltCallback = bsp_i2c_receive_handler;
+  hi2c2 = mcu->hi2c2;
+  hi2c2.MemTxCpltCallback = bsp_i2c_transmit_handler;
+  hi2c2.MemRxCpltCallback = bsp_i2c_receive_handler;
   return BSP_STATE_PASS;
 }
 
