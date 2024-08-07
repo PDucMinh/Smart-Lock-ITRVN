@@ -91,7 +91,6 @@ drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time)
   uint16_t start_reg_addr = DRV_RTC_REG_SECOND;
 
   // Set time 
-  transmit_data[0] = year;
   if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, start_reg_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
