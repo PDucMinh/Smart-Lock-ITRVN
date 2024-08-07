@@ -35,8 +35,8 @@ drv_rtc_status_t drv_rtc_init(drv_rtc_t *rtc)
   {
     return DRV_RTC_STATUS_FAIL;
   }
-  rtc->i2c_write = bsp_i2c_write;
-  rtc->i2c_read = bsp_i2c_read;
+  rtc->i2c_write = bsp_i2c_transmit_start;
+  rtc->i2c_read = bsp_i2c_receive_start;
   rtc->dev_addr = DS1307_ADDRESS;
 
   return DRV_RTC_STATUS_OK;
