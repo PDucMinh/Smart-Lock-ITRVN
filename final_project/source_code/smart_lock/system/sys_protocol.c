@@ -22,7 +22,8 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
-
+static uint8_t data_frame_transmit[MAX_FRAME_LENGTH];
+static uint8_t data_frame_receive[MAX_FRAME_LENGTH];
 /* Private function prototypes ---------------------------------------- */
 /**
  * @brief  <function description>

@@ -15,7 +15,7 @@
 #define __SYS_PROTOCOL_H
 
 /* Includes ----------------------------------------------------------- */
-
+#include "bsp_uart.h"
 /* Public defines ----------------------------------------------------- */
 
 // #define ALLOW_CRC
