@@ -49,18 +49,18 @@ SYS_STATE_PROTOCOL_SEND_INFO --> SYS_STATE_PROTOCOL_RECEIVE_INFO : sys_protocol_
 SYS_STATE_PROTOCOL_RECEIVE_INFO --> SYS_STATE_STORE_INFO : sys_protocol_event = PROTOCOL_COMPLETE
 SYS_STATE_STORE_INFO --> SYS_STATE_DISPLAY_MENU : sys_log_event = LOG_SET_COMPLETE
 
-SYS_STATE_STORE_INFO : sys_log_req = LOG_SET
+SYS_STATE_STORE_INFO : sys_log_req = LOG_SET_USER
 SYS_STATE_PROTOCOL_RECEIVE_INFO : sys_log_req = LOG_ERASE_USER\nreceive data from sys_protocol
 SYS_STATE_PROTOCOL_SEND_INFO : create sys_display_req = DISPLAY_TRANSFER_INFO\nsys_protocol_req = PROTOCOL_INFO\nsend data to sys_protocol
-SYS_STATE_READY_INFO: sys_log_req = LOG_ERASE_LOG\ncreate sys_protocol_req = PROTOCOL_ACCEPT_GUI
+SYS_STATE_READY_INFO: sys_log_req = LOG_ERASE_ACCESS\ncreate sys_protocol_req = PROTOCOL_ACCEPT_GUI
 SYS_STATE_LOAD_ALL : create sys_log_req = LOG_GET_ALL
-SYS_STATE_STORE_PASS : update new password\nsys_log_req = LOG_SET\ncreate sys_display_req = DISPLAY_NOTIFY_COMPLETE
+SYS_STATE_STORE_PASS : update new password\nsys_log_req = LOG_SET_USER\ncreate sys_display_req = DISPLAY_NOTIFY_COMPLETE
 SYS_STATE_DISPLAY_SET_PASS : create sys_display_req = DISPLAY_SET_PASS\nsys_keypad_req = KEYPAD_PASS\nsys_log_req = LOG_ERASE_USER\nset new_pass_flag
 SYS_STATE_DOUBLE_LOCKED : create sys_display_req = DISPLAY_OFF
-SYS_STATE_DISPLAY_BLOCKED : create sys_lock_req = LOCK_DOUBLE\nsys_display_req = DISPLAY_BLOCKED\nsys_notify_req = NOTIFY_DOUBLE_LOCK\nsys_log_req = LOG_SET
+SYS_STATE_DISPLAY_BLOCKED : create sys_lock_req = LOCK_DOUBLE_LOCK\nsys_display_req = DISPLAY_BLOCKED\nsys_notify_req = NOTIFY_DOUBLE_LOCK\nsys_log_req = LOG_SET_ACCESS
 SYS_STATE_DISPLAY_ALARM : create sys_notify_req = NOTIFY_ALARM\nsys_display_notify = DISPLAY_NOTIFY_ALARM
-SYS_STATE_DISPLAY_WRONG : create sys_notify_req = NOTIFY_INCORRECT\nincrease incorrect_cnt\nsys_display_notify = DISPLAY_NOTIFY_INCORRECT\nsys_log_req = LOG_SET\nsys_keypad_req = KEYPAD_RETRY
-SYS_STATE_DISPLAY_RIGHT : if (mode_flag = ENTER_PASSWORD)\n{sys_lock_req = LOCK_OPEN}\ncreate sys_notify_req = NOTIFY_CORRECT\nsys_display_req = DISPLAY_NOTIY_CORRECT\nsys_log_req = LOG_SET
+SYS_STATE_DISPLAY_WRONG : create sys_notify_req = NOTIFY_INCORRECT\nincrease incorrect_cnt\nsys_display_req = DISPLAY_NOTIFY_INCORRECT\nsys_log_req = LOG_SET_ACCESS\nsys_keypad_req = KEYPAD_RETRY
+SYS_STATE_DISPLAY_RIGHT : if (mode_flag = ENTER_PASSWORD)\n{sys_lock_req = LOCK_OPEN}\ncreate sys_notify_req = NOTIFY_CORRECT\nsys_display_req = DISPLAY_NOTIY_CORRECT\nsys_log_req = LOG_SET_ACCESS
 SYS_STATE_PROCESS_ID : extract and decode password field\ncompare with password from sys_keypad
 SYS_STATE_PROCESS_PASS : extract and decode password field\ncompare with password from sys_keypad
 SYS_STATE_LOAD_ADMIN : create sys_log_req = LOG_GET_ADMIN
