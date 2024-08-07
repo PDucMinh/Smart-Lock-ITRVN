@@ -18,6 +18,7 @@
 #include "bsp_uart.h"
 #include "fifo_buffer.h"
 #include "sys_data.h"
+#include "scheduler.h"
 /* Public defines ----------------------------------------------------- */
 
 // #define ALLOW_CRC
@@ -33,6 +34,20 @@
 
 #define MAX_FRAME_LENGTH ((MAX_DATA_LENGTH + MAX_CRC_LENGTH + 8) * 2)
 
+#define START (0x01)
+#define TERMINATE (0x10)
+#define END (0X12)
+#define REQUEST (0X20)
+#define SEND (0X21)
+
+#define NULL (0X00)
+
+#define NONE (0XFF)
+#define DELETE ()
+#define SET ()
+#define ACK ()
+#define NACK ()
+
 /* Public enumerate/structure ----------------------------------------- */
 
 /**
@@ -46,9 +61,9 @@ typedef struct
   uint8_t length;
   uint8_t data[MAX_DATA_LENGTH];
 
-  #ifdef ALLOW_CRC
+#ifdef ALLOW_CRC
   uint8_t crc[MAX_CRC_LENGTH];
-  #endif
+#endif
 
 } data_frame_t;
 
@@ -130,7 +145,7 @@ void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest
  *  - 0: Success
  *  - 1: Error
  */
-void sys_protocol_loop(fifo_buffer_info_t *fifo_request);
+void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fifo_response);
 
 #endif // __CODE_TEMPLATE_H
 

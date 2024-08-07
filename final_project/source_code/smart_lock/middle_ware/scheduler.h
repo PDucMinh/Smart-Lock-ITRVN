@@ -50,11 +50,7 @@ void sch_dispatch_task(void);
  *
  * @param[in]     (*task)  pointer to task function
  * @param[in]     (delay)  delay to first run task
-<<<<<<< HEAD
- * @param[in]     (period) period of task (0: run once, >0: run after N ms)
-=======
  * @param[in]     (period) period of task (0: run ONLY one time after delay, >0: loop with period after first run)
->>>>>>> feature_fifo
  *
  * @attention
  *
