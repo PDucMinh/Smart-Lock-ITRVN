@@ -77,48 +77,41 @@ drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time)
   second = ds1307_encode_BCD(time.second);
 
   // Buffer to transmit
-  uint8_t transmit_data[2] = {0};
+  uint8_t transmit_data[1] = {0};
 
   // Set year
-  transmit_data[0] = DRV_RTC_REG_YEAR;
-  transmit_data[1] = year;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  transmit_data[0] = year;
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_YEAR, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   // Set month
-  transmit_data[0] = DRV_RTC_REG_MONTH;
-  transmit_data[1] = month;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  transmit_data[0] = month;
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MONTH, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   // Set date
-  transmit_data[0] = DRV_RTC_REG_DATE;
-  transmit_data[1] = date;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  transmit_data[0] = date;
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DATE, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   // Set day
-  transmit_data[0] = DRV_RTC_REG_DAY;
-  transmit_data[1] = day;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  transmit_data[0] = day;
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DAY, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   // Set hour
-  transmit_data[0] = DRV_RTC_REG_HOUR;
-  transmit_data[1] = hour;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  transmit_data[0] = hour;
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_HOUR, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   // Set minute
-  transmit_data[0] = DRV_RTC_REG_MINUTE;
-  transmit_data[1] = minute;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  transmit_data[0] = minute;
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MINUTE, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   // Set second
-  transmit_data[0] = DRV_RTC_REG_SECOND;
-  transmit_data[1] = second;
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  transmit_data[0] = second;
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_SECOND, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   return DRV_RTC_STATUS_OK;
@@ -130,52 +123,51 @@ drv_rtc_time_t drv_rtc_read(drv_rtc_t *rtc)
   uint8_t received_data[7] = {0};
 
   // Get year
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &DRV_RTC_REG_YEAR, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, received_data[0], 1);
+  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_YEAR, received_data[0], 1);
   received_data[0] = ds1307_decode_BCD(received_data[0]);
 
   // Get month
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &DRV_RTC_REG_MONTH, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, received_data[1], 1);
+  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MONTH, received_data[1], 1);
   received_data[1] = ds1307_decode_BCD(received_data[1]);
 
   // Get date
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &DRV_RTC_REG_DATE, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, received_data[2], 1);
+  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DATE, received_data[2], 1);
   received_data[2] = ds1307_decode_BCD(received_data[2]);
 
   // Get day
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &DRV_RTC_REG_DAY, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, received_data[3], 1);
+  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DAY, received_data[3], 1);
   received_data[3] = ds1307_decode_BCD(received_data[3]);
 
   // Get hour
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &DRV_RTC_REG_HOUR, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, received_data[4], 1);
+  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_HOUR, received_data[4], 1);
   received_data[4] = ds1307_decode_BCD(received_data[4]);
 
   // Get minute
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &DRV_RTC_REG_MINUTE, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, received_data[5], 1);
+  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MINUTE, received_data[5], 1);
   received_data[5] = ds1307_decode_BCD(received_data[5]);
 
   // Get second
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &DRV_RTC_REG_SECOND, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, received_data[6], 1);
+  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_SECOND, received_data[6], 1);
   received_data[6] = ds1307_decode_BCD(received_data[6]);
 
   if ((received_data[0] >= 0) && (received_data[0] <= 99))
     drv_rtc_read(drv_rtc_t *rtc).year = received_data[0];
+
   if ((received_data[1] >= 1) && (received_data[1] <= 12))
     drv_rtc_read(drv_rtc_t *rtc).month = received_data[1];
+
   if ((received_data[2] >= 1) && (received_data[2] <= 31))
     drv_rtc_read(drv_rtc_t *rtc).date = received_data[2];
+
   if ((received_data[3] >= 1) && (received_data[3] <= 7))
     drv_rtc_read(drv_rtc_t *rtc).day = received_data[3];
+
   if ((received_data[4] >= 0) && (received_data[4] <= 23))
     drv_rtc_read(drv_rtc_t *rtc).hour = received_data[4];
+
   if ((received_data[5] >= 0) && (received_data[5] <= 59))
     drv_rtc_read(drv_rtc_t *rtc).minute = received_data[5];
+
   if ((received_data[6] >= 0) && (received_data[6] <= 59))
     drv_rtc_read(drv_rtc_t *rtc).second = received_data[6];
 }
@@ -191,13 +183,4 @@ uint8_t ds1307_encode_BCD(uint8_t decimal)
   return ((decimal / 10) << 4) | (decimal % 10);
 }
 
-uint8_t ds1307_i2c_read(drv_rtc_t *rtc, uint8_t device_address, uint8_t register_address)
-{
-  uint8_t data;
-  rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, &register_address, 1);
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, &data, 1);
-  //HAL_I2C_Master_Transmit(&hi2c, device_address, &register_address, 1, HAL_MAX_DELAY);
-  //HAL_I2C_Master_Receive(&hi2c, device_address, &data, 1, HAL_MAX_DELAY);
-  return data;
-}
 /* End of file -------------------------------------------------------- */
