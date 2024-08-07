@@ -18,32 +18,13 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "stm32f4xx_hal.h"
+#include "bsp_state.h"
+#include "bsp_config.h"
+#include "bsp_mcu.h"
+
 /* Public defines ----------------------------------------------------- */
 
-/* Phat will define this himself.Will be discussed more */
-
 /* Public enumerate/structure ----------------------------------------- */
-/**
- * @brief <enum descriptiton>
- */
-typedef enum 
-{
-  PUBLIC_ENUM_1, /**< Description of PUBLIC_ENUM_1 */
-  PUBLIC_ENUM_2, /**< Description of PUBLIC_ENUM_2 */
-  PUBLIC_ENUM_3  /**< Description of PUBLIC_ENUM_3 */
-}
-public_enum_type_t;
-
-/**
- * @brief <structure descriptiton>
- */
-typedef struct 
-{
-  uint32_t member_1, /**< Description of member_1 */
-  uint32_t member_2, /**< Description of member_2 */
-  uint32_t member_3  /**< Description of member_3 */
-}
-public_struct_type_t;
 
 /* Public macros ------------------------------------------------------ */
 
@@ -51,22 +32,62 @@ public_struct_type_t;
 
 /* Public function prototypes ----------------------------------------- */
 /**
- * @brief  <function description>
+ * @brief  <initialize private handler for timer>
  *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
+ * @param[in]     mcu       <struct manage MCU peripheral>
+ *
+ * @attention  <This API will be call right after mcu init in system init>
+ *
+ * @return
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
+ */
+bsp_state_t bsp_pwm_init(bsp_mcu_t* mcu);
+
+/**
+ * @brief  <Starting output pwm pulse with duty cycle base initial configuration>
+ *
+ * @param[in]     id       <driver ID to identify which peripheral needed>
+ * @param[in]     channel  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
+ */
+ bsp_state_t bsp_pwm_start(bsp_config_id_t id, uint32_t channel);
+
+
+ /**
+ * @brief  <Stop output pwm pulse>
+ *
+ * @param[in]     id       <driver ID to identify which peripheral needed>
+ * @param[in]     channel  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
  *
  * @attention  <API attention note>
  *
  * @return  
- *  - 0: Success
- *  - 1: Error
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
  */
- void bsp_pwm_start(TIM_HandleTypedef* htim,uint16_t channel);
- void bsp_pwm_stop(TIM_HandleTypedef* htim,uint16_t channel);
- void bsp_pwm_set_duty(TIM_HandleTypedef* htim, uint16_t channel, uint32_t duty);
+ bsp_state_t bsp_pwm_stop(bsp_config_id_t id, uint32_t channel);
 
+
+ /**
+ * @brief  <Set duty cycle for pwm>
+ *
+ * @param[in]     id         <driver ID to identify which peripheral needed>
+ * @param[in]     channel  <TIM_CHANNEL_1 or TIM_CHANNEL_2 or TIM_CHANNEL_3,..>
+ * @param[in]     duty     <duty cycle: 0-100>
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ * - 0: BSP_STATE_FAIL
+ * - 1: BSP_STATE_PASS
+ */
+ bsp_state_t bsp_pwm_set_duty(bsp_config_id_t id, uint32_t channel, uint32_t duty);
 
 #endif // __BSP_PWM_H
 
