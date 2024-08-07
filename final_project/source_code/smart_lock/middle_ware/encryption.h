@@ -27,7 +27,7 @@ typedef struct
     char *key;
     int rfid;
     char *user_name;
-    char *encoded_password;
+    char *decoded_password;
     char *type;
 } user_info_t;
 
@@ -85,6 +85,17 @@ char *encode_number(const int *number);
  *  - l<data>e : Encoded log information
  */
 char *encode_log_info(const log_info_t *log_info);
+
+/**
+ * @brief  bencode encoding user information
+ *
+ * @attention  <API attention note>
+ *
+ * @return  
+ *  - 0: Error
+ *  - u<data>e : Encoded user information
+ */
+char *encode_user_info(const user_info_t *log_info);
 
 /**
  * @brief  count string length

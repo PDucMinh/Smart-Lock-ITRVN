@@ -69,7 +69,17 @@ char *encode_log_info(const log_info_t *log_info)
           encode_string(log_info->user_hierarchy));
   return encoded;
 }
-
+char *encode_user_info(const user_info_t *user_info)
+{
+  char encoded[MAX_ENCODED_STRING_SIZE];
+  sprintf(encoded,
+          "u%s%s%s%s%se",
+          encode_string(user_info->key),
+          encode_number(&user_info->rfid),
+          encode_string(user_info->user_name),
+          encode_string(user_info->encoded_password),
+          encode_string(user_info->type));
+}
 int str_len(const char *str)
 {
   int len = 0;
@@ -86,8 +96,7 @@ int decode_number(const char *bencoded_value)
   if ((integer_e != 0) && (integer_i != 0))
   {
     int length = (int)(integer_e - integer_i) - 1;
-    char 
-    decoded_str[MAX_ENCODED_STRING_SIZE];
+    char decoded_str[MAX_ENCODED_STRING_SIZE];
     strncpy(decoded_str, start, length);
     decoded_str[length] = '\0';
     return atoi(decoded_str);
