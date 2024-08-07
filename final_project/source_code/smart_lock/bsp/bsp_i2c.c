@@ -27,7 +27,7 @@
 /* Private variables -------------------------------------------------- */
 static int var_1; /**< Description of private variable var_1 */
 static int var_2; /**< Description of private variable var_2 */
-static I2C_HandleTypeDef hi2c1;
+static I2C_HandleTypeDef hi2c2;
 static uint8_t tx_cplt = 0;
 static uint8_t rx_cplt = 0;
 /* Private function prototypes ---------------------------------------- */
@@ -81,7 +81,7 @@ bsp_state_t bsp_i2c_transmit_start(bsp_config_id_t id,
   BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
   if (id == BSP_CONFIG_ID_RTC)
   {
-    if (HAL_I2C_Mem_Write_IT(&hi2c1, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
+    if (HAL_I2C_Mem_Write_IT(&hi2c2, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
     {
       return BSP_STATE_FAIL;
     }
@@ -100,7 +100,7 @@ bsp_state_t bsp_i2c_receive_start(bsp_config_id_t id,
   BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
   if (id == BSP_CONFIG_ID_RTC)
   {
-    if (HAL_I2C_Mem_Read_IT(&hi2c1, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
+    if (HAL_I2C_Mem_Read_IT(&hi2c2, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
     {
       return BSP_STATE_FAIL;
     }

@@ -237,9 +237,9 @@ bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
     }
   }
 
-  if ((mcu_init->is_i2c1_used) == BSP_MCU_PERIPH_I2C1)
+  if ((mcu_init->is_i2c2_used) == BSP_MCU_PERIPH_I2C2)
   {
-    if (bsp_mcu_i2c_init(mcu_init->is_i2c1_used, &(mcu->hi2c1)) == BSP_STATE_FAIL)
+    if (bsp_mcu_i2c_init(mcu_init->is_i2c2_used, &(mcu->hi2c1)) == BSP_STATE_FAIL)
     {
       return BSP_STATE_FAIL;
     }
@@ -481,7 +481,7 @@ static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, UART_HandleTypeDef
 
 static bsp_state_t bsp_mcu_i2c_init(bsp_mcu_periph_t periph, I2C_HandleTypeDef* hi2c)
 {
-  (hi2c->Instance) = I2C1;
+  (hi2c->Instance) = I2C2;
   (hi2c->Init).ClockSpeed = 100000;
   (hi2c->Init).DutyCycle = I2C_DUTYCYCLE_2;
   (hi2c->Init).OwnAddress1 = 0;
