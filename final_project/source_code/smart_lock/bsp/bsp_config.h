@@ -41,6 +41,7 @@ typedef enum
   BSP_CONFIG_ID_IR,
   BSP_CONFIG_ID_KEYPAD,
   BSP_CONFIG_ID_PROTOCOL,
+  BSP_CONFIG_ID_RTC,
   BSP_CONFIG_ID_MAX
 }bsp_config_id_t;
 
