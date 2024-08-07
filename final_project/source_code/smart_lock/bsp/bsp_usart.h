@@ -58,7 +58,7 @@ bsp_state_t bsp_usart_init(bsp_mcu_t* mcu);
  *  - 0: Success
  *  - 1: Error
  */
-bsp_state_t bsp_usart_receive_active(bsp_config_id_t id, uint8_t* pdata, uint16_t size);
+bsp_state_t bsp_usart_receive_start(bsp_config_id_t id, uint8_t* pdata, uint16_t size);
 
 /**
  * @brief  <function description>
@@ -73,7 +73,7 @@ bsp_state_t bsp_usart_receive_active(bsp_config_id_t id, uint8_t* pdata, uint16_
  *  - 0: Success
  *  - 1: Error
  */
-bsp_state_t bsp_usart_receive_cplt(bsp_config_id_t id);
+uint8_t bsp_usart_receive_cplt(bsp_config_id_t id);
 #endif // __BSP_USART_H
 
 /* End of file -------------------------------------------------------- */
