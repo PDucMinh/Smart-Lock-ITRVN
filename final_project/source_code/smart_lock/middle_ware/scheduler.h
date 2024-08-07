@@ -16,6 +16,7 @@
 #define __SCHEDULER_H
 
 /* Includes ----------------------------------------------------------- */
+#include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
 #define SCH_MAX_TASK (10) /*Maximum of queue*/
 

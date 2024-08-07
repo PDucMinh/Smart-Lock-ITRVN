@@ -87,10 +87,10 @@
 typedef struct
 {
   uint16_t io;
-  uint16_t af;
-  uint16_t mode;
+  uint32_t af;
+  uint32_t mode;
   uint16_t pull_type;
-  uint16_t speed;
+  uint32_t speed;
 } bsp_gpio_pin_t;
 
 /* Public macros ------------------------------------------------------ */

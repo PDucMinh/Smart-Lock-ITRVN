@@ -135,14 +135,7 @@ bsp_state_t bsp_gpio_pin_init(bsp_gpio_pin_t* bgpio)
   }
   else
   {
-    if (bgpio->mode == BSP_GPIO_INPUT)
-    {
-      v_gpio_pin_list[port][pin] = BSP_GPIO_PIN_STATE_INPUT;
-    }
-    else
-    {
-      v_gpio_pin_list[port][pin] = BSP_GPIO_PIN_STATE_USED;
-    }
+    v_gpio_pin_list[port][pin] = BSP_GPIO_PIN_STATE_USED;
   }
   GPIO_InitTypeDef GPIO_InitStruct = { 0 };
   GPIO_InitStruct.Pin = (uint16_t)1 << pin;
@@ -193,7 +186,7 @@ uint8_t bsp_gpio_pin_read(uint16_t io)
   port = (io & 0xF0) >> 4;
   pin = io & 0x0F;
 
-  if (v_gpio_pin_list[port][pin] != BSP_GPIO_PIN_STATE_INPUT)
+  if (v_gpio_pin_list[port][pin] != BSP_GPIO_PIN_STATE_USED)
   {
     return BSP_GPIO_PIN_ERROR;
   }
