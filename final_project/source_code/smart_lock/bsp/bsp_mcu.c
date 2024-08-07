@@ -131,6 +131,37 @@ static bsp_state_t bsp_mcu_usart_init(bsp_mcu_periph_t periph, USART_HandleTypeD
  *  - 1: Error
  */
 static void bsp_mcu_usart_mspinit(USART_HandleTypeDef* husart);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, USART_HandleTypeDef* huart);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+
+static void bsp_mcu_uart_mspinit(USART_HandleTypeDef* huart);
 /* Function definitions ----------------------------------------------- */
 bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
 {
@@ -162,9 +193,16 @@ bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
       return BSP_STATE_FAIL;
     }
   }
-  if ((mcu_init->is_usart2_used) != BSP_MCU_PERIPH_USART2)
+  if ((mcu_init->is_usart2_used) == BSP_MCU_PERIPH_USART2_SYNCH)
   {
-    if (bsp_mcu_usart_init(mcu_init->is_usart2_used, &(mcu->huart2)) == BSP_STATE_FAIL)
+    if (bsp_mcu_usart_init(mcu_init->is_usart2_used, &(mcu->husart2)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  if ((mcu_init->is_usart6_used) == BSP_MCU_PERIPH_USART6_ASYNCH)
+  {
+    if (bsp_mcu_uart_init(mcu_init->is_usart2_used, &(mcu->huart6)) == BSP_STATE_FAIL)
     {
       return BSP_STATE_FAIL;
     }
@@ -363,7 +401,7 @@ static bsp_state_t bsp_mcu_timer_init(bsp_mcu_periph_t periph, TIM_HandleTypeDef
 static bsp_state_t bsp_mcu_usart_init(bsp_mcu_periph_t periph, USART_HandleTypeDef* husart)
 {
   BSP_CHECK_NULL(husart, BSP_STATE_FAIL);
-  if (periph == BSP_MCU_PERIPH_USART2)
+  if (periph == BSP_MCU_PERIPH_USART2_SYNCH)
   {
     husart->Instance = USART2;
     (husart->Init).BaudRate = 115200;
@@ -381,6 +419,27 @@ static bsp_state_t bsp_mcu_usart_init(bsp_mcu_periph_t periph, USART_HandleTypeD
     }
   }
   return BSP_STATE_FAIL;
+}
+
+static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, UART_HandleTypeDef* huart)
+{
+  BSP_CHECK_NULL(huart, BSP_STATE_FAIL);
+  if (periph == BSP_MCU_PERIPH_USART6_ASYNCH)
+  {
+    (huart->Instance) = USART6;
+    (huart->Init).BaudRate = 115200;
+    (huart->Init).WordLength = UART_WORDLENGTH_8B;
+    (huart->Init).StopBits = UART_STOPBITS_1;
+    (huart->Init).Parity = UART_PARITY_NONE;
+    (huart->Init).Mode = UART_MODE_TX_RX;
+    (huart->Init).HwFlowCtl = UART_HWCONTROL_NONE;
+    (huart->Init).OverSampling = UART_OVERSAMPLING_16;
+    huart->MspInitCallback = bsp_mcu_uart_mspinit;
+    if (HAL_UART_Init(huart) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
 }
 
 static void bsp_mcu_pwm_mspinit(TIM_HandleTypeDef* htim)
@@ -413,6 +472,15 @@ static void bsp_mcu_usart_mspinit(USART_HandleTypeDef* husart)
     __HAL_RCC_USART2_CLK_ENABLE();
     HAL_NVIC_SetPriority(USART2_IRQn, 3, 0);
     HAL_NVIC_EnableIRQ(USART2_IRQn);
+  }
+}
+static void bsp_mcu_uart_mspinit(UART_HandleTypeDef* huart)
+{
+  if (huart->Instance == USART6)
+  {
+    __HAL_RCC_USART6_CLK_ENABLE();
+    HAL_NVIC_SetPriority(USART6_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(USART6_IRQn);
   }
 }
 
