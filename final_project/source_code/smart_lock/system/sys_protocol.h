@@ -83,7 +83,37 @@ void read_data_frame_from_string(data_frame_t *dest_data_frame, char *src_data_s
  *  - 0: Success
  *  - 1: Error
  */
+void read_data_frame_from_uint8_array(data_frame_t *dest_data_frame, uint8_t *src_data_array);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
 char write_data_frame_to_string(data_frame_t *src_data_frame);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest_data_array);
 
 /**
  * @brief  <function description>

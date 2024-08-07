@@ -101,9 +101,35 @@ char write_data_frame_to_string(data_frame_t *src_data_frame)
     strcat(data_string, crc_temp);
   }
   #endif
-  
+
   return data_string;
 }
+
+void read_data_frame_from_uint8_array(data_frame_t *dest_data_frame, uint8_t *src_data_array)
+{
+    dest_data_frame->header = src_data_array[0];
+    dest_data_frame->sequence = src_data_array[1];
+    dest_data_frame->command = src_data_array[2];
+    dest_data_frame->length = src_data_array[3];
+
+    for (int i = 0; i < dest_data_frame->length; i++)
+    {
+        dest_data_frame->data[i] = src_data_array[4 + i];
+    }
+
+    #ifdef ALLOW_CRC
+    for (int i = 0; i < (sizeof(src_data_array)/sizeof(src_data_array[0])); i++)
+    {
+        dest_data_frame->crc[i] = src_data_array[4 + dest_data_frame->length + i];
+    }
+    #endif
+}
+
+void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest_data_array)
+{
+
+}
+
 
 void sys_protocol_loop(/*something here*/)
 {
