@@ -63,8 +63,8 @@ typedef enum
  */
 typedef struct
 {
-  bsp_state_t (*i2c_write)(bsp_config_id_t id, uint16_t slv_addr, uint16_t reg_addr, uint8_t *pdata, uin32_t size);
-  bsp_state_t (*i2c_read)(bsp_config_id_t id, uint16_t slv_addr, uint16_t reg_addr, uint8_t *pdata, uin32_t size);
+  bsp_state_t (*i2c_write)(bsp_config_id_t id, uint16_t slv_addr, uint16_t reg_addr, uint8_t *pdata, uint32_t size);
+  bsp_state_t (*i2c_read)(bsp_config_id_t id, uint16_t slv_addr, uint16_t reg_addr, uint8_t *pdata, uint32_t size);
   uint8_t (*i2c_read_cplt)(bsp_config_id_t id);
   uint8_t (*i2c_write_cplt)(bsp_config_id_t id);
   uint16_t dev_addr;

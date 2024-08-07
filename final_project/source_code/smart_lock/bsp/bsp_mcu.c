@@ -160,7 +160,7 @@ static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, UART_HandleTypeDef
  *  - 0: Success
  *  - 1: Error
  */
-static void bsp_mcu_uart_mspinit(USART_HandleTypeDef* huart);
+static void bsp_mcu_uart_mspinit(UART_HandleTypeDef* huart);
 
 /**
  * @brief  <function description>

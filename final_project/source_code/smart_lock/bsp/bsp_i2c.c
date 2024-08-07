@@ -74,7 +74,7 @@ bsp_state_t bsp_i2c_transmit_start(bsp_config_id_t id,
                                    uint16_t slave_addr,
                                    uint16_t reg_addr,
                                    uint8_t* pdata,
-                                   uint16_t data_size);
+                                   uint16_t data_size)
 {
   BSP_CHECK_NULL(pdata, BSP_STATE_FAIL);
   BSP_CHECK_NULL(data_size, BSP_STATE_FAIL);
@@ -93,7 +93,7 @@ bsp_state_t bsp_i2c_receive_start(bsp_config_id_t id,
                                   uint16_t slave_addr,
                                   uint16_t reg_addr,
                                   uint8_t* pdata,
-                                  uint16_t data_size);
+                                  uint16_t data_size)
 {
   BSP_CHECK_NULL(pdata, BSP_STATE_FAIL);
   BSP_CHECK_NULL(data_size, BSP_STATE_FAIL);

@@ -27,7 +27,8 @@
 static uint8_t ds1307_rx_data[7];
 
 /* Private function prototypes ---------------------------------------- */
-
+uint8_t ds1307_decode_BCD(uint8_t binary);
+uint8_t ds1307_encode_BCD(uint8_t decimal);
 
 /* Function definitions ----------------------------------------------- */
 drv_rtc_status_t drv_rtc_init(drv_rtc_t *rtc)
@@ -126,26 +127,26 @@ drv_rtc_time_t drv_rtc_read_complete(drv_rtc_t *rtc)
     ds1307_rx_data[5] = ds1307_decode_BCD(ds1307_rx_data[5]);
     ds1307_rx_data[6] = ds1307_decode_BCD(ds1307_rx_data[6]);
 
-    if ((received_data[6] >= 0) && (received_data[6] <= 99))
-      return_time.year = received_data[6];
+    if ((ds1307_rx_data[6] >= 0) && (ds1307_rx_data[6] <= 99))
+      return_time.year = ds1307_rx_data[6];
 
-    if ((received_data[5] >= 1) && (received_data[5] <= 12))
-      return_time.month = received_data[5];
+    if ((ds1307_rx_data[5] >= 1) && (ds1307_rx_data[5] <= 12))
+      return_time.month = ds1307_rx_data[5];
 
-    if ((received_data[4] >= 1) && (received_data[4] <= 31))
-      return_time.date = received_data[4];
+    if ((ds1307_rx_data[4] >= 1) && (ds1307_rx_data[4] <= 31))
+      return_time.date = ds1307_rx_data[4];
 
-    if ((received_data[3] >= 1) && (received_data[3] <= 7))
-      return_time.day = received_data[3];
+    if ((ds1307_rx_data[3] >= 1) && (ds1307_rx_data[3] <= 7))
+      return_time.day = ds1307_rx_data[3];
 
-    if ((received_data[2] >= 0) && (received_data[2] <= 23))
-      return_time.hour = received_data[2];
+    if ((ds1307_rx_data[2] >= 0) && (ds1307_rx_data[2] <= 23))
+      return_time.hour = ds1307_rx_data[2];
 
-    if ((received_data[1] >= 0) && (received_data[1] <= 59))
-      return_time.minute = received_data[1];
+    if ((ds1307_rx_data[1] >= 0) && (ds1307_rx_data[1] <= 59))
+      return_time.minute = ds1307_rx_data[1];
 
-    if ((received_data[0] >= 0) && (received_data[0] <= 59))
-      return_time.second = received_data[0];
+    if ((ds1307_rx_data[0] >= 0) && (ds1307_rx_data[0] <= 59))
+      return_time.second = ds1307_rx_data[0];
   }
   else
   {

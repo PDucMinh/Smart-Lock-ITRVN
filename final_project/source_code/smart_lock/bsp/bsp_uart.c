@@ -68,7 +68,7 @@ bsp_state_t bsp_uart_init(bsp_mcu_t* mcu)
   return BSP_STATE_PASS;
 }
 
-bsp_state_t bsp_uart_transmit_start(bsp_config_id_t id, uint8_t* pdata, uint16_t size);
+bsp_state_t bsp_uart_transmit_start(bsp_config_id_t id, uint8_t* pdata, uint16_t size)
 {
   BSP_CHECK_NULL(pdata, BSP_STATE_FAIL);
   BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
@@ -83,7 +83,7 @@ bsp_state_t bsp_uart_transmit_start(bsp_config_id_t id, uint8_t* pdata, uint16_t
   return BSP_STATE_PASS;
 }
 
-bsp_state_t bsp_uart_receive_start(bsp_config_id_t id, uint8_t* pdata, uint16_t size);
+bsp_state_t bsp_uart_receive_start(bsp_config_id_t id, uint8_t* pdata, uint16_t size)
 {
   BSP_CHECK_NULL(pdata, BSP_STATE_FAIL);
   BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
