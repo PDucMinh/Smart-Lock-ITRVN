@@ -24,6 +24,7 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
+static uint8_t ds1307_rx_data[7];
 
 /* Private function prototypes ---------------------------------------- */
 
@@ -37,8 +38,8 @@ drv_rtc_status_t drv_rtc_init(drv_rtc_t *rtc)
   }
   rtc->i2c_write = bsp_i2c_transmit_start;
   rtc->i2c_read = bsp_i2c_receive_start;
-  rtc->i2c_read_cplt = bsp_i2c_transmit_cplt;
-  rtc->i2c_write_cplt = bsp_i2c_receive_cplt;
+  rtc->i2c_read_cplt = bsp_i2c_receive_cplt;
+  rtc->i2c_write_cplt = bsp_i2c_transmit_cplt;
   rtc->dev_addr = DS1307_ADDRESS;
 
   return DRV_RTC_STATUS_OK;
@@ -98,59 +99,65 @@ drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time)
 }
 
 
-drv_rtc_time_t drv_rtc_read(drv_rtc_t *rtc)
+drv_rtc_status_t drv_rtc_read_start(drv_rtc_t *rtc)
 {
-  uint8_t received_data[7] = {0};
+  // Define the starting register address for the data
+  uint16_t start_reg_addr = DRV_RTC_REG_SECOND;
+
+  // Get time
+  if (rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, start_reg_addr, ds1307_rx_data, sizeof(ds1307_rx_data) != BSP_STATE_PASS));
+    return DRV_RTC_STATUS_FAIL;
+
+  return DRV_RTC_STATUS_OK;
+}
+
+
+drv_rtc_time_t drv_rtc_read_complete(drv_rtc_t *rtc)
+{
   drv_rtc_time_t return_time;
-  // Get year
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_YEAR, &received_data[0], 1);
-  received_data[0] = ds1307_decode_BCD(received_data[0]);
 
-  // Get month
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MONTH, &received_data[1], 1);
-  received_data[1] = ds1307_decode_BCD(received_data[1]);
+  if (rtc->i2c_read_cplt(BSP_CONFIG_ID_RTC) == 1)
+  {
+    ds1307_rx_data[0] = ds1307_decode_BCD(ds1307_rx_data[0]);
+    ds1307_rx_data[1] = ds1307_decode_BCD(ds1307_rx_data[1]);
+    ds1307_rx_data[2] = ds1307_decode_BCD(ds1307_rx_data[2]);
+    ds1307_rx_data[3] = ds1307_decode_BCD(ds1307_rx_data[3]);
+    ds1307_rx_data[4] = ds1307_decode_BCD(ds1307_rx_data[4]);
+    ds1307_rx_data[5] = ds1307_decode_BCD(ds1307_rx_data[5]);
+    ds1307_rx_data[6] = ds1307_decode_BCD(ds1307_rx_data[6]);
 
-  // Get date
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DATE, &received_data[2], 1);
-  received_data[2] = ds1307_decode_BCD(received_data[2]);
+    if ((received_data[6] >= 0) && (received_data[6] <= 99))
+      return_time.year = received_data[6];
 
-  // Get day
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_DAY, &received_data[3], 1);
-  received_data[3] = ds1307_decode_BCD(received_data[3]);
+    if ((received_data[5] >= 1) && (received_data[5] <= 12))
+      return_time.month = received_data[5];
 
-  // Get hour
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_HOUR, &received_data[4], 1);
-  received_data[4] = ds1307_decode_BCD(received_data[4]);
+    if ((received_data[4] >= 1) && (received_data[4] <= 31))
+      return_time.date = received_data[4];
 
-  // Get minute
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_MINUTE, &received_data[5], 1);
-  received_data[5] = ds1307_decode_BCD(received_data[5]);
+    if ((received_data[3] >= 1) && (received_data[3] <= 7))
+      return_time.day = received_data[3];
 
-  // Get second
-  rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, DRV_RTC_REG_SECOND, &received_data[6], 1);
-  received_data[6] = ds1307_decode_BCD(received_data[6]);
+    if ((received_data[2] >= 0) && (received_data[2] <= 23))
+      return_time.hour = received_data[2];
 
-  if ((received_data[0] >= 0) && (received_data[0] <= 99))
-    return_time.year = received_data[0];
+    if ((received_data[1] >= 0) && (received_data[1] <= 59))
+      return_time.minute = received_data[1];
 
-  if ((received_data[1] >= 1) && (received_data[1] <= 12))
-    return_time.month = received_data[1];
-
-  if ((received_data[2] >= 1) && (received_data[2] <= 31))
-    return_time.date = received_data[2];
-
-  if ((received_data[3] >= 1) && (received_data[3] <= 7))
-    return_time.day = received_data[3];
-
-  if ((received_data[4] >= 0) && (received_data[4] <= 23))
-    return_time.hour = received_data[4];
-
-  if ((received_data[5] >= 0) && (received_data[5] <= 59))
-    return_time.minute = received_data[5];
-
-  if ((received_data[6] >= 0) && (received_data[6] <= 59))
-    return_time.second = received_data[6];
-
+    if ((received_data[0] >= 0) && (received_data[0] <= 59))
+      return_time.second = received_data[0];
+  }
+  else
+  {
+    return_time.second = 0;
+    return_time.minute = 0;
+    return_time.hour = 0;
+    return_time.day = 0;
+    return_time.date = 0;
+    return_time.month = 0;
+    return_time.year = 0;
+  }
+    
   return return_time;
 }
 
