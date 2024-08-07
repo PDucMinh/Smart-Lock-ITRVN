@@ -2,10 +2,10 @@
 
 ## Data packet Structure
 
-| HEADER | SEQUENCE | COMMAND (optional) | LENGTH | DATA (optional) | CRC |
+| HEADER | SEQUENCE | COMMAND | LENGTH | DATA (optional) | CRC |
 | ------ | -------- | ------- | ------ | ---- | -- |
 | A 8-bits value includes the first byte marking the operation of transaction, the last bytes display the length of data payload | A 8-bits value denotes the order of the data packet transferred. This value will increase by one after new message is created and it will be reset to zero after reaching the end of transaction | A 8-bits value have the predefined system command ID | A 8-bits value indicate length of data buffer | An array of 8-bits value containing the data needing to be transfered | On-going |
-| 8 bits | 8 bits | 8 bits | 8 bits | Length * 8 bits | On-going |
+| 8 bits | 8 bits | 8 bits | 8 bits | Length * 8 bits | Max 4*8 bits |
 
 
 ## Header field specification
@@ -21,6 +21,11 @@ This field contains 2 bytes of data:
 | 0x20 | REQUEST | Request data packet or operation |
 | 0x21 | SEND | Send data packet or operation |
 
+## Sequence field specification
+This field running from 0x00 to 0xFF
+
+## Data field specification
+Default data is 0x00
 
 ## LENGTH field specification
 - 8-bits DATA LENGTH field: Contains information of packet length in transction. Some special mode modified in table below.
@@ -33,14 +38,17 @@ This field contains 2 bytes of data:
 ---
 > Note: The maximum length payload is 100, which mean XX can not be over 0x64
 
-## Table of Command ID 
+## Table of Command 
 | Command ID | Command Type | Command |
 | -- | -- | -- |  
-| | NONE | No command |
+| 0xFF | NONE | No command |
 | | DELETE | Delete data at local |
 | | SET | Write data to local |
 | | REQUEST | Get data from local |
 
 ## Some example 
 
-- 0x0100
+- 0x0100FF00ABCD
+
+---
+> Header: START, Seq: 00, Command: No command, Length: NULL, Data: does not contain, 

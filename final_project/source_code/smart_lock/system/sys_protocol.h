@@ -17,8 +17,20 @@
 /* Includes ----------------------------------------------------------- */
 
 /* Public defines ----------------------------------------------------- */
-#define MAX_DATA_LENGTH 50
-#define MAX_CRC_LENGTH 8
+
+// #define ALLOW_CRC
+#define MAX_DATA_LENGTH 100
+
+#ifdef ALLOW_CRC
+#define MAX_CRC_LENGTH 4
+#define HALF_MAX_CRC_LENGTH 2
+#else
+#define MAX_CRC_LENGTH 0
+#define HALF_MAX_CRC_LENGTH 0
+#endif
+
+#define MAX_FRAME_LENGTH ((MAX_DATA_LENGTH + MAX_CRC_LENGTH + 8) * 2)
+
 /* Public enumerate/structure ----------------------------------------- */
 
 /**
@@ -31,7 +43,11 @@ typedef struct
   uint8_t command;
   uint8_t length;
   uint8_t data[MAX_DATA_LENGTH];
+
+  #ifdef ALLOW_CRC
   uint8_t crc[MAX_CRC_LENGTH];
+  #endif
+
 } data_frame_t;
 
 /* Public macros ------------------------------------------------------ */

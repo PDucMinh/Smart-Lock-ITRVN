@@ -59,23 +59,50 @@ void read_data_frame_from_string(data_frame_t *dest_data_frame, char *src_data_s
     sscanf(src_data_string + 8 + i * 2, "%2hhx%*x", &temp);
     data_f.data[i] = temp;
   }
+
+  #ifdef ALLOW_CRC
   for (int i = 0; *(src_data_string + 8 + data_f.length * 2 + i * 2) != '\0'; i++)
   {
     sscanf(src_data_string + 8 + data_f.length * 2 + i * 2, "%2hhx%*x", &temp);
     data_f.crc[i] = temp;
   }
+  #endif
+
   dest_data_frame->header = data_f.header;
   dest_data_frame->sequence = data_f.sequence;
   dest_data_frame->command = data_f.command;
   dest_data_frame->length = data_f.length;
-  for (int i = 0; i < MAX_DATA_LENGTH; i++)
+  for (int i = 0; i < data_f.length; i++)
     dest_data_frame->data[i] = data_f.data[i];
+
+  #ifdef ALLOW_CRC
   for (int i = 0; i < MAX_CRC_LENGTH; i++)
     dest_data_frame->crc[i] = data_f.crc[i];
+  #endif
 }
 
 char write_data_frame_to_string(data_frame_t *src_data_frame)
 {
+  char data_string[MAX_FRAME_LENGTH];
+  sprintf(data_string, "%02x%02x%02x%02x", src_data_frame->header, src_data_frame->sequence, src_data_frame->command, src_data_frame->length);
+  
+  char frame_temp[MAX_DATA_LENGTH];
+  for (int i=0; i<src_data_frame->length; i++)
+  {
+    sprintf(frame_temp, "%02x", src_data_frame->data[i]);
+    strcat(data_string, frame_temp);
+  }
+
+  #ifdef ALLOW_CRC
+  char crc_temp[MAX_CRC_LENGTH];
+  for (int i=0; i<HALF_MAX_CRC_LENGTH; i++)
+  {
+    sprintf(crc_temp, "%02x", src_data_frame->crc[i]);
+    strcat(data_string, crc_temp);
+  }
+  #endif
+  
+  return data_string;
 }
 
 void sys_protocol_loop(/*something here*/)
