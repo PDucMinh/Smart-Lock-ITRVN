@@ -127,7 +127,22 @@ void read_data_frame_from_uint8_array(data_frame_t *dest_data_frame, uint8_t *sr
 
 void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest_data_array)
 {
+    dest_data_array[0] = src_data_frame->header;
+    dest_data_array[1] = src_data_frame->sequence;
+    dest_data_array[2] = src_data_frame->command;
+    dest_data_array[3] = src_data_frame->length;
 
+    for (int i = 0; i < src_data_frame->length; i++)
+    {
+        dest_data_array[4 + i] = src_data_frame->data[i];
+    }
+
+    #ifdef ALLOW_CRC
+    for (int i = 0; i < MAX_CRC_LENGTH; i++)
+    {
+        dest_data_array[4 + src_data_frame->length + i] = src_data_frame->crc[i];
+    }
+    #endif
 }
 
 
