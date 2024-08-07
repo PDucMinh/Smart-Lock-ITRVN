@@ -48,10 +48,10 @@ parser : do command
 parser : start receive (if command complete)
 
 state "RECEIVE END" as rcvend
+rcvend : do something 
 
-
-state "RECEIVE TERMINATE" as term
-term : backup data 
+state "RECEIVE TERMINATE" as rcvterm
+rcvterm : do something 
 
 default -> init 
 init -> idle : EVENT = ACCEPT_GUI
@@ -65,11 +65,14 @@ sstart -> receive : start receive \n transmit complete
 receive --> rcvsd : HEADER = SEND
 receive --> rcvrq : HEADER = REQUEST
 receive --> rcvend : HEADER = END
-receive --> term : HEADER = TERMINATE
+receive --> rcvterm : HEADER = TERMINATE
 
 rcvrq --> rqwait  : start transmit data
 rqwait -> receive
 
 rcvsd --> parser
+parser -> receive
 
+rcvend -> init 
+rcvterm -> init 
 @enduml

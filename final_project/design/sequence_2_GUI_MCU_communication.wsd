@@ -17,7 +17,6 @@ gui -> protocol : start session
 uart --> protocol : receive data complete
 protocol -> protocol : check start session
 protocol --> protocol : receive start session 
-protocol -> uart : transmit ack accept
 
 else 
 protocol ->uart : receive data
@@ -27,6 +26,10 @@ protocol -> protocol : check start session
 end 
 
 end
+
+protocol -> uart : transmit ack accept
+protocol --> protocol : check transmit complete
+
 
 
 
