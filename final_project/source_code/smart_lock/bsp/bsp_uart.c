@@ -24,7 +24,7 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
-static UART_HandleTypeDef huart6;
+UART_HandleTypeDef huart6;
 static uint8_t tx_cplt = 0;
 static uint8_t rx_cplt = 0;
 
