@@ -75,7 +75,7 @@ uint8_t encode_user_info(const user_info_t *source_user_info, uint8_t *dest_arra
  *  - 0: Error
  *  - 1: OK
  */
-uint8_t encode_user_info(const log_info_t *source_log_info, uint8_t *dest_array);
+uint8_t encode_log_info(const log_info_t *source_log_info, uint8_t *dest_array);
 
 #endif // __CODE_TEMPLATE_H
 

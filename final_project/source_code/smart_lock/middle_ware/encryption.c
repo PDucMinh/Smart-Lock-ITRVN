@@ -39,9 +39,9 @@ uint8_t encode_user_info(const user_info_t *source_user_info, uint8_t *dest_arra
   return 1;
 }
 
-uint8_t encode_user_info(const log_info_t *source_log_info, uint8_t *dest_array)
+uint8_t encode_log_info(const log_info_t *source_log_info, uint8_t *dest_array)
 {
-  dest_array[0] = 'i';
+  dest_array[0] = 'l';
   for (int i = 0; i < 6; i++)
   {
     dest_array[1 + i] = source_log_info->time_stamp[i];
