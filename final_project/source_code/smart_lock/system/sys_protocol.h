@@ -19,6 +19,7 @@
 #include "fifo_buffer.h"
 #include "sys_data.h"
 #include "scheduler.h"
+#include "bsp_gpio.h"
 /* Public defines ----------------------------------------------------- */
 
 // #define ALLOW_CRC
@@ -147,6 +148,7 @@ void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest
  */
 void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fifo_response);
 
+void sys_protocol_init(void);
 #endif // __CODE_TEMPLATE_H
 
 /* End of file -------------------------------------------------------- */

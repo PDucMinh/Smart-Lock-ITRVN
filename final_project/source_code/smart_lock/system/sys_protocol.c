@@ -64,6 +64,23 @@ static
   timer_1_run(void);
 static uint8_t check_timer_1_flag(void);
 /* Function definitions ----------------------------------------------- */
+void sys_protocol_init(void)
+{
+  bsp_gpio_pin_t tx_pin, rx_pin;
+  tx_pin.io = (BSP_GPIO_PORT_C << 4) | BSP_GPIO_PIN_6;
+  tx_pin.mode = BSP_GPIO_AF_PP;
+  tx_pin.pull_type = BSP_GPIO_NOPULL; 
+  tx_pin.speed = BSP_GPIO_FREQ_LOW;
+  tx_pin.af = BSP_GPIO_AF8;
+  bsp_gpio_pin_init(&tx_pin); 
+
+  rx_pin.io = (BSP_GPIO_PORT_C << 4) | BSP_GPIO_PIN_7;
+  rx_pin.mode = BSP_GPIO_AF_PP;
+  rx_pin.pull_type = BSP_GPIO_NOPULL; 
+  rx_pin.speed = BSP_GPIO_FREQ_LOW;
+  rx_pin.af = BSP_GPIO_AF8;
+  bsp_gpio_pin_init(&rx_pin); 
+}
 void read_data_frame_from_string(data_frame_t *dest_data_frame, char *src_data_string)
 {
   data_frame_t data_f;
