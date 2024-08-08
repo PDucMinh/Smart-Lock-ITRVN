@@ -66,7 +66,7 @@ uint8_t encode_user_info(const user_info_t *source_user_info, uint8_t *dest_arra
 /**
  * @brief  bencode encoding string
  *
- * @param[in]     user_info_t
+ * @param[in]     log_info_t
  * @param[out]    uint8_t_array
  *
  * @attention  <API attention note>
