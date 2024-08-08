@@ -26,26 +26,7 @@
 #include "bsp_i2c.h"
 
 /* Public defines ----------------------------------------------------- */
-#define DS1307_ADDRESS       (0x68 << 1) 
-
-/* rtc register ID */
-#define DRV_RTC_REG_SECOND   (0x00)
-#define DRV_RTC_REG_MINUTE   (0x01)
-#define DRV_RTC_REG_HOUR     (0x02)
-#define DRV_RTC_REG_DAY      (0x03)
-#define DRV_RTC_REG_DATE     (0x04)
-#define DRV_RTC_REG_MONTH    (0x05)
-#define DRV_RTC_REG_YEAR     (0x06)
-#define DRV_RTC_REG_CONTROL  (0x07)
-
-/* rtc day ID */
-#define DRV_RTC_DAY_SUN      (0x01)
-#define DRV_RTC_DAY_MON      (0x02)
-#define DRV_RTC_DAY_TUE      (0x03)
-#define DRV_RTC_DAY_WES      (0x04)
-#define DRV_RTC_DAY_THU      (0x05)
-#define DRV_RTC_DAY_FRI      (0x06)
-#define DRV_RTC_DAY_SAT      (0x07)
+#define DRV_RTC_ADDRESS       (0x68 << 1) 
 
 /* Public enumerate/structure ----------------------------------------- */
 /**
