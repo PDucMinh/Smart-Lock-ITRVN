@@ -23,8 +23,7 @@
 
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
-static uint8_t callback_flag = 0;
-static drv_ir_state_t ir_state;
+uint8_t callback_flag = 0;
 /* Private function prototypes ---------------------------------------- */
 static void drv_ir_debounce_callback(void);
 /* Function definitions ----------------------------------------------- */
@@ -37,7 +36,7 @@ drv_ir_status_t drv_ir_init(drv_ir_t *ir)
   ir->debounce_flag = 0;
   ir->exti_event = bsp_exti_event;
   ir->gpio_state = bsp_gpio_pin_read;
-  ir_state = DRV_IR_STATE_NO_OBSTACLE;
+
   return DRV_IR_STATUS_SUCCESS;
 }
 
@@ -47,7 +46,7 @@ drv_ir_state_t drv_ir_state(drv_ir_t *ir)
   {
     // Update debounce tick start
     ir->debounce_flag = 1;
-    sch_add_task(drv_ir_debounce_callback, 100, 0);
+    sch_add_task(drv_ir_debounce_callback, 1, 100);
   }
 
   // Check debounce state
@@ -55,16 +54,16 @@ drv_ir_state_t drv_ir_state(drv_ir_t *ir)
   {
     ir->debounce_flag = 0;
     callback_flag = 0;
-    if(ir->gpio_state(BSP_CONFIG_IR_PIN) == 0)
+    if (ir->gpio_state(BSP_CONFIG_IR_PIN) == 0)
     {
-    	ir_state = DRV_IR_STATE_IS_OBSTACLE;
+      return DRV_IR_STATE_IS_OBSTACLE;
     }
     else
     {
-    	ir_state = DRV_IR_STATE_NO_OBSTACLE;
+      return DRV_IR_STATE_NO_OBSTACLE;
     }
   }
-  return ir_state;
+  return DRV_IR_STATE_NO_OBSTACLE;
 }
 /* Private definitions ----------------------------------------------- */
 static void drv_ir_debounce_callback(void)

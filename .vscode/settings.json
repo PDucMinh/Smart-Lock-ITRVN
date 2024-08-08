@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "bsp_pwm.h": "c"
+        "system_notify.h": "c",
+        "bsp_gpio.h": "c",
+        "scheduler.h": "c"
     }
 }

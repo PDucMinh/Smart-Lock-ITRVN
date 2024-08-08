@@ -1,0 +1,78 @@
+@startuml protocol_transfer_mechanism
+hide empty description
+
+state "DEFAULT" as default 
+
+state "INIT" as init
+init : check fifo empty (EVENT = NONE)
+init : pop() event from fifo 
+init : check EVENT = ACCEPT_GUI
+init : start receive (if EVENT = ACCEPT_GUI)
+init : set timer (if EVENT = ACCEPT_GUI)
+
+state "IDLE_TIME_OUT" as ito 
+ito : send PROTOCOL_COMPLETE 
+
+state "IDLE" as idle 
+idle : check receive complete
+idle : check receive request start session
+idle : check time_out
+
+state "START" as start 
+start : send transmit ack accept 
+' start : set timer for transmit complete
+
+state "SUB_START" as sstart
+sstart : check transmit complete 
+sstart : start receive (if transmit complete)
+' sstart : check time_out 
+
+state "RECEIVE" as receive
+receive : check receive complete
+receive : check HEADER for next action 
+
+state "RECEIVE REQUEST" as rcvrq
+rcvrq : request data from mcu then send to gui
+rcvrq : send transmit data 
+
+state "REQUEST WAITING" as rqwait
+rqwait : check transmit complete
+rqwait : start receive (if transmit complete)
+
+
+state "RECEIVE SEND" as rcvsd
+rcvsd : command parser
+
+state "PARSER" as parser
+parser : do command
+parser : start receive (if command complete)
+
+state "RECEIVE END" as rcvend
+rcvend : do something 
+
+state "RECEIVE TERMINATE" as rcvterm
+rcvterm : do something 
+
+default -> init 
+init -> idle : EVENT = ACCEPT_GUI
+idle -> start : HEADER = START
+idle --> ito : time out
+ito -> init 
+
+start -> sstart 
+sstart -> receive : start receive \n transmit complete
+
+receive --> rcvsd : HEADER = SEND
+receive --> rcvrq : HEADER = REQUEST
+receive --> rcvend : HEADER = END
+receive --> rcvterm : HEADER = TERMINATE
+
+rcvrq --> rqwait  : start transmit data
+rqwait -> receive
+
+rcvsd --> parser
+parser -> receive
+
+rcvend -> init 
+rcvterm -> init 
+@enduml
