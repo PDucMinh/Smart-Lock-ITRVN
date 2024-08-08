@@ -23,8 +23,8 @@
 #include "bsp_timer.h"
 #include "bsp_pwm.h"
 #include "bsp_uart.h"
-#include "scheduler.h" 
-#include "bsp_exti.h" 
+#include "scheduler.h"
+#include "bsp_exti.h"
 
 /* Private defines ---------------------------------------------------- */
 #define SMAN_LCK_KEY 0xFF
@@ -108,12 +108,12 @@ void sys_manager_init(void)
   bsp_gpio_pin_init(&buzzer_pin);
 
   bsp_exti_init((BSP_GPIO_PORT_A << 4) | BSP_GPIO_PIN_2, BSP_EXTI_FALLING_EDGE);
-  drv_buzzer_t dbuzzer;
-  drv_buzzer_init(&dbuzzer);
-  drv_ir_t dir_sensor;
-  drv_ir_init(&dir_sensor);
-  drv_led_rgb_t dled_rgb;
-  drv_led_rgb_init(&dled_rgb);
+  // drv_buzzer_t sys_manager_buzzer;
+  drv_buzzer_init(&sys_manager_buzzer);
+  // drv_ir_t sys_manager_ir;
+  drv_ir_init(&sys_manager_ir);
+  // drv_led_rgb_t sys_manager_led;
+  drv_led_rgb_init(&sys_manager_led);
   bsp_timer_start(&mcu);
 }
 
@@ -125,6 +125,7 @@ void sys_manager_loop(void)
     /* code */
     bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, &sys_manager_receive_key, 1);
     // melody_read(MELODY_ID_FOURTH_SONG); // alarm wrong pass
+    drv_led_rgb_set(&sys_manager_led, DRV_LED_RGB_RED);
     sys_manager_state = SYS_MANAGER_STATE_CLOSE;
     break;
   case SYS_MANAGER_STATE_CLOSE:
@@ -135,6 +136,7 @@ void sys_manager_loop(void)
       {
         sys_manager_state = SYS_MANAGER_STATE_OPEN;
         sys_manager_alarm(melody_read(MELODY_ID_THIRD_SONG)); // alarm right pass
+        drv_led_rgb_set(&sys_manager_led, DRV_LED_RGB_GREEN);
         bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, &sys_manager_key, 1);
         sch_add_task(&sys_manager_timer_run, 10000, 0);
       }
@@ -145,6 +147,7 @@ void sys_manager_loop(void)
         {
           sys_manager_state = SYS_MANAGER_STATE_DOUBLE_LOCK;
           sys_manager_alarm(melody_read(MELODY_ID_FIRST_SONG)); // alarm double lock
+          drv_led_rgb_set(&sys_manager_led, DRV_LED_RGB_PURPLE);
           sch_add_task(&sys_manager_timer_run, 5000, 0);
         }
         else
@@ -163,12 +166,14 @@ void sys_manager_loop(void)
       {
         sys_manager_state = SYS_MANAGER_STATE_CLOSE;
         sys_manager_alarm(melody_read(MELODY_ID_THIRD_SONG)); // alarm close door
+        drv_led_rgb_set(&sys_manager_led, DRV_LED_RGB_RED);
         bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, &sys_manager_key, 1);
       }
       else if (sys_manager_check_flag() && (drv_ir_state(&sys_manager_ir) == DRV_IR_STATE_NO_OBSTACLE))
       {
         sys_manager_state = SYS_MANAGER_STATE_OPEN;
         sys_manager_alarm(melody_read(MELODY_ID_SECOND_SONG)); // alarm not close
+        drv_led_rgb_set(&sys_manager_led, DRV_LED_RGB_ORANGE);
       }
     }
     break;
@@ -190,10 +195,17 @@ void sys_manager_alarm(melody_t alarm_type)
   // play melody
   // set led color
   // set buzzer
-  do
+  int i = 0;
+  for (i; i < alarm_type.size; i)
   {
-
-  } while (drv_buzzer_duration_cplt(&sys_manager_buzzer) == 0);
+    drv_buzzer_set_note(&sys_manager_buzzer,
+                        alarm_type.pnote_array[i].note_freq,
+                        alarm_type.pnote_array[i].duration_ms);
+    if (drv_buzzer_duration_cplt(&sys_manager_buzzer))
+    {
+      i++;
+    }
+  }
 }
 
 void sys_manager_timer_run()
