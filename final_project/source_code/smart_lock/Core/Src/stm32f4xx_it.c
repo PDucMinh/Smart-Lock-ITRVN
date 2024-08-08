@@ -58,7 +58,7 @@ extern I2C_HandleTypeDef hi2c2;
 /* External variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN EV */
-
+extern UART_HandleTypeDef huart6;
 /* USER CODE END EV */
 
 /******************************************************************************/
