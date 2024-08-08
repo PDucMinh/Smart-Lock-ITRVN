@@ -131,7 +131,20 @@ drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time);
  *
  * @return time
  */
-drv_rtc_time_t drv_rtc_read_complete(drv_rtc_t *rtc);
+drv_rtc_status_t drv_rtc_read_cplt(drv_rtc_t* rtc);
+
+/**
+ * @brief  <This function utilized to check if read function completed>
+ *
+ * @param[in]     <drv_rtc_t *rtc>  <pointer to a struct type>
+ * @param[out]    None
+ * @param[inout]  None
+ *
+ * @attention  <API attention note>
+ *
+ * @return time
+ */
+drv_rtc_time_t drv_rtc_get_data(void);
 
 #endif // __DRV_RTC_H
 

@@ -16,7 +16,24 @@
 #include "drv_rtc.h"
 
 /* Private defines ---------------------------------------------------- */
+/* rtc register ID */
+#define DRV_RTC_REG_SECOND (0x00)
+#define DRV_RTC_REG_MINUTE (0x01)
+#define DRV_RTC_REG_HOUR (0x02)
+#define DRV_RTC_REG_DAY (0x03)
+#define DRV_RTC_REG_DATE (0x04)
+#define DRV_RTC_REG_MONTH (0x05)
+#define DRV_RTC_REG_YEAR (0x06)
+#define DRV_RTC_REG_CONTROL (0x07)
 
+/* rtc day ID */
+#define DRV_RTC_DAY_SUN (0x01)
+#define DRV_RTC_DAY_MON (0x02)
+#define DRV_RTC_DAY_TUE (0x03)
+#define DRV_RTC_DAY_WES (0x04)
+#define DRV_RTC_DAY_THU (0x05)
+#define DRV_RTC_DAY_FRI (0x06)
+#define DRV_RTC_DAY_SAT (0x07)
 /* Private enumerate/structure ---------------------------------------- */
 
 /* Private macros ----------------------------------------------------- */
@@ -24,14 +41,14 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
-static uint8_t ds1307_rx_data[7];
-static uint8_t ds1307_tx_data[7];
+static uint8_t drv_rtc_rx_data[7];
+static uint8_t drv_rtc_tx_data[7];
 /* Private function prototypes ---------------------------------------- */
-uint8_t ds1307_decode_BCD(uint8_t binary);
-uint8_t ds1307_encode_BCD(uint8_t decimal);
+uint8_t drv_rtc_decode_BCD(uint8_t binary);
+uint8_t drv_rtc_encode_BCD(uint8_t decimal);
 
 /* Function definitions ----------------------------------------------- */
-drv_rtc_status_t drv_rtc_init(drv_rtc_t *rtc)
+drv_rtc_status_t drv_rtc_init(drv_rtc_t* rtc)
 {
   if (rtc == NULL)
   {
@@ -41,19 +58,18 @@ drv_rtc_status_t drv_rtc_init(drv_rtc_t *rtc)
   rtc->i2c_read = bsp_i2c_receive_start;
   rtc->i2c_read_cplt = bsp_i2c_receive_cplt;
   rtc->i2c_write_cplt = bsp_i2c_transmit_cplt;
-  rtc->dev_addr = DS1307_ADDRESS;
+  rtc->dev_addr = DRV_RTC_ADDRESS;
 
   return DRV_RTC_STATUS_OK;
 }
 
-
-drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time)
+drv_rtc_status_t drv_rtc_write(drv_rtc_t* rtc, drv_rtc_time_t time)
 {
   if (rtc == NULL)
   {
     return DRV_RTC_STATUS_FAIL;
   }
-  
+
   // Check if data is valid
   if ((time.year < 0) || (time.year > 99))
     return DRV_RTC_STATUS_FAIL;
@@ -70,104 +86,75 @@ drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time)
   if ((time.second < 0) || (time.second > 59))
     return DRV_RTC_STATUS_FAIL;
 
-  // Decode data 
-  uint8_t year, month, date, day, hour, minute, second;
-  year = ds1307_encode_BCD(time.year);
-  month = ds1307_encode_BCD(time.month);
-  date = ds1307_encode_BCD(time.date);
-  day = ds1307_encode_BCD(time.day);
-  hour = ds1307_encode_BCD(time.hour);
-  minute = ds1307_encode_BCD(time.minute);
-  second = ds1307_encode_BCD(time.second);
+  // Decode data
+  drv_rtc_tx_data[6] = drv_rtc_encode_BCD(time.year);
+  drv_rtc_tx_data[5] = drv_rtc_encode_BCD(time.month);
+  drv_rtc_tx_data[4] = drv_rtc_encode_BCD(time.date);
+  drv_rtc_tx_data[3] = drv_rtc_encode_BCD(time.day);
+  drv_rtc_tx_data[2] = drv_rtc_encode_BCD(time.hour);
+  drv_rtc_tx_data[1] = drv_rtc_encode_BCD(time.minute);
+  drv_rtc_tx_data[0] = drv_rtc_encode_BCD(time.second);
 
-  // Buffer to transmit
-  ds1307_tx_data[0] = second;
-  ds1307_tx_data[1] = minute;
-  ds1307_tx_data[2] = hour;
-  ds1307_tx_data[3] = day;
-  ds1307_tx_data[4] = date;
-  ds1307_tx_data[5] = month;
-  ds1307_tx_data[6] = year;
   // Define the starting register address for the data
   uint16_t start_reg_addr = DRV_RTC_REG_SECOND;
 
-  // Set time 
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, start_reg_addr, ds1307_tx_data, sizeof(ds1307_tx_data)) != BSP_STATE_PASS)
+  // Set time
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC,
+                     rtc->dev_addr,
+                     start_reg_addr,
+                     drv_rtc_tx_data,
+                     sizeof(drv_rtc_tx_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   return DRV_RTC_STATUS_OK;
 }
 
-
-drv_rtc_status_t drv_rtc_read_start(drv_rtc_t *rtc)
+drv_rtc_status_t drv_rtc_read_start(drv_rtc_t* rtc)
 {
   // Define the starting register address for the data
   uint16_t start_reg_addr = DRV_RTC_REG_SECOND;
 
   // Get time
-  if (rtc->i2c_read(BSP_CONFIG_ID_RTC, rtc->dev_addr, start_reg_addr, ds1307_rx_data, sizeof(ds1307_rx_data) != BSP_STATE_PASS));
-    return DRV_RTC_STATUS_FAIL;
+  if (rtc->i2c_read(BSP_CONFIG_ID_RTC,
+                    rtc->dev_addr,
+                    start_reg_addr,
+                    drv_rtc_rx_data,
+                    sizeof(drv_rtc_rx_data)) != BSP_STATE_PASS)
+    ;
+  return DRV_RTC_STATUS_FAIL;
 
   return DRV_RTC_STATUS_OK;
 }
 
-
-drv_rtc_time_t drv_rtc_read_complete(drv_rtc_t *rtc)
+drv_rtc_status_t drv_rtc_read_cplt(drv_rtc_t* rtc)
 {
-  drv_rtc_time_t return_time;
-
   if (rtc->i2c_read_cplt(BSP_CONFIG_ID_RTC) == 1)
   {
-    ds1307_rx_data[0] = ds1307_decode_BCD(ds1307_rx_data[0]);
-    ds1307_rx_data[1] = ds1307_decode_BCD(ds1307_rx_data[1]);
-    ds1307_rx_data[2] = ds1307_decode_BCD(ds1307_rx_data[2]);
-    ds1307_rx_data[3] = ds1307_decode_BCD(ds1307_rx_data[3]);
-    ds1307_rx_data[4] = ds1307_decode_BCD(ds1307_rx_data[4]);
-    ds1307_rx_data[5] = ds1307_decode_BCD(ds1307_rx_data[5]);
-    ds1307_rx_data[6] = ds1307_decode_BCD(ds1307_rx_data[6]);
-
-    if ((ds1307_rx_data[6] >= 0) && (ds1307_rx_data[6] <= 99))
-      return_time.year = ds1307_rx_data[6];
-
-    if ((ds1307_rx_data[5] >= 1) && (ds1307_rx_data[5] <= 12))
-      return_time.month = ds1307_rx_data[5];
-
-    if ((ds1307_rx_data[4] >= 1) && (ds1307_rx_data[4] <= 31))
-      return_time.date = ds1307_rx_data[4];
-
-    if ((ds1307_rx_data[3] >= 1) && (ds1307_rx_data[3] <= 7))
-      return_time.day = ds1307_rx_data[3];
-
-    if ((ds1307_rx_data[2] >= 0) && (ds1307_rx_data[2] <= 23))
-      return_time.hour = ds1307_rx_data[2];
-
-    if ((ds1307_rx_data[1] >= 0) && (ds1307_rx_data[1] <= 59))
-      return_time.minute = ds1307_rx_data[1];
-
-    if ((ds1307_rx_data[0] >= 0) && (ds1307_rx_data[0] <= 59))
-      return_time.second = ds1307_rx_data[0];
+    return DRV_RTC_STATUS_OK;
   }
-  else
-  {
-    return_time.second = 0;
-    return_time.minute = 0;
-    return_time.hour = 0;
-    return_time.day = 0;
-    return_time.date = 0;
-    return_time.month = 0;
-    return_time.year = 0;
-  }
-    
+  return DRV_RTC_STATUS_FAIL;
+}
+
+drv_rtc_time_t drv_rtc_get_data(void)
+{
+  drv_rtc_time_t return_time;
+  return_time.second = drv_rtc_decode_BCD(drv_rtc_rx_data[0]);
+  return_time.minute = drv_rtc_decode_BCD(drv_rtc_rx_data[1]);
+  return_time.hour = drv_rtc_decode_BCD(drv_rtc_rx_data[2]);
+  return_time.day = drv_rtc_decode_BCD(drv_rtc_rx_data[3]);
+  return_time.date = drv_rtc_decode_BCD(drv_rtc_rx_data[4]);
+  return_time.month = drv_rtc_decode_BCD(drv_rtc_rx_data[5]);
+  return_time.year = drv_rtc_decode_BCD(drv_rtc_rx_data[6]);
   return return_time;
 }
 
 /* Private definitions ----------------------------------------------- */
-uint8_t ds1307_decode_BCD(uint8_t binary)
+uint8_t drv_rtc_decode_BCD(uint8_t binary)
 {
   return ((binary & 0x0F) + ((binary & 0xF0) >> 4) * 10);
 }
 
-uint8_t ds1307_encode_BCD(uint8_t decimal)
+uint8_t drv_rtc_encode_BCD(uint8_t decimal)
 {
   return ((decimal / 10) << 4) | (decimal % 10);
 }
