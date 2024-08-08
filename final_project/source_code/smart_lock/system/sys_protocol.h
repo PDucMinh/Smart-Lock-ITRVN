@@ -36,16 +36,16 @@
 
 #define START (0x01)
 #define TERMINATE (0x10)
-#define END (0X12)
-#define REQUEST (0X20)
-#define SEND (0X21)
+#define END (0x12)
+#define REQUEST (0x20)
+#define SEND (0x21)
 
-#define NULL (0X00)
+#define NULL (0x00)
 
-#define NONE (0XFF)
+#define NONE (0xFF)
 #define DELETE ()
 #define SET ()
-#define ACK ()
+#define ACK (0xFA)
 #define NACK ()
 
 /* Public enumerate/structure ----------------------------------------- */
