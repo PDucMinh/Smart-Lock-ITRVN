@@ -154,9 +154,9 @@ int main(void)
     {
     	drv_rtc_read_start(&ds1307);
     }
-    if (ds1307.i2c_read_cplt(BSP_CONFIG_ID_RTC) == 1)
+    if (drv_rtc_read_cplt(&ds1307) == DRV_RTC_STATUS_OK)
     {
-        time_rx = drv_rtc_read_complete(&ds1307);
+        time_rx = drv_rtc_get_data();
     }
     // if (flag == 0)
     // {
