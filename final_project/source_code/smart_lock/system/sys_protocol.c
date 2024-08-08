@@ -45,23 +45,25 @@ static uint8_t timer_1_flag = 0;
 static sys_protocol_state_t sys_protocol_state;
 static data_frame_t data_frame_receive;
 static data_frame_t data_frame_transmit;
-static
-  /* Private function prototypes ---------------------------------------- */
-  /**
-   * @brief  <function description>
-   *
-   * @param[in]     <param_name>  <param_despcription>
-   * @param[out]    <param_name>  <param_despcription>
-   * @param[inout]  <param_name>  <param_despcription>
-   *
-   * @attention  <API attention note>
-   *
-   * @return
-   *  - 0: Success
-   *  - 1: Error
-   */
-  static void
-  timer_1_run(void);
+
+int count = 0;
+uint8_t temp[MAX_DATA_LENGTH];
+drv_led_rgb_t led_rgb;
+/* Private function prototypes ---------------------------------------- */
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static void timer_1_run(void);
 static uint8_t check_timer_1_flag(void);
 /* Function definitions ----------------------------------------------- */
 void sys_protocol_init(void)
@@ -69,17 +71,19 @@ void sys_protocol_init(void)
   bsp_gpio_pin_t tx_pin, rx_pin;
   tx_pin.io = (BSP_GPIO_PORT_C << 4) | BSP_GPIO_PIN_6;
   tx_pin.mode = BSP_GPIO_AF_PP;
-  tx_pin.pull_type = BSP_GPIO_NOPULL; 
+  tx_pin.pull_type = BSP_GPIO_NOPULL;
   tx_pin.speed = BSP_GPIO_FREQ_LOW;
   tx_pin.af = BSP_GPIO_AF8;
-  bsp_gpio_pin_init(&tx_pin); 
+  bsp_gpio_pin_init(&tx_pin);
 
   rx_pin.io = (BSP_GPIO_PORT_C << 4) | BSP_GPIO_PIN_7;
   rx_pin.mode = BSP_GPIO_AF_PP;
-  rx_pin.pull_type = BSP_GPIO_NOPULL; 
+  rx_pin.pull_type = BSP_GPIO_NOPULL;
   rx_pin.speed = BSP_GPIO_FREQ_LOW;
   rx_pin.af = BSP_GPIO_AF8;
-  bsp_gpio_pin_init(&rx_pin); 
+  bsp_gpio_pin_init(&rx_pin);
+
+  drv_led_rgb_init(&led_rgb);
 }
 void read_data_frame_from_string(data_frame_t *dest_data_frame, char *src_data_string)
 {
@@ -266,10 +270,10 @@ void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fif
         break;
 
       case END:
-      sys_protocol_state = RECEIVE_END;
+        sys_protocol_state = RECEIVE_END;
         break;
       case TERMINATE:
-      sys_protocol_state = RECEIVE_TERMINATE;
+        sys_protocol_state = RECEIVE_TERMINATE;
         break;
       default:
         break;
@@ -336,7 +340,7 @@ void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fif
     read_data_frame_from_uint8_array(&data_frame_receive, array_frame_receive);
     sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_RECEIVE;
     sys_data_to_fifo.protocol_ev.data_size = data_frame_receive.length;
-    for (int i=0; i < data_frame_receive.length; i++)
+    for (int i = 0; i < data_frame_receive.length; i++)
     {
       sys_data_to_fifo.protocol_ev.pdata[i] = data_frame_receive.data[i];
     }
@@ -349,7 +353,7 @@ void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fif
     break;
   case RECEIVE_TERMINATE:
     // do something
-        sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_COMPLETE;
+    sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_COMPLETE;
     fifo_push(fifo_response, &sys_data_to_fifo);
     break;
 
@@ -375,5 +379,27 @@ static uint8_t check_timer_1_flag(void)
     return 1;
   }
   return timer_1_flag;
+}
+
+void sys_protocol_run()
+{
+  if (count == 0)
+  {
+    bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, temp, MAX_DATA_LENGTH);
+    count++;
+  }
+  if (bsp_uart_receive_cplt(BSP_CONFIG_ID_PROTOCOL))
+  {
+    if (temp[0] == 'O' && temp[1] == 'K')
+    {
+      drv_led_rgb_set(&led_rgb, DRV_LED_RGB_COLOR_GREEN);
+      bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, temp, MAX_DATA_LENGTH);
+    }
+    else
+    {
+      drv_led_rgb_set(&led_rgb, DRV_LED_RGB_COLOR_RED);
+      bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, temp, MAX_DATA_LENGTH);
+    }
+  }
 }
 /* End of file -------------------------------------------------------- */
