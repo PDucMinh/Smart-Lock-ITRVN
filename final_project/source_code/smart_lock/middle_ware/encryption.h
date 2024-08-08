@@ -5,7 +5,7 @@
  * @version    major.minor.patch
  * @date       yyyy-mm-dd
  * @author     Minh Pham Duc
- *             
+ *
  * @brief      <A brief description of the content of the file>
  */
 
@@ -16,19 +16,21 @@
 /* Includes ----------------------------------------------------------- */
 #include "string.h"
 #include "stdio.h"
+#include "stdint.h"
 /* Public defines ----------------------------------------------------- */
-
+#define MAX_PASSWORD_LENGTH 20
+#define MAX_ENCODED_STRING_SIZE 150
 /* Public enumerate/structure ----------------------------------------- */
 /**
  * @brief define user information structure
  */
 typedef struct
 {
-    char *key;
-    int rfid;
-    char *user_name;
-    char *decoded_password;
-    char *type;
+  uint8_t  key; //only from 0-255
+  uint8_t user_name; 
+  uint8_t type;
+  uint8_t password_size; // this will not be encoded to send to UI
+  uint8_t decoded_password[MAX_PASSWORD_LENGTH];
 } user_info_t;
 
 /**
@@ -36,10 +38,10 @@ typedef struct
  */
 typedef struct
 {
-    int time_stamp[6];
-    char *user_name;
-    char *access;
-    char *user_hierarchy;
+  uint8_t time_stamp[6];
+  uint8_t user_name;
+  uint8_t access_state;
+  uint8_t user_heriachy;
 } log_info_t;
 
 /* Public macros ------------------------------------------------------ */
@@ -50,77 +52,30 @@ typedef struct
 /**
  * @brief  bencode encoding string
  *
- * @param[in]     string  array of characters
- * @param[out]    encoded_string array of encoded string
+ * @param[in]     user_info_t
+ * @param[out]    uint8_t_array
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Error
- *  - <size>:<string> : encoded string
+ *  - 1: OK
  */
-char *encode_string(const char *string);
+uint8_t encode_user_info(const user_info_t *source_user_info, uint8_t *dest_array);
 
 /**
- * @brief  bencode encoding integer number
+ * @brief  bencode encoding string
  *
- * @param[in]     number array of integer
- * @param[out]    encoded_number array of string contain encoded number 
+ * @param[in]     user_info_t
+ * @param[out]    uint8_t_array
  *
  * @attention  <API attention note>
  *
- * @return  
+ * @return
  *  - 0: Error
- *  - i<number>e : Encoded number
+ *  - 1: OK
  */
-char *encode_number(const int *number);
-
-/**
- * @brief  bencode encoding log information
- *
- * @attention  <API attention note>
- *
- * @return  
- *  - 0: Error
- *  - l<data>e : Encoded log information
- */
-char *encode_log_info(const log_info_t *log_info);
-
-/**
- * @brief  bencode encoding user information
- *
- * @attention  <API attention note>
- *
- * @return  
- *  - 0: Error
- *  - u<data>e : Encoded user information
- */
-char *encode_user_info(const user_info_t *log_info);
-
-/**
- * @brief  count string length
- *
- * @param[in]     str array of character
- * @param[out]    str_len length of string
- *
- * @attention  <API attention note>
- *
- * @return  
- */
-int str_len(const char *str);
-
-/**
- * @brief  decode string to number
- *
- * @param[in]     str array of character
- * @param[out]    decode_number number after decode
- *
- * @attention  <API attention note>
- *
- * @return  
- */
-int decode_number(const char *str);
-
+uint8_t encode_user_info(const log_info_t *source_log_info, uint8_t *dest_array);
 
 #endif // __CODE_TEMPLATE_H
 
