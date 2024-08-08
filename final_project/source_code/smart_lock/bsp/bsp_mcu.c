@@ -239,7 +239,7 @@ bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
 
   if ((mcu_init->is_i2c2_used) == BSP_MCU_PERIPH_I2C2)
   {
-    if (bsp_mcu_i2c_init(mcu_init->is_i2c2_used, &(mcu->hi2c1)) == BSP_STATE_FAIL)
+    if (bsp_mcu_i2c_init(mcu_init->is_i2c2_used, &(mcu->hi2c2)) == BSP_STATE_FAIL)
     {
       return BSP_STATE_FAIL;
     }
@@ -541,11 +541,11 @@ static void bsp_mcu_uart_mspinit(UART_HandleTypeDef* huart)
 
 static void bsp_mcu_i2c_mspinit(I2C_HandleTypeDef* hi2c)
 {
-  if (hi2c->Instance == I2C1)
+  if (hi2c->Instance == I2C2)
   {
-    __HAL_RCC_I2C1_CLK_ENABLE();
-    HAL_NVIC_SetPriority(I2C1_EV_IRQn, 6, 0);
-    HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+    __HAL_RCC_I2C2_CLK_ENABLE();
+    HAL_NVIC_SetPriority(I2C2_EV_IRQn, 6, 0);
+    HAL_NVIC_EnableIRQ(I2C2_EV_IRQn);
   }
 }
 

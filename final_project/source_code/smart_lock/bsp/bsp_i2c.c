@@ -25,9 +25,7 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
-static int var_1; /**< Description of private variable var_1 */
-static int var_2; /**< Description of private variable var_2 */
-static I2C_HandleTypeDef hi2c2;
+I2C_HandleTypeDef hi2c2;
 static uint8_t tx_cplt = 0;
 static uint8_t rx_cplt = 0;
 /* Private function prototypes ---------------------------------------- */

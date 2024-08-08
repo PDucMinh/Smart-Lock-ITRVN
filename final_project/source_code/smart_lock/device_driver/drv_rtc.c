@@ -25,7 +25,7 @@
 
 /* Private variables -------------------------------------------------- */
 static uint8_t ds1307_rx_data[7];
-
+static uint8_t ds1307_tx_data[7];
 /* Private function prototypes ---------------------------------------- */
 uint8_t ds1307_decode_BCD(uint8_t binary);
 uint8_t ds1307_encode_BCD(uint8_t decimal);
@@ -81,19 +81,18 @@ drv_rtc_status_t drv_rtc_write(drv_rtc_t *rtc, drv_rtc_time_t time)
   second = ds1307_encode_BCD(time.second);
 
   // Buffer to transmit
-  uint8_t transmit_data[7] = {second,
-                              minute,
-                              hour,
-                              day,
-                              date,
-                              month,
-                              year};
-  
+  ds1307_tx_data[0] = second;
+  ds1307_tx_data[1] = minute;
+  ds1307_tx_data[2] = hour;
+  ds1307_tx_data[3] = day;
+  ds1307_tx_data[4] = date;
+  ds1307_tx_data[5] = month;
+  ds1307_tx_data[6] = year;
   // Define the starting register address for the data
   uint16_t start_reg_addr = DRV_RTC_REG_SECOND;
 
   // Set time 
-  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, start_reg_addr, transmit_data, sizeof(transmit_data)) != BSP_STATE_PASS)
+  if (rtc->i2c_write(BSP_CONFIG_ID_RTC, rtc->dev_addr, start_reg_addr, ds1307_tx_data, sizeof(ds1307_tx_data)) != BSP_STATE_PASS)
     return DRV_RTC_STATUS_FAIL;
 
   return DRV_RTC_STATUS_OK;

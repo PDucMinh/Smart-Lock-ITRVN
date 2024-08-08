@@ -58,6 +58,7 @@ void SysTick_Handler(void);
 /* USER CODE BEGIN EFP */
 void EXTI2_IRQHandler(void);
 void TIM2_IRQHandler(void);
+void I2C2_EV_IRQHandler(void);
 /* USER CODE END EFP */
 
 #ifdef __cplusplus
