@@ -39,6 +39,7 @@ extern "C" {
 #include "drv_rtc.h"
 #include "bsp_i2c.h"
 #include "bsp_config.h"
+#include "sys_protocol.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 

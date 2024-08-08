@@ -36,13 +36,13 @@
 
 #define MAX_FRAME_LENGTH ((MAX_DATA_LENGTH + MAX_CRC_LENGTH + 8) * 2)
 
-#define START (0x01)
+//#define START (0x01)
 #define TERMINATE (0x10)
 #define END (0x12)
 #define REQUEST (0x20)
 #define SEND (0x21)
 
-#define NULL (0x00)
+//#define NULL (0x00)
 
 #define NONE (0xFF)
 #define DELETE ()

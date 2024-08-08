@@ -198,172 +198,172 @@ void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest
 
 void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fifo_response)
 {
-  switch (sys_protocol_state)
-  {
-  case INIT:
-    if (fifo_size(fifo_request) > 0)
-    {
-      fifo_pop(fifo_request, &sys_data_from_fifo);
-      switch (sys_data_from_fifo.protocol_req.req)
-      {
-      case SYS_REQ_PROTOCOL_ACCEPT_GUI:
-        bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
-        sch_add_task(timer_1_run, 6000, 0);
-        sys_protocol_state = IDLE;
-        break;
-      }
-    }
-    else
-    {
-      // do something
-    }
-    break;
-  case IDLE:
-    if (bsp_uart_receive_cplt(BSP_CONFIG_ID_PROTOCOL))
-    {
-      read_data_frame_from_uint8_array(&data_frame_receive, array_frame_receive);
-      if (data_frame_receive.header == START)
-      {
-        data_frame_transmit.header = SEND;
-        data_frame_transmit.sequence = data_frame_receive.sequence;
-        data_frame_transmit.command = ACK;
-        data_frame_transmit.length = 0;
-
-        write_data_frame_to_uint8_array(&data_frame_transmit, array_frame_transmit);
-        bsp_uart_transmit_start(BSP_CONFIG_ID_PROTOCOL, array_frame_transmit, MAX_FRAME_LENGTH);
-        sys_protocol_state = START;
-      }
-    }
-    else if (check_timer_1_flag())
-    {
-      sys_protocol_state = IDLE_TIME_OUT;
-      // do something to send PROTOCOL_COMPLETE
-      // MERGE IDLE_TIME_OUT and IDLE
-    }
-  // MERGE START and SUB_START
-  case START:
-    // do something
-    if (bsp_uart_transmit_cplt(BSP_CONFIG_ID_PROTOCOL))
-    {
-      bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
-      sys_protocol_state = RECEIVE;
-    }
-    break;
-  case RECEIVE:
-    // do something
-    if (bsp_uart_receive_cplt(BSP_CONFIG_ID_PROTOCOL))
-    {
-      read_data_frame_from_uint8_array(&data_frame_receive, array_frame_receive);
-      switch (data_frame_receive.header)
-      {
-      case SEND:
-        /* code */
-        // bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
-        sys_protocol_state = RECEIVE_SEND;
-        break;
-      case REQUEST:
-        // do something to get data from mcu
-        // do something with array_frame_transmit
-        sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_SEND;
-        fifo_push(fifo_response, &sys_data_to_fifo);
-        sys_protocol_state = RECEIVE_REQUEST;
-        break;
-
-      case END:
-        sys_protocol_state = RECEIVE_END;
-        break;
-      case TERMINATE:
-        sys_protocol_state = RECEIVE_TERMINATE;
-        break;
-      default:
-        break;
-      }
-    }
-    break;
-  // case RECEIVE_REQUEST_MIDDLE:
-  //   // do something
-  //   if (fifo_size(fifo_request) > 0)
-  //   {
-  //     bsp_uart_transmit_start(BSP_CONFIG_ID_PROTOCOL, array_frame_transmit, MAX_FRAME_LENGTH);
-  //     sys_protocol_state
-  //   }
-  //   else
-  //   {
-  //     sys_protocol_state = RECEIVE;
-  //   }
-  //   break;
-  case RECEIVE_REQUEST:
-    // do something
-    if (fifo_size(fifo_request) > 0)
-    {
-      fifo_pop(fifo_request, &sys_data_from_fifo);
-      switch (sys_data_from_fifo.protocol_req.req)
-      {
-      case SYS_REQ_PROTOCOL_INFO:
-        // do something
-        data_frame_transmit.header = SEND;
-        data_frame_transmit.sequence = 0x01;
-        data_frame_transmit.command = NONE;
-        data_frame_transmit.length = sys_data_from_fifo.log_req.data_size;
-        for (int i = 0; i < sys_data_from_fifo.log_req.data_size; i++)
-        {
-          data_frame_transmit.data[i] = sys_data_from_fifo.log_req.pdata[i];
-        }
-        // read_data_frame_from_uint8_array(&data_frame_transmit, );
-        write_data_frame_to_uint8_array(&data_frame_transmit, array_frame_transmit);
-        break;
-      default:
-        // do something
-        break;
-      }
-      bsp_uart_transmit_start(BSP_CONFIG_ID_PROTOCOL, array_frame_transmit, MAX_FRAME_LENGTH);
-      sys_protocol_state = REQUEST_WAITING;
-    }
-    else
-    {
-      // sys_protocol_state = RECEIVE;
-    }
-    break;
-  case REQUEST_WAITING:
-    // do something
-    if (bsp_uart_transmit_cplt(BSP_CONFIG_ID_PROTOCOL))
-    {
-      bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
-      sys_protocol_state = RECEIVE;
-    }
-    break;
-  case RECEIVE_SEND:
-    // do something
-    // if (bsp_uart_receive_cplt(BSP_CONFIG_ID_PROTOCOL))
-    // {
-    // }
-    read_data_frame_from_uint8_array(&data_frame_receive, array_frame_receive);
-    sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_RECEIVE;
-    sys_data_to_fifo.protocol_ev.data_size = data_frame_receive.length;
-    for (int i = 0; i < data_frame_receive.length; i++)
-    {
-      sys_data_to_fifo.protocol_ev.pdata[i] = data_frame_receive.data[i];
-    }
-    fifo_push(fifo_response, &sys_data_to_fifo);
-    break;
-  case RECEIVE_END:
-    // do something
-    sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_COMPLETE;
-    fifo_push(fifo_response, &sys_data_to_fifo);
-    break;
-  case RECEIVE_TERMINATE:
-    // do something
-    sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_COMPLETE;
-    fifo_push(fifo_response, &sys_data_to_fifo);
-    break;
-
-  // case PARSER:
-  //   // do something
-  //   break;
-  default:
-    sys_protocol_state = INIT;
-    break;
-  }
+//  switch (sys_protocol_state)
+//  {
+//  case INIT:
+//    if (fifo_size(fifo_request) > 0)
+//    {
+//      fifo_pop(fifo_request, &sys_data_from_fifo);
+//      switch (sys_data_from_fifo.protocol_req.req)
+//      {
+//      case SYS_REQ_PROTOCOL_ACCEPT_GUI:
+//        bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
+//        sch_add_task(timer_1_run, 6000, 0);
+//        sys_protocol_state = IDLE;
+//        break;
+//      }
+//    }
+//    else
+//    {
+//      // do something
+//    }
+//    break;
+//  case IDLE:
+//    if (bsp_uart_receive_cplt(BSP_CONFIG_ID_PROTOCOL))
+//    {
+//      read_data_frame_from_uint8_array(&data_frame_receive, array_frame_receive);
+//      if (data_frame_receive.header == START)
+//      {
+//        data_frame_transmit.header = SEND;
+//        data_frame_transmit.sequence = data_frame_receive.sequence;
+//        data_frame_transmit.command = ACK;
+//        data_frame_transmit.length = 0;
+//
+//        write_data_frame_to_uint8_array(&data_frame_transmit, array_frame_transmit);
+//        bsp_uart_transmit_start(BSP_CONFIG_ID_PROTOCOL, array_frame_transmit, MAX_FRAME_LENGTH);
+//        sys_protocol_state = START;
+//      }
+//    }
+//    else if (check_timer_1_flag())
+//    {
+//      sys_protocol_state = IDLE_TIME_OUT;
+//      // do something to send PROTOCOL_COMPLETE
+//      // MERGE IDLE_TIME_OUT and IDLE
+//    }
+//  // MERGE START and SUB_START
+//  case START:
+//    // do something
+//    if (bsp_uart_transmit_cplt(BSP_CONFIG_ID_PROTOCOL))
+//    {
+//      bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
+//      sys_protocol_state = RECEIVE;
+//    }
+//    break;
+//  case RECEIVE:
+//    // do something
+//    if (bsp_uart_receive_cplt(BSP_CONFIG_ID_PROTOCOL))
+//    {
+//      read_data_frame_from_uint8_array(&data_frame_receive, array_frame_receive);
+//      switch (data_frame_receive.header)
+//      {
+//      case SEND:
+//        /* code */
+//        // bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
+//        sys_protocol_state = RECEIVE_SEND;
+//        break;
+//      case REQUEST:
+//        // do something to get data from mcu
+//        // do something with array_frame_transmit
+//        sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_SEND;
+//        fifo_push(fifo_response, &sys_data_to_fifo);
+//        sys_protocol_state = RECEIVE_REQUEST;
+//        break;
+//
+//      case END:
+//        sys_protocol_state = RECEIVE_END;
+//        break;
+//      case TERMINATE:
+//        sys_protocol_state = RECEIVE_TERMINATE;
+//        break;
+//      default:
+//        break;
+//      }
+//    }
+//    break;
+//  // case RECEIVE_REQUEST_MIDDLE:
+//  //   // do something
+//  //   if (fifo_size(fifo_request) > 0)
+//  //   {
+//  //     bsp_uart_transmit_start(BSP_CONFIG_ID_PROTOCOL, array_frame_transmit, MAX_FRAME_LENGTH);
+//  //     sys_protocol_state
+//  //   }
+//  //   else
+//  //   {
+//  //     sys_protocol_state = RECEIVE;
+//  //   }
+//  //   break;
+//  case RECEIVE_REQUEST:
+//    // do something
+//    if (fifo_size(fifo_request) > 0)
+//    {
+//      fifo_pop(fifo_request, &sys_data_from_fifo);
+//      switch (sys_data_from_fifo.protocol_req.req)
+//      {
+//      case SYS_REQ_PROTOCOL_INFO:
+//        // do something
+//        data_frame_transmit.header = SEND;
+//        data_frame_transmit.sequence = 0x01;
+//        data_frame_transmit.command = NONE;
+//        data_frame_transmit.length = sys_data_from_fifo.log_req.data_size;
+//        for (int i = 0; i < sys_data_from_fifo.log_req.data_size; i++)
+//        {
+//          data_frame_transmit.data[i] = sys_data_from_fifo.log_req.pdata[i];
+//        }
+//        // read_data_frame_from_uint8_array(&data_frame_transmit, );
+//        write_data_frame_to_uint8_array(&data_frame_transmit, array_frame_transmit);
+//        break;
+//      default:
+//        // do something
+//        break;
+//      }
+//      bsp_uart_transmit_start(BSP_CONFIG_ID_PROTOCOL, array_frame_transmit, MAX_FRAME_LENGTH);
+//      sys_protocol_state = REQUEST_WAITING;
+//    }
+//    else
+//    {
+//      // sys_protocol_state = RECEIVE;
+//    }
+//    break;
+//  case REQUEST_WAITING:
+//    // do something
+//    if (bsp_uart_transmit_cplt(BSP_CONFIG_ID_PROTOCOL))
+//    {
+//      bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, array_frame_receive, MAX_FRAME_LENGTH);
+//      sys_protocol_state = RECEIVE;
+//    }
+//    break;
+//  case RECEIVE_SEND:
+//    // do something
+//    // if (bsp_uart_receive_cplt(BSP_CONFIG_ID_PROTOCOL))
+//    // {
+//    // }
+//    read_data_frame_from_uint8_array(&data_frame_receive, array_frame_receive);
+//    sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_RECEIVE;
+//    sys_data_to_fifo.protocol_ev.data_size = data_frame_receive.length;
+//    for (int i = 0; i < data_frame_receive.length; i++)
+//    {
+//      sys_data_to_fifo.protocol_ev.pdata[i] = data_frame_receive.data[i];
+//    }
+//    fifo_push(fifo_response, &sys_data_to_fifo);
+//    break;
+//  case RECEIVE_END:
+//    // do something
+//    sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_COMPLETE;
+//    fifo_push(fifo_response, &sys_data_to_fifo);
+//    break;
+//  case RECEIVE_TERMINATE:
+//    // do something
+//    sys_data_to_fifo.protocol_ev = SYS_EVENT_PROTOCOL_COMPLETE;
+//    fifo_push(fifo_response, &sys_data_to_fifo);
+//    break;
+//
+//  // case PARSER:
+//  //   // do something
+//  //   break;
+//  default:
+//    sys_protocol_state = INIT;
+//    break;
+//  }
 }
 /* Private definitions ----------------------------------------------- */
 static void timer_1_run(void)
@@ -392,12 +392,12 @@ void sys_protocol_run()
   {
     if (temp[0] == 'O' && temp[1] == 'K')
     {
-      drv_led_rgb_set(&led_rgb, DRV_LED_RGB_COLOR_GREEN);
+      drv_led_rgb_set(&led_rgb, DRV_LED_RGB_GREEN);
       bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, temp, MAX_DATA_LENGTH);
     }
     else
     {
-      drv_led_rgb_set(&led_rgb, DRV_LED_RGB_COLOR_RED);
+      drv_led_rgb_set(&led_rgb, DRV_LED_RGB_RED);
       bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, temp, MAX_DATA_LENGTH);
     }
   }

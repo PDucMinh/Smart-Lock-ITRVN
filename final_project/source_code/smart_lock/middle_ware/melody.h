@@ -17,6 +17,7 @@
 #define __MELODY_H
 
 /* Includes ----------------------------------------------------------- */
+#include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
 #define MELODY_ID_FIRST_SONG (0u)
 #define MELODY_ID_SECOND_SONG (1u)

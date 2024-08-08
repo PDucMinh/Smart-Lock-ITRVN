@@ -18,6 +18,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include <stdio.h>
+#include "stm32f4xx_hal.h"
 /* Public defines ----------------------------------------------------- */
 #define FIFO_MAX_SIZE (100) /* MAX OF FIFO SIZE */
 #define FIFO_MAX_NUM (10)

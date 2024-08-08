@@ -37,7 +37,7 @@ drv_buzzer_status_t drv_buzzer_init(drv_buzzer_t* buzzer)
   }
   buzzer->pwm_start = bsp_pwm_start;
   buzzer->pwm_stop = bsp_pwm_stop;
-  buzzer->pwm_set_feq = bsp_pwm_set_freq;
+  buzzer->pwm_set_freq = bsp_pwm_set_freq;
   duration_flag = 0;
 
   return DRV_BUZZER_STATUS_SUCCESS;

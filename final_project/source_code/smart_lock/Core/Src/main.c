@@ -82,7 +82,8 @@ int main(void)
   // bstmf411_init.is_tim3_used = BSP_MCU_PERIPH_TIM3;
   bstmf411_init.is_tim2_used = BSP_MCU_PERIPH_TIM2;
 //  bstmf411_init.is_tim4_used = BSP_MCU_PERIPH_TIM4;
-  bstmf411_init.is_i2c2_used = BSP_MCU_PERIPH_I2C2;
+//  bstmf411_init.is_i2c2_used = BSP_MCU_PERIPH_I2C2;
+  bstmf411_init.is_usart6_used = BSP_MCU_PERIPH_USART6_ASYNCH;
   bsp_mcu_init(&bstmf411_init, &bstmf411);
 
 //  bbuzzer_pin.io = (BSP_GPIO_PORT_D << 4) | BSP_GPIO_PIN_12;
@@ -91,27 +92,27 @@ int main(void)
 //  bbuzzer_pin.pull_type = BSP_GPIO_NOPULL;
 //  bbuzzer_pin.speed = BSP_GPIO_FREQ_LOW;
 //  bsp_gpio_pin_init(&bbuzzer_pin);
-  brtc_scl.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_10;
-  brtc_scl.mode = BSP_GPIO_AF_OD;
-  brtc_scl.af = BSP_GPIO_AF4;
-  brtc_scl.pull_type = BSP_GPIO_NOPULL;
-  brtc_scl.speed = BSP_GPIO_FREQ_LOW;
-  bsp_gpio_pin_init(&brtc_scl);
-
-  brtc_sda.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_3;
-  brtc_sda.mode = BSP_GPIO_AF_OD;
-  brtc_sda.af = BSP_GPIO_AF9;
-  brtc_sda.pull_type = BSP_GPIO_NOPULL;
-  brtc_sda.speed = BSP_GPIO_FREQ_LOW;
-  bsp_gpio_pin_init(&brtc_sda);
+//  brtc_scl.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_10;
+//  brtc_scl.mode = BSP_GPIO_AF_OD;
+//  brtc_scl.af = BSP_GPIO_AF4;
+//  brtc_scl.pull_type = BSP_GPIO_NOPULL;
+//  brtc_scl.speed = BSP_GPIO_FREQ_LOW;
+//  bsp_gpio_pin_init(&brtc_scl);
+//
+//  brtc_sda.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_3;
+//  brtc_sda.mode = BSP_GPIO_AF_OD;
+//  brtc_sda.af = BSP_GPIO_AF9;
+//  brtc_sda.pull_type = BSP_GPIO_NOPULL;
+//  brtc_sda.speed = BSP_GPIO_FREQ_LOW;
+//  bsp_gpio_pin_init(&brtc_sda);
 
   // bsp_pwm_init(&bstmf411);
   bsp_timer_init(&bstmf411);
   bsp_timer_register_callback(sch_update);
-  bsp_i2c_init(&bstmf411);
-  drv_rtc_init(&ds1307);
+//  bsp_i2c_init(&bstmf411);
+//  drv_rtc_init(&ds1307);
   bsp_timer_start(&bstmf411);
-  drv_rtc_write(&ds1307, time_tx);
+//  drv_rtc_write(&ds1307, time_tx);
   // drv_buzzer_init(&dbuzzer);
   // drv_buzzer_active(&dbuzzer);
   // first_song = melody_read(MELODY_ID_SECOND_SONG);
@@ -121,7 +122,7 @@ int main(void)
   bsp_timer_register_callback(sch_update);
   bsp_timer_start(&bstmf411); */
 
-  /* bled_pin_r.af = BSP_GPIO_AF2;
+  bled_pin_r.af = BSP_GPIO_AF2;
   bled_pin_r.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_4;
   bled_pin_r.mode = BSP_GPIO_AF_PP;
   bled_pin_r.pull_type = BSP_GPIO_NOPULL;
@@ -143,21 +144,22 @@ int main(void)
   bsp_gpio_pin_init(&bled_pin_b);
 
   bsp_pwm_init(&bstmf411);
-  drv_led_rgb_init(&dled_rgb);
-  drv_led_rgb_set(&dled_rgb, DRV_LED_RGB_ORANGE); */
+  sys_protocol_init();
+//  drv_led_rgb_init(&dled_rgb);
+//  drv_led_rgb_set(&dled_rgb, DRV_LED_RGB_ORANGE);
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
     sch_dispatch_task();
-    if (ds1307.i2c_write_cplt(BSP_CONFIG_ID_RTC) == 1)
-    {
-    	drv_rtc_read_start(&ds1307);
-    }
-    if (drv_rtc_read_cplt(&ds1307) == DRV_RTC_STATUS_OK)
-    {
-        time_rx = drv_rtc_get_data();
-    }
+//    if (ds1307.i2c_write_cplt(BSP_CONFIG_ID_RTC) == 1)
+//    {
+//    	drv_rtc_read_start(&ds1307);
+//    }
+//    if (drv_rtc_read_cplt(&ds1307) == DRV_RTC_STATUS_OK)
+//    {
+//        time_rx = drv_rtc_get_data();
+//    }
     // if (flag == 0)
     // {
     //   drv_buzzer_set_note(&dbuzzer, first_song.pnote_array[index_song].note_freq, first_song.pnote_array[index_song].duration_ms);
