@@ -104,7 +104,7 @@ bsp_state_t bsp_uart_receive_start(bsp_config_id_t id, uint8_t* pdata, uint16_t 
  *  - 0: Success
  *  - 1: Error
  */
-uint8_t bsp_uart_receive_cplt(bsp_config_id_t id);
+uint16_t bsp_uart_receive_cplt(bsp_config_id_t id);
 
 #endif // __BSP_UART_H
 
