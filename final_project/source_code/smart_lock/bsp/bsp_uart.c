@@ -26,8 +26,8 @@
 /* Private variables -------------------------------------------------- */
 UART_HandleTypeDef huart6;
 static uint8_t tx_cplt = 0;
-static uint8_t rx_cplt = 0;
-
+static uint16_t data_receive_size = 0;
+static uint16_t data_max_size = 0;
 /* Private function prototypes ---------------------------------------- */
 /**
  * @brief  <function description>
@@ -42,7 +42,7 @@ static uint8_t rx_cplt = 0;
  *  - 0: Success
  *  - 1: Error
  */
-static void bsp_uart_receive_handler(UART_HandleTypeDef* huart);
+static void bsp_uart_receive_handler(UART_HandleTypeDef* huart, uint16_t size);
 
 /**
  * @brief  <function description>
@@ -63,7 +63,7 @@ bsp_state_t bsp_uart_init(bsp_mcu_t* mcu)
 {
   BSP_CHECK_NULL(mcu, BSP_STATE_FAIL);
   huart6 = mcu->huart6;
-  huart6.RxCpltCallback = bsp_uart_receive_handler;
+  huart6.RxEventCallback = bsp_uart_receive_handler;
   huart6.TxCpltCallback = bsp_uart_transmit_handler;
   return BSP_STATE_PASS;
 }
@@ -90,7 +90,8 @@ bsp_state_t bsp_uart_receive_start(bsp_config_id_t id, uint8_t* pdata, uint16_t 
   BSP_CHECK_NULL(size, BSP_STATE_FAIL);
   if (id == BSP_CONFIG_ID_PROTOCOL)
   {
-    if (HAL_UART_Receive_IT(&huart6, pdata, size) != HAL_OK)
+    data_max_size = size;
+    if (HAL_UARTEx_ReceiveToIdle_IT(&huart6, pdata, size) != HAL_OK)
     {
       return BSP_STATE_FAIL;
     }
@@ -112,17 +113,17 @@ uint8_t bsp_uart_transmit_cplt(bsp_config_id_t id)
   }
 }
 
-uint8_t bsp_uart_receive_cplt(bsp_config_id_t id)
+uint16_t bsp_uart_receive_cplt(bsp_config_id_t id)
 {
   if (id == BSP_CONFIG_ID_PROTOCOL)
   {
-    uint8_t ret_flag;
-    ret_flag = rx_cplt;
-    if (rx_cplt == 1)
+    uint8_t ret_size;
+    ret_size = data_receive_size;
+    if (data_receive_size > 0)
     {
-      rx_cplt = 0;
+      data_receive_size = 0;
     }
-    return ret_flag;
+    return ret_size;
   }
 }
 /* Private definitions ----------------------------------------------- */
@@ -131,8 +132,8 @@ static void bsp_uart_transmit_handler(UART_HandleTypeDef* huart)
   tx_cplt = 1;
 }
 
-static void bsp_uart_receive_handler(UART_HandleTypeDef* huart)
+static void bsp_uart_receive_handler(UART_HandleTypeDef* huart, uint16_t size)
 {
-  rx_cplt = 1;
+  data_receive_size = data_max_size - size;
 }
 /* End of file -------------------------------------------------------- */
