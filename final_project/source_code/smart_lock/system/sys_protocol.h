@@ -37,18 +37,18 @@
 #define MAX_FRAME_LENGTH ((MAX_DATA_LENGTH + MAX_CRC_LENGTH + 8) * 2)
 
 //#define START (0x01)
-#define TERMINATE (0x10)
-#define END (0x12)
-#define REQUEST (0x20)
-#define SEND (0x21)
+#define SPROTOCOL_TERMINATE (0x10)
+#define SPROTOCOL_END (0x12)
+#define SPROTOCOL_REQUEST (0x20)
+#define SPROTOCOL_SEND (0x21)
 
 //#define NULL (0x00)
 
-#define NONE (0xFF)
-#define DELETE ()
-#define SET ()
-#define ACK (0xFA)
-#define NACK ()
+#define SPROTOCOL_NONE (0xFF)
+#define SPROTOCOL_DELETE ()
+#define SPROTOCOL_SET ()
+#define SPROTOCOL_ACK (0xFA)
+#define SPROTOCOL_NACK ()
 
 /* Public enumerate/structure ----------------------------------------- */
 
@@ -87,67 +87,37 @@ typedef struct
  *  - 0: Success
  *  - 1: Error
  */
-void read_data_frame_from_string(data_frame_t *dest_data_frame, char *src_data_string);
-
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-void read_data_frame_from_uint8_array(data_frame_t *dest_data_frame, uint8_t *src_data_array);
-
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-char write_data_frame_to_string(data_frame_t *src_data_frame);
-
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
-void write_data_frame_to_uint8_array(data_frame_t *src_data_frame, uint8_t *dest_data_array);
-
-/**
- * @brief  <function description>
- *
- * @param[in]     <param_name>  <param_despcription>
- * @param[out]    <param_name>  <param_despcription>
- * @param[inout]  <param_name>  <param_despcription>
- *
- * @attention  <API attention note>
- *
- * @return
- *  - 0: Success
- *  - 1: Error
- */
 void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fifo_response);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+void sys_protocol_write_data_frame_to_array(data_frame_t *source_data_frame, uint8_t *dest_array);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+void sys_protocol_read_data_frame_from_array(data_frame_t *dest_data_frame, uint8_t *source_array);
 
 void sys_protocol_init(void);
 
