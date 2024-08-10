@@ -78,6 +78,7 @@ typedef struct
 {
   bsp_mcu_periph_t is_spi_used;
   bsp_mcu_periph_t is_i2c1_used;
+  bsp_mcu_periph_t is_i2c2_used;
   bsp_mcu_periph_t is_dma_used;
   bsp_mcu_periph_t is_usart2_used;
   bsp_mcu_periph_t is_usart6_used;
