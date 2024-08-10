@@ -25,11 +25,10 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
-static int var_1; /**< Description of private variable var_1 */
-static int var_2; /**< Description of private variable var_2 */
 static I2C_HandleTypeDef hi2c1;
-static uint8_t tx_cplt = 0;
-static uint8_t rx_cplt = 0;
+static uint8_t tx_cplt_i2c1 = 0;
+static uint8_t tx_cplt_i2c2 = 0;
+static uint8_t rx_cplt_i2c2 = 0;
 /* Private function prototypes ---------------------------------------- */
 /**
  * @brief  <function description>
@@ -81,6 +80,13 @@ bsp_state_t bsp_i2c_transmit_start(bsp_config_id_t id,
   BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
   if (id == BSP_CONFIG_ID_RTC)
   {
+    if (HAL_I2C_Mem_Write_IT(&hi2c2, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  else if (id == BSP_CONFIG_ID_OLED)
+  {
     if (HAL_I2C_Mem_Write_IT(&hi2c1, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
     {
       return BSP_STATE_FAIL;
@@ -113,10 +119,20 @@ uint8_t bsp_i2c_transmit_cplt(bsp_config_id_t id)
   if (id == BSP_CONFIG_ID_RTC)
   {
     uint8_t ret_flag = 0;
-    ret_flag = tx_cplt;
-    if (tx_cplt == 1)
+    ret_flag = tx_cplt_i2c2;
+    if (tx_cplt_i2c2 == 1)
     {
-      tx_cplt = 0;
+      tx_cplt_i2c2 = 0;
+    }
+    return ret_flag;
+  }
+  else if (id == BSP_CONFIG_ID_OLED)
+  {
+    uint8_t ret_flag = 0;
+    ret_flag = tx_cplt_i2c1;
+    if (tx_cplt_i2c1 == 1)
+    {
+      tx_cplt_i2c1 = 0;
     }
     return ret_flag;
   }
@@ -127,10 +143,10 @@ uint8_t bsp_i2c_receive_cplt(bsp_config_id_t id)
   if (id == BSP_CONFIG_ID_RTC)
   {
     uint8_t ret_flag = 0;
-    ret_flag = rx_cplt;
-    if (rx_cplt == 1)
+    ret_flag = rx_cplt_i2c2;
+    if (rx_cplt_i2c2 == 1)
     {
-      rx_cplt = 0;
+      rx_cplt_i2c2 = 0;
     }
     return ret_flag;
   }
@@ -138,11 +154,18 @@ uint8_t bsp_i2c_receive_cplt(bsp_config_id_t id)
 /* Private definitions ----------------------------------------------- */
 static void bsp_i2c_transmit_handler(I2C_HandleTypeDef* hi2c)
 {
-    tx_cplt = 1;
+  if (hi2c->Instance == I2C1)
+  {
+    tx_cplt_i2c2_i2c1 = 1;
+  }
+  else if (hi2c->Instance == I2C2)
+  {
+    tx_cplt_i2c2_i2c2 = 1;
+  }
 }
 
 static void bsp_i2c_receive_handler(I2C_HandleTypeDef* hi2c)
 {
-    rx_cplt = 1;
+  rx_cplt_i2c2 = 1;
 }
 /* End of file -------------------------------------------------------- */
