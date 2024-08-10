@@ -1,19 +1,16 @@
 /**
  * @file       bsp_config.h
  * @copyright  Copyright (C) 2019 ITRVN. All rights reserved.
- * @license    This project is released under the Fiot License.
- * @version    major.minor.patch
- * @date       yyyy-mm-dd
- * @author     <first_name_1> <last_name_1>
- * @author     <first_name_2> <last_name_2>
+ * @license    
+ * @version    1.0.0
+ * @date       2024-08-10
+ * @author     Hung Nguyen
  *
  * @brief      <A brief description of the content of the file>
  *
  * @note
- * @example    example_file_1.c
- *             Example_1 description
- * @example    example_file_2.c
- *             Example_2 description
+ * @example    
+ * 
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
@@ -42,6 +39,7 @@ typedef enum
   BSP_CONFIG_ID_KEYPAD,
   BSP_CONFIG_ID_PROTOCOL,
   BSP_CONFIG_ID_RTC,
+  BSP_CONFIG_ID_OLED,
   BSP_CONFIG_ID_MAX
 }bsp_config_id_t;
 
