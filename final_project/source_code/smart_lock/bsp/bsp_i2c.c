@@ -25,9 +25,11 @@
 /* Public variables --------------------------------------------------- */
 
 /* Private variables -------------------------------------------------- */
-I2C_HandleTypeDef hi2c2;
-static uint8_t tx_cplt = 0;
-static uint8_t rx_cplt = 0;
+static I2C_HandleTypeDef hi2c1;
+static I2C_HandleTypeDef hi2c2;
+static uint8_t tx_cplt_i2c1 = 0;
+static uint8_t tx_cplt_i2c2 = 0;
+static uint8_t rx_cplt_i2c2 = 0;
 /* Private function prototypes ---------------------------------------- */
 /**
  * @brief  <function description>
@@ -62,7 +64,9 @@ static void bsp_i2c_receive_handler(I2C_HandleTypeDef* hi2c);
 bsp_state_t bsp_i2c_init(bsp_mcu_t* mcu)
 {
   BSP_CHECK_NULL(mcu, BSP_STATE_FAIL);
+  hi2c1 = mcu->hi2c1;
   hi2c2 = mcu->hi2c2;
+  hi2c1.MemTxCpltCallback = bsp_i2c_transmit_handler;
   hi2c2.MemTxCpltCallback = bsp_i2c_transmit_handler;
   hi2c2.MemRxCpltCallback = bsp_i2c_receive_handler;
   return BSP_STATE_PASS;
@@ -76,10 +80,17 @@ bsp_state_t bsp_i2c_transmit_start(bsp_config_id_t id,
 {
   BSP_CHECK_NULL(pdata, BSP_STATE_FAIL);
   BSP_CHECK_NULL(data_size, BSP_STATE_FAIL);
-  BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
+  BSP_CHECK_RANGE(id, 0, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
   if (id == BSP_CONFIG_ID_RTC)
   {
     if (HAL_I2C_Mem_Write_IT(&hi2c2, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  else if (id == BSP_CONFIG_ID_OLED)
+  {
+    if (HAL_I2C_Mem_Write_IT(&hi2c1, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
     {
       return BSP_STATE_FAIL;
     }
@@ -95,7 +106,7 @@ bsp_state_t bsp_i2c_receive_start(bsp_config_id_t id,
 {
   BSP_CHECK_NULL(pdata, BSP_STATE_FAIL);
   BSP_CHECK_NULL(data_size, BSP_STATE_FAIL);
-  BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
+  BSP_CHECK_RANGE(id, 0, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
   if (id == BSP_CONFIG_ID_RTC)
   {
     if (HAL_I2C_Mem_Read_IT(&hi2c2, slave_addr, reg_addr, I2C_MEMADD_SIZE_8BIT, pdata, data_size) != HAL_OK)
@@ -111,10 +122,20 @@ uint8_t bsp_i2c_transmit_cplt(bsp_config_id_t id)
   if (id == BSP_CONFIG_ID_RTC)
   {
     uint8_t ret_flag = 0;
-    ret_flag = tx_cplt;
-    if (tx_cplt == 1)
+    ret_flag = tx_cplt_i2c2;
+    if (tx_cplt_i2c2 == 1)
     {
-      tx_cplt = 0;
+      tx_cplt_i2c2 = 0;
+    }
+    return ret_flag;
+  }
+  else if (id == BSP_CONFIG_ID_OLED)
+  {
+    uint8_t ret_flag = 0;
+    ret_flag = tx_cplt_i2c1;
+    if (tx_cplt_i2c1 == 1)
+    {
+      tx_cplt_i2c1 = 0;
     }
     return ret_flag;
   }
@@ -125,10 +146,10 @@ uint8_t bsp_i2c_receive_cplt(bsp_config_id_t id)
   if (id == BSP_CONFIG_ID_RTC)
   {
     uint8_t ret_flag = 0;
-    ret_flag = rx_cplt;
-    if (rx_cplt == 1)
+    ret_flag = rx_cplt_i2c2;
+    if (rx_cplt_i2c2 == 1)
     {
-      rx_cplt = 0;
+      rx_cplt_i2c2 = 0;
     }
     return ret_flag;
   }
@@ -136,11 +157,18 @@ uint8_t bsp_i2c_receive_cplt(bsp_config_id_t id)
 /* Private definitions ----------------------------------------------- */
 static void bsp_i2c_transmit_handler(I2C_HandleTypeDef* hi2c)
 {
-    tx_cplt = 1;
+  if (hi2c->Instance == I2C1)
+  {
+    tx_cplt_i2c1 = 1;
+  }
+  else if (hi2c->Instance == I2C2)
+  {
+    tx_cplt_i2c2 = 1;
+  }
 }
 
 static void bsp_i2c_receive_handler(I2C_HandleTypeDef* hi2c)
 {
-    rx_cplt = 1;
+  rx_cplt_i2c2 = 1;
 }
 /* End of file -------------------------------------------------------- */

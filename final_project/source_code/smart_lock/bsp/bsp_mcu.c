@@ -191,6 +191,21 @@ static bsp_state_t bsp_mcu_i2c_init(bsp_mcu_periph_t periph, I2C_HandleTypeDef* 
  *  - 1: Error
  */
 static void bsp_mcu_i2c_mspinit(I2C_HandleTypeDef* hi2c);
+
+/**
+ * @brief  <function description>
+ *
+ * @param[in]     <param_name>  <param_despcription>
+ * @param[out]    <param_name>  <param_despcription>
+ * @param[inout]  <param_name>  <param_despcription>
+ *
+ * @attention  <API attention note>
+ *
+ * @return
+ *  - 0: Success
+ *  - 1: Error
+ */
+static bsp_state_t bsp_mcu_crc_init(bsp_mcu_periph_t periph, CRC_HandleTypeDef* hcrc);
 /* Function definitions ----------------------------------------------- */
 bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
 {
@@ -237,9 +252,25 @@ bsp_state_t bsp_mcu_init(bsp_mcu_init_t* mcu_init, bsp_mcu_t* mcu)
     }
   }
 
+  if ((mcu_init->is_i2c1_used) == BSP_MCU_PERIPH_I2C1)
+  {
+    if (bsp_mcu_i2c_init(mcu_init->is_i2c1_used, &(mcu->hi2c1)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+
   if ((mcu_init->is_i2c2_used) == BSP_MCU_PERIPH_I2C2)
   {
     if (bsp_mcu_i2c_init(mcu_init->is_i2c2_used, &(mcu->hi2c2)) == BSP_STATE_FAIL)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+
+  if ((mcu_init->is_crc_used) == BSP_MCU_PERIPH_CRC)
+  {
+    if (bsp_mcu_crc_init(mcu_init->is_crc_used, &(mcu->hcrc)) == BSP_STATE_FAIL)
     {
       return BSP_STATE_FAIL;
     }
@@ -455,7 +486,7 @@ static bsp_state_t bsp_mcu_usart_init(bsp_mcu_periph_t periph, USART_HandleTypeD
       return BSP_STATE_FAIL;
     }
   }
-  return BSP_STATE_FAIL;
+  return BSP_STATE_PASS;
 }
 
 static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, UART_HandleTypeDef* huart)
@@ -477,24 +508,61 @@ static bsp_state_t bsp_mcu_uart_init(bsp_mcu_periph_t periph, UART_HandleTypeDef
       return BSP_STATE_FAIL;
     }
   }
+  return BSP_STATE_PASS;
 }
 
 static bsp_state_t bsp_mcu_i2c_init(bsp_mcu_periph_t periph, I2C_HandleTypeDef* hi2c)
 {
-  (hi2c->Instance) = I2C2;
-  (hi2c->Init).ClockSpeed = 100000;
-  (hi2c->Init).DutyCycle = I2C_DUTYCYCLE_2;
-  (hi2c->Init).OwnAddress1 = 0;
-  (hi2c->Init).AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  (hi2c->Init).DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  (hi2c->Init).OwnAddress2 = 0;
-  (hi2c->Init).GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  (hi2c->Init).NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  hi2c->MspInitCallback = bsp_mcu_i2c_mspinit;
-  if (HAL_I2C_Init(hi2c) != HAL_OK)
+  BSP_CHECK_NULL(hi2c, BSP_STATE_FAIL);
+  if (periph == BSP_MCU_PERIPH_I2C1)
   {
-    return BSP_STATE_FAIL;
+    (hi2c->Instance) = I2C1;
+    (hi2c->Init).ClockSpeed = 400000;
+    (hi2c->Init).DutyCycle = I2C_DUTYCYCLE_2;
+    (hi2c->Init).OwnAddress1 = 0;
+    (hi2c->Init).AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+    (hi2c->Init).DualAddressMode = I2C_DUALADDRESS_DISABLE;
+    (hi2c->Init).OwnAddress2 = 0;
+    (hi2c->Init).GeneralCallMode = I2C_GENERALCALL_DISABLE;
+    (hi2c->Init).NoStretchMode = I2C_NOSTRETCH_DISABLE;
+    hi2c->MspInitCallback = bsp_mcu_i2c_mspinit;
+    if (HAL_I2C_Init(hi2c) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
   }
+  else if (periph == BSP_MCU_PERIPH_I2C2)
+  {
+    (hi2c->Instance) = I2C2;
+    (hi2c->Init).ClockSpeed = 100000;
+    (hi2c->Init).DutyCycle = I2C_DUTYCYCLE_2;
+    (hi2c->Init).OwnAddress1 = 0;
+    (hi2c->Init).AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+    (hi2c->Init).DualAddressMode = I2C_DUALADDRESS_DISABLE;
+    (hi2c->Init).OwnAddress2 = 0;
+    (hi2c->Init).GeneralCallMode = I2C_GENERALCALL_DISABLE;
+    (hi2c->Init).NoStretchMode = I2C_NOSTRETCH_DISABLE;
+    hi2c->MspInitCallback = bsp_mcu_i2c_mspinit;
+    if (HAL_I2C_Init(hi2c) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  return BSP_STATE_PASS;
+}
+
+static bsp_state_t bsp_mcu_crc_init(bsp_mcu_periph_t periph, CRC_HandleTypeDef* hcrc)
+{
+  BSP_CHECK_NULL(hcrc, BSP_STATE_FAIL);
+  if (periph == BSP_MCU_PERIPH_CRC)
+  {
+    hcrc->Instance = CRC;
+    if (HAL_CRC_Init(hcrc) != HAL_OK)
+    {
+      return BSP_STATE_FAIL;
+    }
+  }
+  return BSP_STATE_PASS;
 }
 
 static void bsp_mcu_pwm_mspinit(TIM_HandleTypeDef* htim)
@@ -543,8 +611,14 @@ static void bsp_mcu_i2c_mspinit(I2C_HandleTypeDef* hi2c)
 {
   if (hi2c->Instance == I2C2)
   {
+    __HAL_RCC_I2C1_CLK_ENABLE();
+    HAL_NVIC_SetPriority(I2C1_EV_IRQn, 6, 0);
+    HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+  }
+  else if (hi2c->Instance == I2C2)
+  {
     __HAL_RCC_I2C2_CLK_ENABLE();
-    HAL_NVIC_SetPriority(I2C2_EV_IRQn, 6, 0);
+    HAL_NVIC_SetPriority(I2C2_EV_IRQn, 7, 0);
     HAL_NVIC_EnableIRQ(I2C2_EV_IRQn);
   }
 }
@@ -553,5 +627,16 @@ void HAL_MspInit(void)
 {
   __HAL_RCC_SYSCFG_CLK_ENABLE();
   __HAL_RCC_PWR_CLK_ENABLE();
+  /* FLASH_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(FLASH_IRQn, 8, 0);
+  HAL_NVIC_EnableIRQ(FLASH_IRQn);
+}
+
+void HAL_CRC_MspInit(CRC_HandleTypeDef* hcrc)
+{
+  if (hcrc->Instance == CRC)
+  {
+    __HAL_RCC_CRC_CLK_ENABLE();
+  }
 }
 /* End of file -------------------------------------------------------- */
