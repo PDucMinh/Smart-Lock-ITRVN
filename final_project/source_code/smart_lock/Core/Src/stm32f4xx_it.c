@@ -256,4 +256,15 @@ void I2C2_EV_IRQHandler(void)
 
   /* USER CODE END I2C1_EV_IRQn 1 */
 }
+
+void FLASH_IRQHandler(void)
+{
+  /* USER CODE BEGIN FLASH_IRQn 0 */
+
+  /* USER CODE END FLASH_IRQn 0 */
+  HAL_FLASH_IRQHandler();
+  /* USER CODE BEGIN FLASH_IRQn 1 */
+
+  /* USER CODE END FLASH_IRQn 1 */
+}
 /* USER CODE END 1 */
