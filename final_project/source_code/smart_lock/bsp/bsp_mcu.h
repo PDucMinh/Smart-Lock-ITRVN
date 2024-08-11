@@ -68,6 +68,7 @@ typedef enum
   BSP_MCU_PERIPH_USART6_ASYNCH,
   BSP_MCU_PERIPH_EXTI,
   BSP_MCU_PERIPH_FLASH,
+  BSP_MCU_PERIPH_CRC
 } bsp_mcu_periph_t;
 
 /**
@@ -76,6 +77,7 @@ typedef enum
 typedef struct
 {
   bsp_mcu_periph_t is_spi_used;
+  bsp_mcu_periph_t is_i2c1_used;
   bsp_mcu_periph_t is_i2c2_used;
   bsp_mcu_periph_t is_dma_used;
   bsp_mcu_periph_t is_usart2_used;
@@ -88,6 +90,7 @@ typedef struct
   bsp_mcu_periph_t is_tim9_used;
   bsp_mcu_periph_t is_tim10_used;
   bsp_mcu_periph_t is_tim11_used;
+  bsp_mcu_periph_t is_crc_used;
 } bsp_mcu_init_t;
 
 /**
@@ -133,6 +136,7 @@ typedef struct
   TIM_HandleTypeDef htim9;
   TIM_HandleTypeDef htim10;
   TIM_HandleTypeDef htim11;
+  CRC_HandleTypeDef hcrc;
 } bsp_mcu_t;
 /* Public macros ------------------------------------------------------ */
 

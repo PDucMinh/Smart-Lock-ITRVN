@@ -125,8 +125,8 @@ bsp_state_t bsp_pwm_set_duty(bsp_config_id_t id, uint32_t channel, uint32_t duty
 
 bsp_state_t bsp_pwm_set_freq(bsp_config_id_t id, uint32_t channel, uint32_t period)
 {
-  BSP_CHECK_RANGE(id, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
-  BSP_CHECK_RANGE(period, 65535, BSP_STATE_FAIL);
+  BSP_CHECK_RANGE(id, 0, BSP_CONFIG_ID_MAX, BSP_STATE_FAIL);
+  BSP_CHECK_RANGE(period, 0, 65535, BSP_STATE_FAIL);
   uint16_t temp_duty = (period + 1) / 2 - 1;
   __HAL_TIM_SET_COMPARE(&htim4, channel, temp_duty);
   __HAL_TIM_SET_AUTORELOAD(&htim4, period);
