@@ -65,10 +65,10 @@ typedef enum
  *  - BSP_STATE_PASS: first parameter is valid
  *  - BSP_STATE_FAIL: first parameter is invalid
  */
-#define BSP_CHECK_RANGE(A, __RANGE__, B) \
+#define BSP_CHECK_RANGE(A, __MIN__ , __MAX__, B) \
   do                                        \
   {                                         \
-    if (!(A < __RANGE__))                   \
+    if ((A >= __MAX__) || (A <= __MIN__))                   \
       return B;                             \
   } while (0)
 
