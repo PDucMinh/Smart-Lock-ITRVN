@@ -144,10 +144,12 @@ void sys_protocol_loop(fifo_buffer_info_t *fifo_request, fifo_buffer_info_t *fif
       case SPROTOCOL_END:
         sys_data_to_fifo.protocol_ev.ev = SYS_EVENT_PROTOCOL_COMPLETE;
         fifo_push(fifo_response, &sys_data_to_fifo);
+        sys_protocol_state = SP_INIT;
         break;
       case SPROTOCOL_TERMINATE:
         sys_data_to_fifo.protocol_ev.ev = SYS_EVENT_PROTOCOL_COMPLETE;
         fifo_push(fifo_response, &sys_data_to_fifo);
+        sys_protocol_state = SP_INIT;
         break;
       default:
         break;
