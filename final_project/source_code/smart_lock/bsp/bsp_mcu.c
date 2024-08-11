@@ -627,6 +627,9 @@ void HAL_MspInit(void)
 {
   __HAL_RCC_SYSCFG_CLK_ENABLE();
   __HAL_RCC_PWR_CLK_ENABLE();
+  /* FLASH_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(FLASH_IRQn, 8, 0);
+  HAL_NVIC_EnableIRQ(FLASH_IRQn);
 }
 
 void HAL_CRC_MspInit(CRC_HandleTypeDef* hcrc)
