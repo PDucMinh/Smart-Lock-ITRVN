@@ -36,7 +36,7 @@
 
 #define MAX_FRAME_LENGTH ((MAX_DATA_LENGTH + MAX_CRC_LENGTH + 8) * 2)
 
-//#define START (0x01)
+// #define SPROTOCOL_START (0x01)
 #define SPROTOCOL_TERMINATE (0x10)
 #define SPROTOCOL_END (0x12)
 #define SPROTOCOL_REQUEST (0x20)
@@ -121,7 +121,6 @@ void sys_protocol_read_data_frame_from_array(data_frame_t *dest_data_frame, uint
 
 void sys_protocol_init(void);
 
-void sys_protocol_run();
 
 #endif // __CODE_TEMPLATE_H
 
