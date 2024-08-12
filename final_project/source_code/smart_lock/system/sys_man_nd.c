@@ -88,6 +88,7 @@ void sys_managar_loop(void)
         {
           sys_manager_state = SYS_MANAGER_STATE_DOUBLE_LOCK;
           sys_manager_alarm(melody_read(MELODY_ID_FIRST_SONG)); // alarm double lock
+          sch_add_task(&sys_manager_timer_run, 5000, 0);
         }
         else
         {
@@ -105,6 +106,11 @@ void sys_managar_loop(void)
       {
         sys_manager_state = SYS_MANAGER_STATE_CLOSE;
         bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, &sys_manager_key, 1);
+      }
+      else if (sys_manager_check_flag() && (drv_ir_state(&sys_manager_ir) == DRV_IR_STATE_NO_OBSTACLE))
+      {
+        sys_manager_state = SYS_MANAGER_STATE_OPEN;
+        sys_manager_alarm(melody_read(MELODY_ID_FIRST_SONG)); // alarm not close
       }
     }
     break;
