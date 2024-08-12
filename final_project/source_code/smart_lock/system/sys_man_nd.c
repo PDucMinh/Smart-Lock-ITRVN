@@ -60,7 +60,7 @@ void sys_manager_init(void)
   // init timer scheduler
 }
 
-void sys_managar_loop(void)
+void sys_manager_loop(void)
 {
   switch (sys_manager_state)
   {
@@ -105,12 +105,13 @@ void sys_managar_loop(void)
       if (sys_manager_key == SMAN_LCK_KEY)
       {
         sys_manager_state = SYS_MANAGER_STATE_CLOSE;
+        sys_manager_alarm(melody_read(MELODY_ID_THIRD_SONG)); // alarm close door
         bsp_uart_receive_start(BSP_CONFIG_ID_PROTOCOL, &sys_manager_key, 1);
       }
       else if (sys_manager_check_flag() && (drv_ir_state(&sys_manager_ir) == DRV_IR_STATE_NO_OBSTACLE))
       {
         sys_manager_state = SYS_MANAGER_STATE_OPEN;
-        sys_manager_alarm(melody_read(MELODY_ID_FIRST_SONG)); // alarm not close
+        sys_manager_alarm(melody_read(MELODY_ID_SECOND_SONG)); // alarm not close
       }
     }
     break;
@@ -118,6 +119,7 @@ void sys_managar_loop(void)
     if (sys_manager_check_flag())
     {
       sys_manager_state = SYS_MANAGER_STATE_INIT;
+      sys_manager_alarm(melody_read(MELODY_ID_THIRD_SONG)); // alarm out of double lock
     }
     break;
   default:
@@ -151,7 +153,7 @@ uint8_t sys_manager_check_flag()
   }
   return 0;
 }
-void sys_manager_wrong_pass_threshold()
+uint8_t sys_manager_wrong_pass_threshold()
 {
   if (sys_manager_wrong_pass_count >= 3)
   {
