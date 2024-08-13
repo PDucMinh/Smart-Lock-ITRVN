@@ -23,7 +23,7 @@
 #include "drv_buzzer.h"
 #include "melody.h"
 #include "bsp_uart.h"
-#include "scheduler.h"
+
 /* Public defines ----------------------------------------------------- */
 
 /* Public enumerate/structure ----------------------------------------- */
