@@ -17,6 +17,14 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "sys_man_nd.h"
+#include "cmsis_compiler.h"
+#include "bsp_mcu.h"
+#include "bsp_gpio.h"
+#include "bsp_timer.h"
+#include "bsp_pwm.h"
+#include "bsp_uart.h"
+#include "scheduler.h" 
+#include "bsp_exti.h" 
 
 /* Private defines ---------------------------------------------------- */
 #define SMAN_LCK_KEY 0xFF
@@ -58,6 +66,55 @@ void sys_manager_init(void)
   // init ir
   // init pwm led
   // init timer scheduler
+  bsp_mcu_t mcu;
+  bsp_mcu_init_t mcu_init;
+  mcu_init.is_tim2_used = BSP_MCU_PERIPH_TIM2;
+  mcu_init.is_tim3_used = BSP_MCU_PERIPH_TIM3;
+  mcu_init.is_tim4_used = BSP_MCU_PERIPH_TIM4;
+  mcu_init.is_usart6_used = BSP_MCU_PERIPH_USART6_ASYNCH;
+  bsp_mcu_init(&mcu_init, &mcu);
+  bsp_uart_init(&mcu);
+  bsp_timer_init(&mcu);
+  bsp_pwm_init(&mcu);
+  bsp_timer_register_callback(sch_add_task);
+  bsp_gpio_pin_t ledr_pin, ledg_pin, ledb_pin;
+  ledr_pin.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_4;
+  ledr_pin.mode = BSP_GPIO_AF_PP;
+  ledr_pin.pull_type = BSP_GPIO_NOPULL;
+  ledr_pin.speed = BSP_GPIO_FREQ_MEDIUM;
+  ledr_pin.af = BSP_GPIO_AF2;
+  bsp_gpio_pin_init(&ledr_pin);
+
+  ledg_pin.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_5;
+  ledg_pin.mode = BSP_GPIO_AF_PP;
+  ledg_pin.pull_type = BSP_GPIO_NOPULL;
+  ledg_pin.speed = BSP_GPIO_FREQ_MEDIUM;
+  ledg_pin.af = BSP_GPIO_AF2;
+  bsp_gpio_pin_init(&ledg_pin);
+
+  ledb_pin.io = (BSP_GPIO_PORT_B << 4) | BSP_GPIO_PIN_0;
+  ledb_pin.mode = BSP_GPIO_AF_PP;
+  ledb_pin.pull_type = BSP_GPIO_NOPULL;
+  ledb_pin.speed = BSP_GPIO_FREQ_MEDIUM;
+  ledb_pin.af = BSP_GPIO_AF2;
+  bsp_gpio_pin_init(&ledb_pin);
+
+  bsp_gpio_pin_t buzzer_pin;
+  buzzer_pin.io = (BSP_GPIO_PORT_D << 4) | BSP_GPIO_PIN_12;
+  buzzer_pin.mode = BSP_GPIO_AF_PP;
+  buzzer_pin.pull_type = BSP_GPIO_NOPULL;
+  buzzer_pin.speed = BSP_GPIO_FREQ_MEDIUM;
+  buzzer_pin.af = BSP_GPIO_AF2;
+  bsp_gpio_pin_init(&buzzer_pin);
+
+  bsp_exti_init((BSP_GPIO_PORT_A << 4) | BSP_GPIO_PIN_2, BSP_EXTI_FALLING_EDGE);
+  drv_buzzer_t dbuzzer;
+  drv_buzzer_init(&dbuzzer);
+  drv_ir_t dir_sensor;
+  drv_ir_init(&dir_sensor);
+  drv_led_rgb_t dled_rgb;
+  drv_led_rgb_init(&dled_rgb);
+  bsp_timer_start(&mcu);
 }
 
 void sys_manager_loop(void)
